@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="LRD planning applications database for Ireland">
+  <title>LRD Planning Monitor</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="shell">
+    <aside class="sidebar">
+      <a class="brand" href="#" aria-label="LRD Monitor home"><span class="brand-mark">L</span><span>LRD<span class="brand-light">monitor</span></span></a>
+      <nav aria-label="Main navigation">
+        <a class="nav-item active" href="#"><span>⌂</span>Overview</a>
+        <a class="nav-item" href="#applications"><span>▤</span>Applications <b>247</b></a>
+        <a class="nav-item" href="#map"><span>◇</span>Map view</a>
+        <a class="nav-item" href="#analytics"><span>⌁</span>Analytics</a>
+        <p class="nav-label">Workspace</p>
+        <a class="nav-item" href="#saved"><span>♡</span>Saved searches</a>
+        <a class="nav-item" href="#alerts"><span>♢</span>Alerts <i></i></a>
+      </nav>
+      <div class="source-card">
+        <span class="live-dot"></span><small>DATA SOURCE</small>
+        <strong>Irish Planning Applications</strong>
+        <p>Powered by GeoHive</p>
+        <a href="https://planning.geohive.ie/datasets/housinggovie::irishplanningapplications/explore?layer=0" target="_blank" rel="noreferrer">View source ↗</a>
+      </div>
+      <div class="profile"><div class="avatar">AO</div><div><strong>Alex O'Rourke</strong><small>Planning analyst</small></div><button aria-label="Open profile menu">•••</button></div>
+    </aside>
+
+    <main>
+      <header class="topbar">
+        <div class="mobile-brand">LRD monitor</div>
+        <label class="global-search"><span>⌕</span><input id="search" type="search" placeholder="Search reference, location or applicant…"><kbd>⌘ K</kbd></label>
+        <div class="top-actions"><button class="icon-button" aria-label="Notifications">♢<span></span></button><button id="exportBtn" class="export">Export data <span>↓</span></button></div>
+      </header>
+
+      <div class="content">
+        <section class="welcome">
+          <div><p class="eyebrow">IRELAND · LRD DATABASE</p><h1>Planning overview</h1><p>Track Large-scale Residential Development applications across Ireland.</p></div>
+          <div class="updated"><span class="live-dot"></span><div><small>LAST UPDATED</small><strong>Today, 09:42</strong></div><button id="refreshBtn" aria-label="Refresh data">↻</button></div>
+        </section>
+
+        <section class="metrics" aria-label="Key statistics">
+          <article><div class="metric-icon navy">▤</div><div><span>Total applications</span><strong>247</strong><small><em>↑ 12</em> this month</small></div></article>
+          <article><div class="metric-icon green">✓</div><div><span>Granted</span><strong>142</strong><small>57.5% approval rate</small></div></article>
+          <article><div class="metric-icon amber">◷</div><div><span>Under review</span><strong>68</strong><small><em class="orange">9 due</em> within 30 days</small></div></article>
+          <article><div class="metric-icon blue">⌂</div><div><span>Housing units</span><strong>38,426</strong><small>Across all applications</small></div></article>
+        </section>
+
+        <section class="workspace" id="applications">
+          <div class="workspace-head"><div><h2>Planning applications</h2><p>Showing <strong id="resultCount">247</strong> Large-scale Residential Developments</p></div><div class="views"><button class="active">▤ List</button><button>◇ Map</button></div></div>
+          <div class="filters">
+            <label class="table-search"><span>⌕</span><input id="tableSearch" type="search" placeholder="Search applications…"></label>
+            <select id="statusFilter" aria-label="Filter by status"><option value="all">All statuses</option><option>Granted</option><option>Under review</option><option>Further information</option></select>
+            <select id="countyFilter" aria-label="Filter by county"><option value="all">All counties</option><option>Dublin</option><option>Cork</option><option>Galway</option><option>Kildare</option><option>Meath</option></select>
+            <button id="moreFilters" class="filter-button">≡ More filters <span>2</span></button>
+            <button id="clearFilters" class="clear">Clear all</button>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>REFERENCE ↕</th><th>DEVELOPMENT</th><th>LOCATION</th><th>UNITS ↕</th><th>STATUS</th><th>DECISION DATE ↕</th><th></th></tr></thead>
+              <tbody id="applicationRows"></tbody>
+            </table>
+            <div id="emptyState" class="empty" hidden><strong>No applications found</strong><p>Try adjusting your search or filters.</p></div>
+          </div>
+          <div class="pagination"><span>Showing <strong id="rangeText">1–6</strong> of <strong id="totalText">247</strong></span><div><button disabled>‹</button><button class="active">1</button><button>2</button><button>3</button><span>…</span><button>42</button><button>›</button></div></div>
+        </section>
+        <footer><span><i></i> All systems operational</span><p>Data sourced from the <a href="https://planning.geohive.ie/datasets/housinggovie::irishplanningapplications/explore?layer=0" target="_blank" rel="noreferrer">National Planning Applications Database ↗</a></p></footer>
+      </div>
+    </main>
+  </div>
+  <dialog id="detailDialog"><button class="dialog-close" aria-label="Close">×</button><p class="eyebrow">APPLICATION DETAIL</p><h2 id="dialogTitle"></h2><div id="dialogBody"></div></dialog>
+  <div id="toast" role="status"></div>
+  <script src="app.js"></script>
+</body>
+</html>
