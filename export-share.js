@@ -17,7 +17,7 @@
     "share-links.js?v=20260803-4",
     "map-files.js?v=20260803-3",
     "export-layer-sync.js?v=20260803-2",
-    "workbook-export.js?v=20260803-1"
+    "workbook-export.js?v=20260803-2"
   ];
   sources.reduce((chain, src) => chain.then(() => new Promise((resolve, reject) => {
     const script = document.createElement("script");
