@@ -14,6 +14,7 @@
   }
 
   function unitParam(value) {
+    if (value == null || value === "") return null;
     const number = Number(value);
     return Number.isSafeInteger(number) && number >= 0 && number <= 10000000 ? number : null;
   }
