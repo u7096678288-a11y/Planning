@@ -54,6 +54,7 @@
       <a class="secondary-button patreon-button" href="https://www.patreon.com/16538169/join" target="_blank" rel="noopener noreferrer" aria-label="Support Radharc Pleanála on Patreon">Support on Patreon</a>
       <span id="connectionStatus" class="status-pill">Connecting…</span>
       <button id="refreshButton" class="secondary-button" type="button">Refresh data</button>
+      <button id="resetDashboardButton" class="secondary-button" type="button">Reset dashboard</button>
     </div>
   </header>
 
@@ -76,10 +77,10 @@
         <h2>Time period</h2>
         <label for="dateRange">Use a quick period or choose exact dates below</label>
         <select id="dateRange">
-          <option value="7" selected>Last 7 days</option>
+          <option value="7">Last 7 days</option>
           <option value="30">Last 30 days</option>
           <option value="90">Last 90 days</option>
-          <option value="365">Last 12 months</option>
+          <option value="365" selected>Last 12 months</option>
           <option value="1095">Last 3 years</option>
           <option value="all">All available records</option>
           <option value="custom" disabled>Custom calendar range</option>
@@ -131,7 +132,7 @@
       </section>
       <p id="sourceFreshness" class="source-freshness">Source update dates will appear after the dashboard is synchronised.</p>
       <div class="smart-filter-summary">
-        <p id="activeFilterSummary">Period: Last 7 days</p>
+        <p id="activeFilterSummary">Period: Last 12 months</p>
         <button id="clearSmartFilters" type="button" disabled>Clear smart filters</button>
       </div>
 
@@ -250,6 +251,6 @@
   <script src="app.js?v=20260803-10"></script>
   <script src="smart-filters.js?v=20260803-2"></script>
   <script src="select-all.js?v=20260803-1"></script>
-  <script src="sync-controller.js?v=20260803-1"></script>
+  <script src="sync-controller.js?v=20260803-2"></script>
 </body>
 </html>
