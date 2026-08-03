@@ -109,6 +109,7 @@
     await loadScript("completions-launcher.js?v=20260803-1");
     await loadScript("sync-health.js?v=20260803-2");
     await loadScript("dashboard-building-control.js?v=20260803-1");
+    await loadScript("building-control-kpi-ratios.js?v=20260803-1");
 
     moduleStatus.ready = true;
     document.dispatchEvent(new CustomEvent("radharc:modules-ready", { detail: { ...moduleStatus, corkReady } }));
