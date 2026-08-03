@@ -1,20 +1,20 @@
 "use strict";
 
-(function scheduleCorkCityAreaFix() {
+(function scheduleCorkCityMetricAdapter() {
   function install() {
-    if (window.__radharcCorkAreaFixInstalled) return;
+    if (window.__radharcCorkMetricAdapterInstalled) return;
     if (!window.CorkCityCKAN || typeof map === "undefined" || typeof S === "undefined") {
       setTimeout(install, 40);
       return;
     }
-    window.__radharcCorkAreaFixInstalled = true;
+    window.__radharcCorkMetricAdapterInstalled = true;
     const originalQ = q;
 
-    function containsCorkAreaStatistic(parameters) {
+    function hasStatistics(parameters) {
       if (!parameters?.outStatistics || parameters.groupByFieldsForStatistics) return false;
       try {
         const stats = typeof parameters.outStatistics === "string" ? JSON.parse(parameters.outStatistics) : parameters.outStatistics;
-        return (stats || []).some(item => item.onStatisticField === "AreaofSite");
+        return Array.isArray(stats) && stats.length > 0;
       } catch {
         return false;
       }
@@ -47,11 +47,16 @@
       return `(${where || "1=1"}) AND (PlanningAuthority IS NULL OR UPPER(PlanningAuthority) NOT LIKE 'CORK CITY%')`;
     }
 
+    function sourceField(requested) {
+      if (requested === "AreaofSite") return "AreaOfSite";
+      return requested;
+    }
+
     function directStatistics(records, statistics) {
       const output = {};
       (statistics || []).forEach(item => {
         const requested = item.onStatisticField;
-        const field = requested === "AreaofSite" ? "AreaOfSite" : requested;
+        const field = sourceField(requested);
         const alias = item.outStatisticFieldName || requested;
         const values = records
           .map(record => record[field])
@@ -63,9 +68,9 @@
       return output;
     }
 
-    q = async function corkAreaAwareQuery(url, parameters = {}) {
+    q = async function corkMetricAwareQuery(url, parameters = {}) {
       const planning = url === S.planningPoints.url || url === S.planningSites.url;
-      if (!planning || !containsCorkAreaStatistic(parameters)) return originalQ(url, parameters);
+      if (!planning || !hasStatistics(parameters)) return originalQ(url, parameters);
 
       const statistics = typeof parameters.outStatistics === "string"
         ? JSON.parse(parameters.outStatistics)
