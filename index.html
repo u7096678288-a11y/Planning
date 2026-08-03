@@ -5,10 +5,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="description" content="Live Irish planning, ACP case and cadastral mapping dashboard powered by public ArcGIS REST services." />
   <title>Irish Planning Intelligence Map</title>
-  <link rel="preconnect" href="https://unpkg.com" />
   <link rel="preconnect" href="https://cdn.jsdelivr.net" />
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIINfQ3yK2R9K7GxjMZ4bI7Y8rYQz1Q4f3M=" crossorigin="" />
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="styles.css?v=20260803-3" />
+  <style>
+    /* Local Leaflet fallback: keeps the basemap intact if the CDN stylesheet is delayed or blocked. */
+    .leaflet-container{overflow:hidden;outline:0;background:#dfe7eb}
+    .leaflet-pane,.leaflet-tile,.leaflet-marker-icon,.leaflet-marker-shadow,
+    .leaflet-tile-container,.leaflet-pane>svg,.leaflet-pane>canvas,
+    .leaflet-zoom-box,.leaflet-image-layer,.leaflet-layer{
+      position:absolute;left:0;top:0
+    }
+    .leaflet-tile{visibility:hidden;user-select:none;-webkit-user-drag:none}
+    .leaflet-tile-loaded{visibility:inherit}
+    .leaflet-top,.leaflet-bottom{position:absolute;z-index:1000;pointer-events:none}
+    .leaflet-top{top:0}.leaflet-right{right:0}.leaflet-bottom{bottom:0}.leaflet-left{left:0}
+    .leaflet-control{position:relative;z-index:800;pointer-events:auto}
+  </style>
 </head>
 <body>
   <header class="topbar">
@@ -142,13 +155,32 @@
 
   <noscript>This tool requires JavaScript to query the live ArcGIS REST services.</noscript>
 
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-  <script src="https://unpkg.com/esri-leaflet@3.0.15/dist/esri-leaflet.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/esri-leaflet@3.0.15/dist/esri-leaflet.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
-  <script src="app.js"></script>
+  <script src="app.js?v=20260803-3"></script>
   <script>
+    function settlePlanningMap() {
+      if (typeof map === "undefined" || !map) return;
+      map.invalidateSize({ pan: false });
+      map.fitBounds([[51.35, -10.75], [55.55, -5.35]], {
+        padding: [18, 18],
+        animate: false
+      });
+    }
+
     addEventListener("DOMContentLoaded", () => {
-      map.fitBounds([[51.35, -10.75], [55.55, -5.35]], { padding: [16, 16] });
+      requestAnimationFrame(() => requestAnimationFrame(settlePlanningMap));
+      setTimeout(settlePlanningMap, 350);
+      setTimeout(settlePlanningMap, 1000);
+    });
+
+    let mapResizeTimer;
+    addEventListener("resize", () => {
+      clearTimeout(mapResizeTimer);
+      mapResizeTimer = setTimeout(() => {
+        if (typeof map !== "undefined" && map) map.invalidateSize({ pan: false });
+      }, 150);
     });
   </script>
 </body>
