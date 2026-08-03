@@ -33,6 +33,14 @@
     return text(value).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
   }
 
+  function referenceMarkup(record) {
+    const reference = text(record.ApplicationNumber) || "—";
+    const url = window.RadharcRecordLinks?.planningUrl?.(record) || "";
+    return url
+      ? `<a class="performance-record-link" href="${safe(url)}" target="_blank" rel="noopener noreferrer">${safe(reference)} <span aria-hidden="true">↗</span></a>`
+      : safe(reference);
+  }
+
   function unitSort(left, right) {
     return number(right.__units) - number(left.__units)
       || (parseTime(left.__forecastTime) ?? Infinity) - (parseTime(right.__forecastTime) ?? Infinity)
@@ -97,7 +105,7 @@
     const visible = records.slice(0, 500);
     const rows = visible.map(record => `
       <tr>
-        <td>${safe(record.ApplicationNumber || "—")}</td>
+        <td>${referenceMarkup(record)}</td>
         <td>${safe(record.PlanningAuthority)}</td>
         <td><strong>${format(record.__units)}</strong></td>
         <td>${dateText(record.DecisionDueDate)}</td>
