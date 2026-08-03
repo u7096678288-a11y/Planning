@@ -16,6 +16,7 @@
     "cork-city-area-fix.js?v=20260803-2",
     "cork-city-layer-toggle.js?v=20260803-1",
     "cross-layer-sync.js?v=20260803-2",
+    "cork-city-sync-hook.js?v=20260803-1",
     "dynamic-performance.js?v=20260803-1",
     "all-layer-search.js?v=20260803-2",
     "export-core.js?v=20260803-2",
