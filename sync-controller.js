@@ -2,6 +2,8 @@
 
 (function installSynchronizedDashboard() {
   let syncRun = 0;
+  const DEFAULT_PERIOD = "365";
+  const IRELAND_BOUNDS = [[51.35, -10.75], [55.55, -5.35]];
 
   function buildSnapshot() {
     const run = ++syncRun;
@@ -243,5 +245,104 @@
     );
   }
 
+  function resetLayerVisibility() {
+    Object.entries(S).forEach(([key, source]) => {
+      const layer = layers[key];
+      if (!layer) return;
+
+      if (source.on && !map.hasLayer(layer)) layer.addTo(map);
+      if (!source.on && map.hasLayer(layer)) map.removeLayer(layer);
+
+      const checkbox = document.querySelector(`#layerToggles input[data-k="${key}"]`);
+      if (checkbox) checkbox.checked = source.on;
+    });
+  }
+
+  async function resetDashboard() {
+    const resetButton = document.querySelector("#resetDashboardButton");
+    if (resetButton) {
+      resetButton.disabled = true;
+      resetButton.textContent = "Resetting…";
+    }
+
+    ++syncRun;
+    clearTimeout(timer);
+
+    smartState.customDates = null;
+    smartState.lastPreset = DEFAULT_PERIOD;
+    smartState.decision = [];
+    smartState.authority = [];
+    smartState.category = [];
+
+    const dateRange = document.querySelector("#dateRange");
+    const startDate = document.querySelector("#customStartDate");
+    const endDate = document.querySelector("#customEndDate");
+    const dateStatus = document.querySelector("#customDateStatus");
+    const today = new Date().toLocaleDateString("en-CA");
+
+    if (dateRange) dateRange.value = DEFAULT_PERIOD;
+    if (startDate) {
+      startDate.value = "";
+      startDate.max = today;
+    }
+    if (endDate) {
+      endDate.value = "";
+      endDate.min = "";
+      endDate.max = today;
+    }
+    if (dateStatus) dateStatus.textContent = "Reset to Last 12 months.";
+
+    ["decision", "authority", "category"].forEach(key => {
+      if (smartTools[key]?.search) smartTools[key].search.value = "";
+      smartSyncSelect(key);
+    });
+    smartUpdateSummary();
+
+    const searchInput = document.querySelector("#searchInput");
+    const searchResults = document.querySelector("#searchResults");
+    const searchStatus = document.querySelector("#searchStatus");
+    if (searchInput) searchInput.value = "";
+    if (searchResults) searchResults.innerHTML = "";
+    if (searchStatus) searchStatus.textContent = "Dashboard reset to Last 12 months. Press Search to list records.";
+
+    selected = null;
+    const selectedRecord = document.querySelector("#selectedRecord");
+    const copyButton = document.querySelector("#copyBriefButton");
+    if (selectedRecord) {
+      selectedRecord.className = "empty-state";
+      selectedRecord.textContent = "Select a planning point, site, ACP case or parcel on the map.";
+    }
+    if (copyButton) {
+      copyButton.disabled = true;
+      copyButton.textContent = "Copy record brief";
+    }
+
+    const refreshButton = document.querySelector("#refreshButton");
+    if (refreshButton) {
+      refreshButton.disabled = false;
+      refreshButton.textContent = "Refresh data";
+    }
+
+    map.closePopup();
+    resetLayerVisibility();
+    map.fitBounds(IRELAND_BOUNDS, {
+      padding: [18, 18],
+      animate: false
+    });
+
+    await synchronizedUpdate();
+
+    if (resetButton) {
+      resetButton.disabled = false;
+      resetButton.textContent = "Reset dashboard";
+    }
+  }
+
+  function bindResetButton() {
+    const resetButton = document.querySelector("#resetDashboardButton");
+    if (resetButton) resetButton.addEventListener("click", resetDashboard);
+  }
+
   update = synchronizedUpdate;
+  document.addEventListener("DOMContentLoaded", bindResetButton);
 })();
