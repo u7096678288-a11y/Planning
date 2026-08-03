@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Rolling 30-day report of Ireland's largest planning and An Coimisiún Pleanála movements." />
+  <title>Weekly Planning Update · Radharc Pleanála</title>
+  <style>
+    :root{font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#132538;background:#edf3f5;--navy:#102f49;--teal:#24747a;--line:#d7e2e6;--muted:#607783;--paper:#fff}
+    *{box-sizing:border-box}body{margin:0}.topbar{display:flex;justify-content:space-between;gap:20px;align-items:flex-start;padding:20px clamp(16px,3vw,42px);background:var(--navy);color:#fff}.eyebrow{margin:0 0 5px;color:#b8d8df;font-size:10px;font-weight:800;letter-spacing:.09em}.topbar h1{margin:0;font-size:clamp(24px,4vw,38px)}.topbar p{max-width:860px;margin:7px 0 0;color:#d7e4ea;font-size:13px;line-height:1.45}.header-actions{display:flex;gap:7px;flex-wrap:wrap;justify-content:flex-end}.button{display:inline-flex;align-items:center;justify-content:center;gap:5px;border:1px solid #b7c8d0;border-radius:7px;background:#fff;color:#16364d;padding:9px 12px;font-size:11px;font-weight:800;text-decoration:none;cursor:pointer}.button.primary{border-color:#2d7c82;background:#2d7c82;color:#fff}.button:disabled{opacity:.55;cursor:wait}
+    main{width:min(1540px,calc(100% - 24px));margin:16px auto 44px}.report-status{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:11px 13px;border:1px solid var(--line);border-radius:9px;background:#fff;color:#496271;font-size:11px}.report-status[data-mode="loading"]{border-color:#a8ccca;color:#225b5f}.report-status[data-mode="error"]{border-color:#deb8b0;background:#fff7f5;color:#7a3028}.controls{display:grid;grid-template-columns:minmax(210px,1fr) 190px 210px auto;gap:9px;align-items:end;margin-top:12px;padding:12px;border:1px solid var(--line);border-radius:9px;background:#fff}.controls label{display:grid;gap:5px;color:#506875;font-size:10px;font-weight:800}.controls input,.controls select{width:100%;border:1px solid #b7c8d0;border-radius:7px;background:#fff;color:#132538;padding:9px;font-size:11px}.control-actions{display:flex;gap:7px;flex-wrap:wrap;justify-content:flex-end}
+    .metrics{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:9px;margin-top:12px}.metric{padding:13px;border:1px solid var(--line);border-radius:9px;background:#fff}.metric span{display:block;color:#607783;font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.04em}.metric strong{display:block;margin-top:5px;color:#102f49;font-size:24px}.metric small{display:block;margin-top:4px;color:#6a7f8b;font-size:10px;line-height:1.35}
+    .section{margin-top:12px;border:1px solid var(--line);border-radius:9px;background:#fff;overflow:hidden}.section-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;padding:13px 14px;border-bottom:1px solid #e0e8eb;background:#f9fbfb}.section-head h2{margin:0;color:#102f49;font-size:16px}.section-head p{margin:4px 0 0;color:#607783;font-size:10px;line-height:1.45}.table-wrap{overflow:auto;max-height:70vh}.report-table{width:100%;border-collapse:collapse;font-size:10px}.report-table th{position:sticky;top:0;z-index:2;padding:9px 8px;background:#eaf2f3;color:#385360;text-align:left;white-space:nowrap;border-bottom:1px solid #cddadd}.report-table td{padding:9px 8px;border-bottom:1px solid #e5ecef;vertical-align:top;line-height:1.4}.report-table tbody tr:hover{background:#f7fafb}.report-table .rank{font-weight:800;color:#607783}.project-link,.record-link{color:#0a5f7a;font-weight:800;text-decoration:underline;text-underline-offset:2px}.project-title{min-width:250px;max-width:380px}.project-title small{display:block;margin-top:4px;color:#607783;font-weight:500}.units{font-weight:900;color:#173f56;text-align:right}.movement{display:inline-flex;margin:1px 3px 2px 0;border-radius:999px;padding:3px 6px;background:#e9f2f3;color:#315e63;font-size:8px;font-weight:800;white-space:nowrap}.movement.decision{background:#e9f4ed;color:#285f41}.movement.refusal{background:#fff0ed;color:#7a3028}.movement.appeal{background:#f3edfa;color:#64458a}.movement.lodgement{background:#eef2fb;color:#3f5790}.reason{min-width:170px}.empty{padding:34px;text-align:center;color:#607783}.method{padding:13px 15px;color:#4e6673;font-size:10px;line-height:1.55}.method strong{color:#173a51}.source-warning{margin-top:10px;padding:10px 12px;border-left:3px solid #d39a35;background:#fff9e9;color:#66521e;font-size:10px;line-height:1.45}
+    @media(max-width:1050px){.topbar{flex-direction:column}.header-actions{justify-content:flex-start}.controls{grid-template-columns:1fr 1fr}.metrics{grid-template-columns:repeat(3,minmax(0,1fr))}}@media(max-width:650px){.controls{grid-template-columns:1fr}.control-actions{justify-content:stretch}.control-actions .button{flex:1}.metrics{grid-template-columns:1fr 1fr}.report-status{align-items:flex-start;flex-direction:column}}
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <p class="eyebrow">RADHARC PLEANÁLA · ROLLING 30-DAY INTELLIGENCE</p>
+      <h1>Weekly Planning Update</h1>
+      <p>The largest residential, strategic infrastructure and significant planning movements, combining local-authority applications with An Coimisiún Pleanála lodgements and decisions.</p>
+    </div>
+    <nav class="header-actions" aria-label="Report actions">
+      <a class="button" href="./">Dashboard</a>
+      <button id="refreshReport" class="button primary" type="button">Refresh report</button>
+      <button id="exportCsv" class="button" type="button" disabled>Export CSV</button>
+      <button id="exportExcel" class="button" type="button" disabled>Export Excel</button>
+      <button id="emailReport" class="button" type="button" disabled>Email link</button>
+    </nav>
+  </header>
+
+  <main>
+    <div id="reportStatus" class="report-status" data-mode="loading" role="status" aria-live="polite">
+      <span>Loading the last 30 days…</span><span id="reportWindow"></span>
+    </div>
+
+    <section class="controls" aria-label="Report filters">
+      <label for="reportSearch">Search projects, references, applicants or locations
+        <input id="reportSearch" type="search" placeholder="Search the report" />
+      </label>
+      <label for="movementFilter">Movement
+        <select id="movementFilter">
+          <option value="all">All movements</option>
+          <option value="planning-lodged">Planning lodgements</option>
+          <option value="planning-decided">Planning decisions</option>
+          <option value="appeal">Appeals / ACP</option>
+          <option value="sid">SID / strategic</option>
+          <option value="refused">Refusals</option>
+        </select>
+      </label>
+      <label for="authorityFilterWeekly">Planning authority
+        <select id="authorityFilterWeekly"><option value="all">All authorities</option></select>
+      </label>
+      <div class="control-actions"><button id="clearReportFilters" class="button" type="button">Clear filters</button></div>
+    </section>
+
+    <section id="reportMetrics" class="metrics" aria-label="Weekly update totals"></section>
+
+    <section class="section">
+      <header class="section-head">
+        <div><h2>Ranked project movements</h2><p>Projects are ranked by residential units first, then strategic significance and latest movement. The table and exports contain the same filtered records.</p></div>
+        <strong id="visibleSummary">—</strong>
+      </header>
+      <div id="reportTable" class="table-wrap"><div class="empty">Loading report…</div></div>
+    </section>
+
+    <section class="section">
+      <div class="method">
+        <strong>Coverage rules.</strong> The report includes applications reporting at least 100 residential units; ACP cases identified as SID, strategic housing/LRD/SHD or major infrastructure; projects with at least 10,000 m² floor area or 10 hectares; and national-scale transport, energy, utility, port, airport, hospital or data-centre projects identified from the published description/category. A movement is included where a planning receipt, planning decision, grant, appeal lodgement, appeal decision, ACP lodgement or ACP decision falls within the rolling 30-day window.
+        <div class="source-warning">The report is generated from public ArcGIS and Cork City CKAN feeds. Applicant names, unit figures and appeal links are shown only where published. ACP notes that its mapped dataset may omit some invalid or withdrawn cases; the official case page remains authoritative.</div>
+      </div>
+    </section>
+  </main>
+
+  <script src="weekly-update.js?v=20260803-1"></script>
+</body>
+</html>
