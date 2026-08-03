@@ -22,6 +22,15 @@
     .leaflet-top{top:0}.leaflet-right{right:0}.leaflet-bottom{bottom:0}.leaflet-left{left:0}
     .leaflet-control{position:relative;z-index:800;pointer-events:auto}
     .patreon-button{display:inline-flex;align-items:center;text-decoration:none;white-space:nowrap}
+    .custom-date-panel{margin-top:12px;padding:12px;background:#f3f6f7;border:1px solid #dce4e8;border-radius:7px}
+    .custom-date-panel h3{font-size:12px;margin:0 0 9px}
+    .date-input-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+    .date-input-grid label{margin:0!important}
+    .date-input-grid input{width:100%;margin-top:5px;border:1px solid #cbd6dc;border-radius:6px;padding:8px;background:#fff;color:#132538}
+    .date-actions{display:flex;gap:7px;margin-top:9px}
+    .date-actions button{flex:1;border:1px solid #b9c7cf;background:#fff;color:#132538;border-radius:6px;padding:8px;font-weight:bold}
+    .date-actions .apply-date-button{background:#102f49;color:#fff;border-color:#102f49}
+    .date-status{min-height:16px;margin:8px 0 0;font-size:11px;color:#687b88;line-height:1.4}
   </style>
 </head>
 <body>
@@ -55,7 +64,7 @@
 
       <section class="panel-section">
         <h2>Time period</h2>
-        <label for="dateRange">Filter planning received / ACP lodged dates</label>
+        <label for="dateRange">Use a quick period or choose exact dates below</label>
         <select id="dateRange">
           <option value="7" selected>Last 7 days</option>
           <option value="30">Last 30 days</option>
@@ -63,7 +72,25 @@
           <option value="365">Last 12 months</option>
           <option value="1095">Last 3 years</option>
           <option value="all">All available records</option>
+          <option value="custom" disabled>Custom calendar range</option>
         </select>
+
+        <div class="custom-date-panel">
+          <h3>Custom calendar range</h3>
+          <div class="date-input-grid">
+            <label for="customStartDate">From
+              <input id="customStartDate" type="date" />
+            </label>
+            <label for="customEndDate">To
+              <input id="customEndDate" type="date" />
+            </label>
+          </div>
+          <div class="date-actions">
+            <button id="applyCustomDates" class="apply-date-button" type="button">Apply dates</button>
+            <button id="clearCustomDates" type="button">Clear dates</button>
+          </div>
+          <p id="customDateStatus" class="date-status" aria-live="polite">Pick either date or both dates to create a custom range.</p>
+        </div>
       </section>
 
       <section class="panel-section">
@@ -185,12 +212,55 @@
   <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/esri-leaflet@3.0.15/dist/esri-leaflet.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
-  <script src="app.js?v=20260803-7"></script>
+  <script src="app.js?v=20260803-8"></script>
   <script>
     const originalDashboardUpdate = update;
+    let customDateRange = null;
+    let lastPresetValue = "7";
+
     const fmtWholeUp = value => new Intl.NumberFormat("en-IE", {
       maximumFractionDigits: 0
     }).format(Math.ceil(Number(value) || 0));
+
+    function nextIsoDate(value) {
+      const [year, month, day] = value.split("-").map(Number);
+      const date = new Date(Date.UTC(year, month - 1, day));
+      date.setUTCDate(date.getUTCDate() + 1);
+      return date.toISOString().slice(0, 10);
+    }
+
+    function customDateWhere(field) {
+      if (!customDateRange) return field === "ReceivedDate" ? cutoff() : acpCutoff();
+      const clauses = [];
+      if (customDateRange.start) clauses.push(`${field} >= DATE '${customDateRange.start}'`);
+      if (customDateRange.end) clauses.push(`${field} < DATE '${nextIsoDate(customDateRange.end)}'`);
+      return clauses.join(" AND ") || "1=1";
+    }
+
+    const activePlanningWhere = () => customDateWhere("ReceivedDate");
+    const activeAcpWhere = () => customDateWhere("LODGEDON");
+
+    function readablePickedDate(value) {
+      if (!value) return "";
+      return new Date(`${value}T00:00:00`).toLocaleDateString("en-IE", {
+        day: "2-digit", month: "short", year: "numeric"
+      });
+    }
+
+    function activePeriodLabel() {
+      if (!customDateRange) return periodLabel();
+      if (customDateRange.start && customDateRange.end) {
+        return `${readablePickedDate(customDateRange.start)} to ${readablePickedDate(customDateRange.end)}`;
+      }
+      if (customDateRange.start) return `from ${readablePickedDate(customDateRange.start)}`;
+      return `up to ${readablePickedDate(customDateRange.end)}`;
+    }
+
+    function applyActiveLayerFilters() {
+      layers.planningPoints.setWhere(activePlanningWhere());
+      layers.planningSites.setWhere(activePlanningWhere());
+      layers.acpCases.setWhere(activeAcpWhere());
+    }
 
     async function metricStat(url, field, where, geometry) {
       const result = await q(url, {
@@ -232,7 +302,7 @@
 
     async function populatePlanningTotals() {
       const geometry = geom();
-      const where = cutoff();
+      const where = activePlanningWhere();
       const fields = ["NumResidentialUnits", "FloorArea", "AreaofSite"];
       const results = await Promise.allSettled(
         fields.flatMap(field => [
@@ -250,10 +320,114 @@
       showMetric("#siteAreaCount", "#siteCoverage", siteArea, fmtWholeUp, "Site area", "ha");
     }
 
-    update = async function robustDashboardUpdate() {
-      await Promise.allSettled([originalDashboardUpdate()]);
+    async function updateCustomDashboard() {
+      status("Checking custom date range");
+      const geometry = geom();
+      try {
+        const [planningCount, acpCount, planningDecisions, authorities, categories, planningMeta, acpMeta] = await Promise.all([
+          q(S.planningPoints.url, { where: activePlanningWhere(), returnCountOnly: true, ...geometry }),
+          q(S.acpCases.url, { where: activeAcpWhere(), returnCountOnly: true, ...geometry }),
+          q(S.planningPoints.url, {
+            where: activePlanningWhere(),
+            outStatistics: JSON.stringify([{ statisticType: "count", onStatisticField: "OBJECTID", outStatisticFieldName: "n" }]),
+            groupByFieldsForStatistics: "Decision",
+            orderByFields: "n DESC",
+            returnGeometry: false,
+            ...geometry
+          }),
+          q(S.planningPoints.url, {
+            where: activePlanningWhere(),
+            outStatistics: JSON.stringify([{ statisticType: "count", onStatisticField: "OBJECTID", outStatisticFieldName: "n" }]),
+            groupByFieldsForStatistics: "PlanningAuthority",
+            orderByFields: "n DESC",
+            resultRecordCount: 8,
+            returnGeometry: false,
+            ...geometry
+          }),
+          q(S.acpCases.url, {
+            where: activeAcpWhere(),
+            outStatistics: JSON.stringify([{ statisticType: "count", onStatisticField: "OBJECTID", outStatisticFieldName: "n" }]),
+            groupByFieldsForStatistics: "CATEGORY",
+            orderByFields: "n DESC",
+            resultRecordCount: 8,
+            returnGeometry: false,
+            ...geometry
+          }),
+          layerInfo(S.planningPoints.url),
+          layerInfo(S.acpCases.url)
+        ]);
+
+        document.querySelector("#planningCount").textContent = fmt(planningCount.count);
+        document.querySelector("#acpCount").textContent = fmt(acpCount.count);
+        document.querySelector("#parcelCount").textContent = map.getZoom() >= 13 ? "Visible" : "Zoom in";
+        draw("planningDecisionChart", planningDecisions.features || [], "Decision", "n", "doughnut");
+        draw("authorityChart", authorities.features || [], "PlanningAuthority", "n", "bar");
+        draw("acpCategoryChart", categories.features || [], "CATEGORY", "n", "doughnut");
+
+        const checked = new Date();
+        document.querySelector("#dashboardUpdated").textContent = `Checked ${checked.toLocaleTimeString("en-IE", {
+          hour: "2-digit", minute: "2-digit", second: "2-digit"
+        })}`;
+        const planningEdit = planningMeta.editingInfo?.dataLastEditDate;
+        const acpEdit = acpMeta.editingInfo?.dataLastEditDate;
+        document.querySelector("#sourceFreshness").textContent = [
+          planningEdit ? `Planning feed edited ${dateTime(planningEdit)}` : "Planning feed edit date unavailable",
+          acpEdit ? `ACP feed edited ${dateTime(acpEdit)}` : "ACP feed edit date unavailable",
+          `Custom period: ${activePeriodLabel()}`
+        ].join(" · ");
+        status("Live data checked", "ok");
+      } catch (error) {
+        console.error(error);
+        status("Custom date query failed", "error");
+        document.querySelector("#sourceFreshness").textContent = "One or more live feeds could not be checked for the custom dates.";
+      }
+    }
+
+    update = async function calendarAwareDashboardUpdate() {
+      if (customDateRange) await updateCustomDashboard();
+      else await Promise.allSettled([originalDashboardUpdate()]);
       await populatePlanningTotals();
     };
+
+    async function calendarAwareSearch(event) {
+      event.preventDefault();
+      const raw = document.querySelector("#searchInput").value.trim();
+      const text = raw.replaceAll("'", "''");
+      const planningText = `(ApplicationNumber LIKE '%${text}%' OR DevelopmentAddress LIKE '%${text}%' OR DevelopmentDescription LIKE '%${text}%')`;
+      const acpText = `(ABPCASEID LIKE '%${text}%' OR DEVADDRESS LIKE '%${text}%' OR DEVDESC LIKE '%${text}%')`;
+      const planningWhere = raw ? `(${activePlanningWhere()}) AND ${planningText}` : activePlanningWhere();
+      const acpWhere = raw ? `(${activeAcpWhere()}) AND ${acpText}` : activeAcpWhere();
+      document.querySelector("#searchStatus").textContent = `Searching ${activePeriodLabel()}…`;
+
+      try {
+        const [planning, acp] = await Promise.all([
+          q(S.planningPoints.url, {
+            where: planningWhere, outFields: "*", returnGeometry: true, outSR: 4326,
+            orderByFields: "ReceivedDate DESC", resultRecordCount: 50, f: "geojson"
+          }),
+          q(S.acpCases.url, {
+            where: acpWhere, outFields: "*", returnGeometry: true, outSR: 4326,
+            orderByFields: "LODGEDON DESC", resultRecordCount: 50, f: "geojson"
+          })
+        ]);
+        const all = [
+          ...(planning.features || []).map(feature => ["planningPoints", feature]),
+          ...(acp.features || []).map(feature => ["acpCases", feature])
+        ].sort((a, b) => recordDate(b) - recordDate(a));
+
+        document.querySelector("#searchResults").innerHTML = all.length
+          ? all.map(resultMarkup).join("")
+          : '<div class="empty-state">No matching records were returned for this period.</div>';
+        document.querySelectorAll("#searchResults button").forEach(button => {
+          button.onclick = () => focus(all[button.dataset.i]);
+        });
+        const qualifier = raw ? ` matching “${raw}”` : "";
+        document.querySelector("#searchStatus").textContent = `${all.length} result${all.length === 1 ? "" : "s"}${qualifier} in ${activePeriodLabel()}${all.length === 100 ? " (first 100)" : ""}.`;
+      } catch (error) {
+        console.error(error);
+        document.querySelector("#searchStatus").textContent = "Search could not be completed";
+      }
+    }
 
     function settlePlanningMap() {
       if (typeof map === "undefined" || !map) return;
@@ -265,6 +439,72 @@
     }
 
     addEventListener("DOMContentLoaded", () => {
+      const dateRange = document.querySelector("#dateRange");
+      const startDate = document.querySelector("#customStartDate");
+      const endDate = document.querySelector("#customEndDate");
+      const dateStatus = document.querySelector("#customDateStatus");
+      const today = new Date().toLocaleDateString("en-CA");
+      lastPresetValue = dateRange.value;
+      startDate.max = today;
+      endDate.max = today;
+
+      dateRange.onchange = () => {
+        if (dateRange.value === "custom") return;
+        lastPresetValue = dateRange.value;
+        customDateRange = null;
+        startDate.value = "";
+        endDate.value = "";
+        startDate.max = today;
+        endDate.min = "";
+        dateStatus.textContent = `Using ${periodLabel()}.`;
+        applyActiveLayerFilters();
+        document.querySelector("#searchResults").innerHTML = "";
+        document.querySelector("#searchStatus").textContent = `Filter changed to ${periodLabel()}. Press Search to list records.`;
+        update();
+      };
+
+      startDate.addEventListener("change", () => {
+        endDate.min = startDate.value || "";
+      });
+      endDate.addEventListener("change", () => {
+        startDate.max = endDate.value || today;
+      });
+
+      document.querySelector("#applyCustomDates").onclick = () => {
+        const start = startDate.value;
+        const end = endDate.value;
+        if (!start && !end) {
+          dateStatus.textContent = "Choose at least one calendar date.";
+          return;
+        }
+        if (start && end && start > end) {
+          dateStatus.textContent = "The From date must be before or equal to the To date.";
+          return;
+        }
+        customDateRange = { start, end };
+        dateRange.value = "custom";
+        applyActiveLayerFilters();
+        document.querySelector("#searchResults").innerHTML = "";
+        document.querySelector("#searchStatus").textContent = `Custom period applied: ${activePeriodLabel()}. Press Search to list records.`;
+        dateStatus.textContent = `Active: ${activePeriodLabel()}.`;
+        update();
+      };
+
+      document.querySelector("#clearCustomDates").onclick = () => {
+        customDateRange = null;
+        startDate.value = "";
+        endDate.value = "";
+        startDate.max = today;
+        endDate.min = "";
+        dateRange.value = lastPresetValue;
+        applyActiveLayerFilters();
+        document.querySelector("#searchResults").innerHTML = "";
+        document.querySelector("#searchStatus").textContent = `Using ${periodLabel()}. Press Search to list records.`;
+        dateStatus.textContent = `Custom dates cleared. Using ${periodLabel()}.`;
+        update();
+      };
+
+      document.querySelector("#searchForm").onsubmit = calendarAwareSearch;
       requestAnimationFrame(() => requestAnimationFrame(settlePlanningMap));
       setTimeout(settlePlanningMap, 350);
       setTimeout(settlePlanningMap, 1000);
