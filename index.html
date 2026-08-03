@@ -7,15 +7,13 @@
   <title>Radharc Pleanála</title>
   <link rel="preconnect" href="https://cdn.jsdelivr.net" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css" />
-  <link rel="stylesheet" href="styles.css?v=20260803-7" />
+  <link rel="stylesheet" href="styles.css?v=20260803-8" />
   <style>
     /* Local Leaflet fallback: keeps the basemap intact if the CDN stylesheet is delayed or blocked. */
     .leaflet-container{overflow:hidden;outline:0;background:#dfe7eb}
     .leaflet-pane,.leaflet-tile,.leaflet-marker-icon,.leaflet-marker-shadow,
     .leaflet-tile-container,.leaflet-pane>svg,.leaflet-pane>canvas,
-    .leaflet-zoom-box,.leaflet-image-layer,.leaflet-layer{
-      position:absolute;left:0;top:0
-    }
+    .leaflet-zoom-box,.leaflet-image-layer,.leaflet-layer{position:absolute;left:0;top:0}
     .leaflet-tile{visibility:hidden;user-select:none;-webkit-user-drag:none}
     .leaflet-tile-loaded{visibility:inherit}
     .leaflet-top,.leaflet-bottom{position:absolute;z-index:1000;pointer-events:none}
@@ -31,6 +29,15 @@
     .date-actions button{flex:1;border:1px solid #b9c7cf;background:#fff;color:#132538;border-radius:6px;padding:8px;font-weight:bold}
     .date-actions .apply-date-button{background:#102f49;color:#fff;border-color:#102f49}
     .date-status{min-height:16px;margin:8px 0 0;font-size:11px;color:#687b88;line-height:1.4}
+    .smart-filter-summary{margin:0;padding:10px 14px;background:#eef5f5;border-bottom:1px solid #dce4e8;display:flex;align-items:center;gap:10px}
+    .smart-filter-summary p{margin:0;flex:1;font-size:11px;line-height:1.4;color:#425c6c}
+    .smart-filter-summary button{border:1px solid #b9c7cf;background:#fff;color:#132538;border-radius:6px;padding:7px 9px;font-size:11px;font-weight:bold;white-space:nowrap}
+    .smart-filter-summary button:disabled{opacity:.45;cursor:not-allowed}
+    .chart-filter-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}
+    .chart-filter-row h2{margin:0!important}
+    .chart-filter-row select{width:min(175px,58%);padding:7px;font-size:11px;border:1px solid #b8c8d0;border-radius:6px;background:#fff;color:#132538}
+    .filter-help{margin:0 0 8px;font-size:10px;color:#687b88;line-height:1.35}
+    @media(max-width:700px){.chart-filter-row{align-items:flex-start;flex-direction:column}.chart-filter-row select{width:100%;max-width:none}.smart-filter-summary{align-items:flex-start;flex-direction:column}.smart-filter-summary button{width:100%}}
   </style>
 </head>
 <body>
@@ -52,9 +59,9 @@
       <section class="panel-section">
         <h2>Search and list records</h2>
         <form id="searchForm" class="search-form">
-          <label for="searchInput">Enter a reference, address or description, or leave blank to list everything in the selected period.</label>
+          <label for="searchInput">Enter a reference, address or description, or leave blank to list everything in the selected period and filters.</label>
           <div class="search-row">
-            <input id="searchInput" name="search" type="search" placeholder="Blank = all recent records" autocomplete="off" />
+            <input id="searchInput" name="search" type="search" placeholder="Blank = all filtered records" autocomplete="off" />
             <button type="submit">Search</button>
           </div>
         </form>
@@ -120,17 +127,21 @@
         <span id="dashboardUpdated" class="muted small">Not yet checked</span>
       </section>
       <p id="sourceFreshness" class="source-freshness">Source update dates will appear after the live feeds are checked.</p>
+      <div class="smart-filter-summary">
+        <p id="activeFilterSummary">Period: Last 7 days</p>
+        <button id="clearSmartFilters" type="button" disabled>Clear smart filters</button>
+      </div>
 
       <section class="metric-grid" aria-label="Headline metrics">
         <article class="metric-card">
           <span>Planning applications</span>
           <strong id="planningCount">—</strong>
-          <small>Records in the selected period</small>
+          <small>Records matching the active filters</small>
         </article>
         <article class="metric-card">
           <span>ACP cases</span>
           <strong id="acpCount">—</strong>
-          <small>Cases in the selected period</small>
+          <small>Cases matching the active filters</small>
         </article>
         <article class="metric-card">
           <span>Total residential units</span>
@@ -154,22 +165,40 @@
         </article>
       </section>
 
-      <p class="data-quality-note">Residential units, floor area and site area are summed from the official planning feed for the visible map area and selected period. Null values are excluded. Floor area is shown in square metres and site area is shown in hectares; both area totals are rounded upward to whole numbers.</p>
+      <p class="data-quality-note">Residential units, floor area and site area are summed from the official planning feed for the visible map area, selected period and smart filters. Null values are excluded. Floor area is shown in square metres and site area is shown in hectares; both area totals are rounded upward to whole numbers.</p>
 
       <section class="panel-section chart-section">
-        <h2>Planning decisions</h2>
+        <div class="chart-filter-row">
+          <h2>Planning decisions</h2>
+          <select id="decisionFilter" aria-label="Filter by planning decision">
+            <option value="">Loading decisions…</option>
+          </select>
+        </div>
+        <p class="filter-help">Options and counts update automatically. You can also click a chart segment to filter.</p>
         <div class="chart-wrap"><canvas id="planningDecisionChart"></canvas></div>
         <div id="planningDecisionFallback" class="data-fallback"></div>
       </section>
 
       <section class="panel-section chart-section">
-        <h2>Applications by authority</h2>
+        <div class="chart-filter-row">
+          <h2>Applications by authority</h2>
+          <select id="authorityFilter" aria-label="Filter by planning authority">
+            <option value="">Loading authorities…</option>
+          </select>
+        </div>
+        <p class="filter-help">The authority list responds to the chosen period and decision filter.</p>
         <div class="chart-wrap tall"><canvas id="authorityChart"></canvas></div>
         <div id="authorityFallback" class="data-fallback"></div>
       </section>
 
       <section class="panel-section chart-section">
-        <h2>ACP categories</h2>
+        <div class="chart-filter-row">
+          <h2>ACP categories</h2>
+          <select id="categoryFilter" aria-label="Filter by ACP category">
+            <option value="">Loading ACP categories…</option>
+          </select>
+        </div>
+        <p class="filter-help">ACP categories filter ACP cases independently while using the same date range and map area.</p>
         <div class="chart-wrap"><canvas id="acpCategoryChart"></canvas></div>
         <div id="acpCategoryFallback" class="data-fallback"></div>
       </section>
@@ -212,311 +241,7 @@
   <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/esri-leaflet@3.0.15/dist/esri-leaflet.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
-  <script src="app.js?v=20260803-8"></script>
-  <script>
-    const originalDashboardUpdate = update;
-    let customDateRange = null;
-    let lastPresetValue = "7";
-
-    const fmtWholeUp = value => new Intl.NumberFormat("en-IE", {
-      maximumFractionDigits: 0
-    }).format(Math.ceil(Number(value) || 0));
-
-    function nextIsoDate(value) {
-      const [year, month, day] = value.split("-").map(Number);
-      const date = new Date(Date.UTC(year, month - 1, day));
-      date.setUTCDate(date.getUTCDate() + 1);
-      return date.toISOString().slice(0, 10);
-    }
-
-    function customDateWhere(field) {
-      if (!customDateRange) return field === "ReceivedDate" ? cutoff() : acpCutoff();
-      const clauses = [];
-      if (customDateRange.start) clauses.push(`${field} >= DATE '${customDateRange.start}'`);
-      if (customDateRange.end) clauses.push(`${field} < DATE '${nextIsoDate(customDateRange.end)}'`);
-      return clauses.join(" AND ") || "1=1";
-    }
-
-    const activePlanningWhere = () => customDateWhere("ReceivedDate");
-    const activeAcpWhere = () => customDateWhere("LODGEDON");
-
-    function readablePickedDate(value) {
-      if (!value) return "";
-      return new Date(`${value}T00:00:00`).toLocaleDateString("en-IE", {
-        day: "2-digit", month: "short", year: "numeric"
-      });
-    }
-
-    function activePeriodLabel() {
-      if (!customDateRange) return periodLabel();
-      if (customDateRange.start && customDateRange.end) {
-        return `${readablePickedDate(customDateRange.start)} to ${readablePickedDate(customDateRange.end)}`;
-      }
-      if (customDateRange.start) return `from ${readablePickedDate(customDateRange.start)}`;
-      return `up to ${readablePickedDate(customDateRange.end)}`;
-    }
-
-    function applyActiveLayerFilters() {
-      layers.planningPoints.setWhere(activePlanningWhere());
-      layers.planningSites.setWhere(activePlanningWhere());
-      layers.acpCases.setWhere(activeAcpWhere());
-    }
-
-    async function metricStat(url, field, where, geometry) {
-      const result = await q(url, {
-        where,
-        outStatistics: JSON.stringify([
-          { statisticType: "sum", onStatisticField: field, outStatisticFieldName: "total" },
-          { statisticType: "count", onStatisticField: field, outStatisticFieldName: "records" }
-        ]),
-        returnGeometry: false,
-        ...geometry
-      });
-      const values = result.features?.[0]?.attributes || {};
-      return {
-        total: Number(values.total) || 0,
-        records: Number(values.records) || 0
-      };
-    }
-
-    function bestMetric(pointResult, siteResult) {
-      const candidates = [];
-      if (pointResult.status === "fulfilled") candidates.push({ ...pointResult.value, source: "point layer" });
-      if (siteResult.status === "fulfilled") candidates.push({ ...siteResult.value, source: "site layer" });
-      candidates.sort((a, b) => (b.records - a.records) || (b.total - a.total));
-      return candidates[0] || null;
-    }
-
-    function showMetric(valueId, coverageId, metric, formatter, label, unit = "") {
-      const value = document.querySelector(valueId);
-      const coverage = document.querySelector(coverageId);
-      if (!metric) {
-        value.textContent = "Unavailable";
-        coverage.textContent = `${label} feed could not be queried`;
-        return;
-      }
-      const formatted = formatter(metric.total);
-      value.textContent = formatted;
-      coverage.textContent = `${formatted}${unit ? ` ${unit}` : ""} total from ${fmt(metric.records)} reporting records · ${metric.source}`;
-    }
-
-    async function populatePlanningTotals() {
-      const geometry = geom();
-      const where = activePlanningWhere();
-      const fields = ["NumResidentialUnits", "FloorArea", "AreaofSite"];
-      const results = await Promise.allSettled(
-        fields.flatMap(field => [
-          metricStat(S.planningPoints.url, field, where, geometry),
-          metricStat(S.planningSites.url, field, where, geometry)
-        ])
-      );
-
-      const units = bestMetric(results[0], results[1]);
-      const floorArea = bestMetric(results[2], results[3]);
-      const siteArea = bestMetric(results[4], results[5]);
-
-      showMetric("#unitCount", "#unitCoverage", units, fmt, "Residential units");
-      showMetric("#floorAreaCount", "#floorCoverage", floorArea, fmtWholeUp, "Floor area", "m²");
-      showMetric("#siteAreaCount", "#siteCoverage", siteArea, fmtWholeUp, "Site area", "ha");
-    }
-
-    async function updateCustomDashboard() {
-      status("Checking custom date range");
-      const geometry = geom();
-      try {
-        const [planningCount, acpCount, planningDecisions, authorities, categories, planningMeta, acpMeta] = await Promise.all([
-          q(S.planningPoints.url, { where: activePlanningWhere(), returnCountOnly: true, ...geometry }),
-          q(S.acpCases.url, { where: activeAcpWhere(), returnCountOnly: true, ...geometry }),
-          q(S.planningPoints.url, {
-            where: activePlanningWhere(),
-            outStatistics: JSON.stringify([{ statisticType: "count", onStatisticField: "OBJECTID", outStatisticFieldName: "n" }]),
-            groupByFieldsForStatistics: "Decision",
-            orderByFields: "n DESC",
-            returnGeometry: false,
-            ...geometry
-          }),
-          q(S.planningPoints.url, {
-            where: activePlanningWhere(),
-            outStatistics: JSON.stringify([{ statisticType: "count", onStatisticField: "OBJECTID", outStatisticFieldName: "n" }]),
-            groupByFieldsForStatistics: "PlanningAuthority",
-            orderByFields: "n DESC",
-            resultRecordCount: 8,
-            returnGeometry: false,
-            ...geometry
-          }),
-          q(S.acpCases.url, {
-            where: activeAcpWhere(),
-            outStatistics: JSON.stringify([{ statisticType: "count", onStatisticField: "OBJECTID", outStatisticFieldName: "n" }]),
-            groupByFieldsForStatistics: "CATEGORY",
-            orderByFields: "n DESC",
-            resultRecordCount: 8,
-            returnGeometry: false,
-            ...geometry
-          }),
-          layerInfo(S.planningPoints.url),
-          layerInfo(S.acpCases.url)
-        ]);
-
-        document.querySelector("#planningCount").textContent = fmt(planningCount.count);
-        document.querySelector("#acpCount").textContent = fmt(acpCount.count);
-        document.querySelector("#parcelCount").textContent = map.getZoom() >= 13 ? "Visible" : "Zoom in";
-        draw("planningDecisionChart", planningDecisions.features || [], "Decision", "n", "doughnut");
-        draw("authorityChart", authorities.features || [], "PlanningAuthority", "n", "bar");
-        draw("acpCategoryChart", categories.features || [], "CATEGORY", "n", "doughnut");
-
-        const checked = new Date();
-        document.querySelector("#dashboardUpdated").textContent = `Checked ${checked.toLocaleTimeString("en-IE", {
-          hour: "2-digit", minute: "2-digit", second: "2-digit"
-        })}`;
-        const planningEdit = planningMeta.editingInfo?.dataLastEditDate;
-        const acpEdit = acpMeta.editingInfo?.dataLastEditDate;
-        document.querySelector("#sourceFreshness").textContent = [
-          planningEdit ? `Planning feed edited ${dateTime(planningEdit)}` : "Planning feed edit date unavailable",
-          acpEdit ? `ACP feed edited ${dateTime(acpEdit)}` : "ACP feed edit date unavailable",
-          `Custom period: ${activePeriodLabel()}`
-        ].join(" · ");
-        status("Live data checked", "ok");
-      } catch (error) {
-        console.error(error);
-        status("Custom date query failed", "error");
-        document.querySelector("#sourceFreshness").textContent = "One or more live feeds could not be checked for the custom dates.";
-      }
-    }
-
-    update = async function calendarAwareDashboardUpdate() {
-      if (customDateRange) await updateCustomDashboard();
-      else await Promise.allSettled([originalDashboardUpdate()]);
-      await populatePlanningTotals();
-    };
-
-    async function calendarAwareSearch(event) {
-      event.preventDefault();
-      const raw = document.querySelector("#searchInput").value.trim();
-      const text = raw.replaceAll("'", "''");
-      const planningText = `(ApplicationNumber LIKE '%${text}%' OR DevelopmentAddress LIKE '%${text}%' OR DevelopmentDescription LIKE '%${text}%')`;
-      const acpText = `(ABPCASEID LIKE '%${text}%' OR DEVADDRESS LIKE '%${text}%' OR DEVDESC LIKE '%${text}%')`;
-      const planningWhere = raw ? `(${activePlanningWhere()}) AND ${planningText}` : activePlanningWhere();
-      const acpWhere = raw ? `(${activeAcpWhere()}) AND ${acpText}` : activeAcpWhere();
-      document.querySelector("#searchStatus").textContent = `Searching ${activePeriodLabel()}…`;
-
-      try {
-        const [planning, acp] = await Promise.all([
-          q(S.planningPoints.url, {
-            where: planningWhere, outFields: "*", returnGeometry: true, outSR: 4326,
-            orderByFields: "ReceivedDate DESC", resultRecordCount: 50, f: "geojson"
-          }),
-          q(S.acpCases.url, {
-            where: acpWhere, outFields: "*", returnGeometry: true, outSR: 4326,
-            orderByFields: "LODGEDON DESC", resultRecordCount: 50, f: "geojson"
-          })
-        ]);
-        const all = [
-          ...(planning.features || []).map(feature => ["planningPoints", feature]),
-          ...(acp.features || []).map(feature => ["acpCases", feature])
-        ].sort((a, b) => recordDate(b) - recordDate(a));
-
-        document.querySelector("#searchResults").innerHTML = all.length
-          ? all.map(resultMarkup).join("")
-          : '<div class="empty-state">No matching records were returned for this period.</div>';
-        document.querySelectorAll("#searchResults button").forEach(button => {
-          button.onclick = () => focus(all[button.dataset.i]);
-        });
-        const qualifier = raw ? ` matching “${raw}”` : "";
-        document.querySelector("#searchStatus").textContent = `${all.length} result${all.length === 1 ? "" : "s"}${qualifier} in ${activePeriodLabel()}${all.length === 100 ? " (first 100)" : ""}.`;
-      } catch (error) {
-        console.error(error);
-        document.querySelector("#searchStatus").textContent = "Search could not be completed";
-      }
-    }
-
-    function settlePlanningMap() {
-      if (typeof map === "undefined" || !map) return;
-      map.invalidateSize({ pan: false });
-      map.fitBounds([[51.35, -10.75], [55.55, -5.35]], {
-        padding: [18, 18],
-        animate: false
-      });
-    }
-
-    addEventListener("DOMContentLoaded", () => {
-      const dateRange = document.querySelector("#dateRange");
-      const startDate = document.querySelector("#customStartDate");
-      const endDate = document.querySelector("#customEndDate");
-      const dateStatus = document.querySelector("#customDateStatus");
-      const today = new Date().toLocaleDateString("en-CA");
-      lastPresetValue = dateRange.value;
-      startDate.max = today;
-      endDate.max = today;
-
-      dateRange.onchange = () => {
-        if (dateRange.value === "custom") return;
-        lastPresetValue = dateRange.value;
-        customDateRange = null;
-        startDate.value = "";
-        endDate.value = "";
-        startDate.max = today;
-        endDate.min = "";
-        dateStatus.textContent = `Using ${periodLabel()}.`;
-        applyActiveLayerFilters();
-        document.querySelector("#searchResults").innerHTML = "";
-        document.querySelector("#searchStatus").textContent = `Filter changed to ${periodLabel()}. Press Search to list records.`;
-        update();
-      };
-
-      startDate.addEventListener("change", () => {
-        endDate.min = startDate.value || "";
-      });
-      endDate.addEventListener("change", () => {
-        startDate.max = endDate.value || today;
-      });
-
-      document.querySelector("#applyCustomDates").onclick = () => {
-        const start = startDate.value;
-        const end = endDate.value;
-        if (!start && !end) {
-          dateStatus.textContent = "Choose at least one calendar date.";
-          return;
-        }
-        if (start && end && start > end) {
-          dateStatus.textContent = "The From date must be before or equal to the To date.";
-          return;
-        }
-        customDateRange = { start, end };
-        dateRange.value = "custom";
-        applyActiveLayerFilters();
-        document.querySelector("#searchResults").innerHTML = "";
-        document.querySelector("#searchStatus").textContent = `Custom period applied: ${activePeriodLabel()}. Press Search to list records.`;
-        dateStatus.textContent = `Active: ${activePeriodLabel()}.`;
-        update();
-      };
-
-      document.querySelector("#clearCustomDates").onclick = () => {
-        customDateRange = null;
-        startDate.value = "";
-        endDate.value = "";
-        startDate.max = today;
-        endDate.min = "";
-        dateRange.value = lastPresetValue;
-        applyActiveLayerFilters();
-        document.querySelector("#searchResults").innerHTML = "";
-        document.querySelector("#searchStatus").textContent = `Using ${periodLabel()}. Press Search to list records.`;
-        dateStatus.textContent = `Custom dates cleared. Using ${periodLabel()}.`;
-        update();
-      };
-
-      document.querySelector("#searchForm").onsubmit = calendarAwareSearch;
-      requestAnimationFrame(() => requestAnimationFrame(settlePlanningMap));
-      setTimeout(settlePlanningMap, 350);
-      setTimeout(settlePlanningMap, 1000);
-    });
-
-    let mapResizeTimer;
-    addEventListener("resize", () => {
-      clearTimeout(mapResizeTimer);
-      mapResizeTimer = setTimeout(() => {
-        if (typeof map !== "undefined" && map) map.invalidateSize({ pan: false });
-      }, 150);
-    });
-  </script>
+  <script src="app.js?v=20260803-10"></script>
+  <script src="smart-filters.js?v=20260803-1"></script>
 </body>
 </html>
