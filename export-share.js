@@ -13,7 +13,7 @@
   const sources = [
     "export-core.js?v=20260803-1",
     "share-links.js?v=20260803-1",
-    "map-files.js?v=20260803-1"
+    "map-files.js?v=20260803-2"
   ];
   sources.reduce((chain, src) => chain.then(() => new Promise((resolve, reject) => {
     const script = document.createElement("script");
