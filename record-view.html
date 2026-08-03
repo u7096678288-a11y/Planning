@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex" />
+  <title>Planning record · Radharc Pleanála</title>
+  <style>
+    :root{font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#132538;background:#eef3f5}
+    *{box-sizing:border-box}body{margin:0}.record-header{padding:20px clamp(16px,4vw,48px);background:#102f49;color:#fff}.eyebrow{margin:0 0 5px;color:#bcd9df;font-size:11px;font-weight:800;letter-spacing:.08em}.record-header h1{margin:0;font-size:clamp(22px,4vw,34px)}.record-header p{max-width:850px;margin:7px 0 0;color:#d8e5ec;font-size:13px;line-height:1.5}
+    main{width:min(1100px,calc(100% - 28px));margin:20px auto 50px}.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}.button{display:inline-flex;align-items:center;gap:5px;padding:9px 12px;border:1px solid #b8c8d0;border-radius:7px;background:#fff;color:#123d55;font-size:12px;font-weight:750;text-decoration:none}.button.primary{border-color:#102f49;background:#102f49;color:#fff}.button[hidden]{display:none}
+    .status,.card{border:1px solid #d6e1e5;border-radius:10px;background:#fff;box-shadow:0 7px 24px rgba(20,48,64,.06)}.status{padding:12px 14px;color:#536b78;font-size:12px}.status.error{border-color:#deb9b2;background:#fff7f5;color:#7a3028}.card{margin-top:12px;overflow:hidden}.record-title{padding:18px;border-bottom:1px solid #dde6e9;background:#f9fbfb}.record-title h2{margin:0;color:#102f49;font-size:23px}.record-title p{margin:6px 0 0;color:#5b7280;font-size:12px;line-height:1.5}.record-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));margin:0}.record-grid>div{padding:12px 16px;border-bottom:1px solid #e6edef}.record-grid>div:nth-child(odd){border-right:1px solid #e6edef}.record-grid dt{color:#607783;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.045em}.record-grid dd{margin:5px 0 0;color:#172f43;font-size:13px;line-height:1.45;white-space:pre-wrap;overflow-wrap:anywhere}.record-grid .wide{grid-column:1/-1;border-right:0}.record-grid .wide:nth-child(odd){border-right:0}.record-actions{display:flex;gap:8px;flex-wrap:wrap;padding:14px 16px;background:#f7fafb}.source-note{margin-top:12px;padding:12px 14px;border-left:3px solid #4d8b91;background:#eaf4f4;color:#455f6d;font-size:11px;line-height:1.55}
+    @media(max-width:650px){.record-grid{grid-template-columns:1fr}.record-grid>div,.record-grid>div:nth-child(odd){border-right:0}.record-grid .wide{grid-column:auto}}
+  </style>
+</head>
+<body>
+  <header class="record-header">
+    <p class="eyebrow">RADHARC PLEANÁLA · PLANNING RECORD</p>
+    <h1 id="pageHeading">Planning application</h1>
+    <p>A readable view of the selected public planning record. Source information remains subject to the relevant planning authority or ACP record.</p>
+  </header>
+  <main>
+    <nav class="toolbar" aria-label="Record actions">
+      <a class="button" href="./">← Dashboard</a>
+      <a id="officialLinkTop" class="button primary" href="#" target="_blank" rel="noopener noreferrer" hidden>Open official application page ↗</a>
+      <a id="rawSourceLink" class="button" href="#" target="_blank" rel="noopener noreferrer" hidden>Source data ↗</a>
+    </nav>
+    <div id="status" class="status">Loading planning record…</div>
+    <article id="recordCard" class="card" hidden>
+      <header class="record-title"><h2 id="recordReference"></h2><p id="recordSubtitle"></p></header>
+      <dl id="recordGrid" class="record-grid"></dl>
+      <div id="recordActions" class="record-actions"></div>
+    </article>
+    <p class="source-note">This page reformats public-source data for research. The official planning authority or ACP page remains the authoritative record where a direct link is supplied.</p>
+  </main>
+  <script>
+    "use strict";
+    (() => {
+      const SOURCES = {
+        planningPoints: "https://services.arcgis.com/NzlPQPKn5QF9v2US/arcgis/rest/services/IrishPlanningApplications/FeatureServer/0",
+        planningSites: "https://services.arcgis.com/NzlPQPKn5QF9v2US/arcgis/rest/services/IrishPlanningApplications/FeatureServer/1"
+      };
+      const CORK_API = "https://data.corkcity.ie/api/3/action/datastore_search_sql";
+      const CORK_RESOURCE = "8d5bbfa9-3b0c-40ac-8630-4243bed94b2d";
+      const params = new URLSearchParams(location.search);
+      const source = params.get("source") || "planningPoints";
+      const reference = (params.get("ref") || "").trim();
+      const authority = (params.get("authority") || "").trim();
+      const $ = selector => document.querySelector(selector);
+      const esc = value => String(value ?? "").replace(/[&<>"']/g, character => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[character]));
+      const text = value => String(value ?? "").replace(/\s+/g," ").trim();
+      const sql = value => String(value ?? "").replaceAll("'", "''");
+      const present = value => value !== null && value !== undefined && value !== "";
+      const number = value => present(value) && Number.isFinite(Number(value)) ? new Intl.NumberFormat("en-IE",{maximumFractionDigits:2}).format(Number(value)) : value;
+      const date = value => {
+        if (!present(value)) return "";
+        const raw = Number(value), parsed = new Date(Number.isFinite(raw) ? raw : value);
+        return Number.isNaN(parsed.getTime()) ? String(value) : parsed.toLocaleDateString("en-IE",{day:"2-digit",month:"short",year:"numeric"});
+      };
+      const cleanUrl = value => {
+        if (!text(value)) return "";
+        try { const url = new URL(text(value).replaceAll("&amp;","&"), location.href); return /^https?:$/.test(url.protocol) ? url.toString() : ""; }
+        catch { return ""; }
+      };
+      function setStatus(message, error=false){const node=$("#status");node.textContent=message;node.className=`status${error?" error":""}`;}
+      async function arcgis(layer){
+        const url=SOURCES[layer];
+        if(!url) return {record:null,raw:""};
+        const clauses=[`ApplicationNumber = '${sql(reference)}'`];
+        if(authority) clauses.push(`PlanningAuthority = '${sql(authority)}'`);
+        const body=new URLSearchParams({f:"json",where:clauses.join(" AND "),outFields:"*",returnGeometry:"false",resultRecordCount:"2"});
+        const response=await fetch(`${url}/query`,{method:"POST",headers:{"Content-Type":"application/x-www-form-urlencoded;charset=UTF-8"},body,cache:"no-store",credentials:"omit"});
+        if(!response.ok) throw new Error(`Planning service HTTP ${response.status}`);
+        const data=await response.json();
+        if(data.error) throw new Error(data.error.message||"Planning service query failed");
+        const raw=new URL(`${url}/query`);raw.search=new URLSearchParams({f:"pjson",where:clauses.join(" AND "),outFields:"*",returnGeometry:"true",outSR:"4326"}).toString();
+        return {record:data.features?.[0]?.attributes||null,raw:raw.toString()};
+      }
+      function jsonp(sqlQuery){
+        return new Promise((resolve,reject)=>{
+          const callback=`__record_${Date.now()}_${Math.random().toString(36).slice(2)}`;
+          const script=document.createElement("script");
+          const url=new URL(CORK_API);url.searchParams.set("sql",sqlQuery);url.searchParams.set("callback",callback);
+          const timer=setTimeout(()=>{script.remove();delete window[callback];reject(new Error("Cork City source timed out"));},20000);
+          window[callback]=payload=>{clearTimeout(timer);script.remove();delete window[callback];payload?.success?resolve(payload.result?.records||[]):reject(new Error(payload?.error?.message||"Cork City query failed"));};
+          script.onerror=()=>{clearTimeout(timer);script.remove();delete window[callback];reject(new Error("Cork City source could not be reached"));};
+          script.src=url.toString();document.head.append(script);
+        });
+      }
+      async function cork(){
+        const query=`SELECT * FROM "${CORK_RESOURCE}" WHERE CAST("ApplicationNumber" AS text) = '${sql(reference)}' LIMIT 2`;
+        const rows=await jsonp(query);const raw=new URL(CORK_API);raw.searchParams.set("sql",query);
+        return {record:rows[0]||null,raw:raw.toString()};
+      }
+      function officialUrl(record){
+        for(const value of [record.LinkAppDetails,record.LINKAPPDETAILS,record.LinkApplicationDetails,record.PlanningApplicationURL,record.ApplicationURL,record.URL]){const url=cleanUrl(value);if(url)return url;}
+        return "";
+      }
+      function appealUrl(record){
+        const supplied=cleanUrl(record.LINKABPWEB||record.LinkABPWeb);if(supplied)return supplied;
+        const raw=text(record.AppealRefNumber||record.AppealRefNum||record.ABPCASEID);const six=(raw.match(/\d{6}/g)||[]).at(-1)||raw.replace(/\D/g,"").slice(-6);
+        return six.length===6?`https://www.pleanala.ie/en-ie/case/${six}`:"";
+      }
+      function field(label,value,{wide=false,format="text"}={}){
+        if(!present(value))return "";
+        const output=format==="date"?date(value):format==="number"?number(value):value;
+        if(!present(output))return "";
+        return `<div class="${wide?"wide":""}"><dt>${esc(label)}</dt><dd>${esc(output)}</dd></div>`;
+      }
+      function render(record,raw){
+        const ref=text(record.ApplicationNumber)||reference||"Planning application";
+        const auth=text(record.PlanningAuthority)||authority||(source==="cork"?"Cork City Council":"Not stated");
+        document.title=`${ref} · Radharc Pleanála`;$("#pageHeading").textContent=ref;$("#recordReference").textContent=ref;
+        $("#recordSubtitle").textContent=[auth,text(record.ApplicationStatus)].filter(Boolean).join(" · ");
+        const rows=[
+          field("Planning authority",auth),field("Application status",record.ApplicationStatus),
+          field("Development address",record.DevelopmentAddress,{wide:true}),field("Development description",record.DevelopmentDescription,{wide:true}),
+          field("Received",record.ReceivedDate,{format:"date"}),field("Decision due",record.DecisionDueDate,{format:"date"}),
+          field("Decision",record.Decision),field("Decision date",record.DecisionDate,{format:"date"}),
+          field("Grant date",record.GrantDate,{format:"date"}),field("Residential units",record.NumResidentialUnits,{format:"number"}),
+          field("Floor area (m²)",record.FloorArea,{format:"number"}),field("Site area (ha)",record.AreaofSite??record.AreaOfSite,{format:"number"}),
+          field("Further information requested",record.FIRequestDate,{format:"date"}),field("Further information received",record.FIRecDate,{format:"date"}),
+          field("Appeal reference",record.AppealRefNumber||record.AppealRefNum),field("Appeal status",record.AppealStatus),
+          field("Appeal submitted",record.AppealSubmittedDate,{format:"date"}),field("Appeal decision",record.AppealDecision),
+          field("Appeal decision date",record.AppealDecisionDate,{format:"date"}),field("Data source",source==="cork"?"Cork City Council CKAN":"National Irish Planning Applications service")
+        ].join("");
+        $("#recordGrid").innerHTML=rows||field("Record",ref);
+        const official=officialUrl(record),appeal=appealUrl(record),actions=[];
+        if(official)actions.push(`<a class="button primary" href="${esc(official)}" target="_blank" rel="noopener noreferrer">Open official application page ↗</a>`);
+        if(appeal)actions.push(`<a class="button" href="${esc(appeal)}" target="_blank" rel="noopener noreferrer">Open ACP appeal ↗</a>`);
+        if(raw)actions.push(`<a class="button" href="${esc(raw)}" target="_blank" rel="noopener noreferrer">Source data ↗</a>`);
+        $("#recordActions").innerHTML=actions.join("");
+        if(official){$("#officialLinkTop").href=official;$("#officialLinkTop").hidden=false;}
+        if(raw){$("#rawSourceLink").href=raw;$("#rawSourceLink").hidden=false;}
+        $("#recordCard").hidden=false;$("#status").hidden=true;
+      }
+      async function load(){
+        if(!reference){setStatus("No planning reference was supplied.",true);return;}
+        try{
+          let result;
+          if(source==="cork") result=await cork();
+          else {
+            result=await arcgis(source==="planningSites"?"planningSites":"planningPoints");
+            if(!result.record) result=await arcgis(source==="planningSites"?"planningPoints":"planningSites");
+          }
+          if(!result.record){setStatus(`No public planning record was returned for ${reference}.`,true);return;}
+          render(result.record,result.raw);
+        }catch(error){console.error(error);setStatus(`The planning record could not be loaded: ${error.message}`,true);}
+      }
+      load();
+    })();
+  </script>
+</body>
+</html>
