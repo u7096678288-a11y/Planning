@@ -8,10 +8,8 @@
   delete smartState.maxUnits;
 
   const basePlanningWhere = smartPlanningWhere;
-  const baseAcpWhere = smartAcpWhere;
   const baseSummary = smartSummary;
   const baseUpdateSummary = smartUpdateSummary;
-  const baseApplyLayerFilters = smartApplyLayerFilters;
 
   function isActive() {
     return smartState.residentialOnly || smartState.minUnits != null;
@@ -32,44 +30,24 @@
     return units ? `(${base}) AND (${units})` : base;
   };
 
-  smartAcpWhere = function residentialAcpWhere(exclude = "") {
-    return isActive() ? "1=0" : baseAcpWhere(exclude);
-  };
-
-  function syncNonResidentialLayers() {
-    if (!map || !layers.acpCases || !layers.freehold) return;
-    const acpInput = document.querySelector('#layerToggles input[data-k="acpCases"]');
-    const freeholdInput = document.querySelector('#layerToggles input[data-k="freehold"]');
-    if (isActive()) {
-      if (map.hasLayer(layers.acpCases)) map.removeLayer(layers.acpCases);
-      if (map.hasLayer(layers.freehold)) map.removeLayer(layers.freehold);
-      if (acpInput) acpInput.disabled = true;
-      if (freeholdInput) freeholdInput.disabled = true;
-      return;
-    }
-    if (acpInput) {
-      acpInput.disabled = false;
-      if (acpInput.checked && !map.hasLayer(layers.acpCases)) layers.acpCases.addTo(map);
-    }
-    if (freeholdInput) {
-      freeholdInput.disabled = false;
-      if (freeholdInput.checked && !map.hasLayer(layers.freehold)) layers.freehold.addTo(map);
-    }
-  }
-
-  smartApplyLayerFilters = function residentialApplyLayerFilters() {
-    baseApplyLayerFilters();
-    syncNonResidentialLayers();
-  };
-
   function rangeLabel() {
     return isActive() ? `${fmt(effectiveMinimum())}+ residential units` : "All planning applications";
   }
 
   smartSummary = function residentialSummary() {
     const base = baseSummary();
-    return isActive() ? `${base} · Units: ${rangeLabel()}` : base;
+    return isActive() ? `${base} · Planning units: ${rangeLabel()}` : base;
   };
+
+  function restoreLayerControls() {
+    ["acpCases", "freehold"].forEach(key => {
+      const input = document.querySelector(`#layerToggles input[data-k="${key}"]`);
+      if (!input) return;
+      input.disabled = false;
+      if (input.checked && !map.hasLayer(layers[key])) layers[key].addTo(map);
+      if (!input.checked && map.hasLayer(layers[key])) map.removeLayer(layers[key]);
+    });
+  }
 
   smartUpdateSummary = function residentialUpdateSummary() {
     baseUpdateSummary();
@@ -78,6 +56,7 @@
       const hasAny = smartState.decision.length || smartState.authority.length || smartState.category.length || isActive();
       clear.disabled = !hasAny;
     }
+    restoreLayerControls();
     updateUi();
   };
 
@@ -109,8 +88,8 @@
     if (clear) clear.disabled = !isActive();
     if (statusText) {
       statusText.textContent = isActive()
-        ? `Showing planning applications with ${rangeLabel().toLowerCase()}. ACP and freehold layers are temporarily hidden because they do not contain the structured residential-units field.`
-        : "Enter a minimum threshold or use Residential only to exclude applications with no reported residential units.";
+        ? `Planning points and planning sites are filtered to ${rangeLabel().toLowerCase()}. Selected ACP and freehold layers remain visible and keep their own filters.`
+        : "Enter a minimum threshold or use Residential only to exclude planning applications with no reported residential units.";
     }
   }
 
@@ -122,8 +101,8 @@
 
     smartState.residentialOnly = Boolean(residentialOnly);
     smartState.minUnits = min;
-    updateUi();
     smartApplyLayerFilters();
+    restoreLayerControls();
     smartUpdateSummary();
     clearResults(`${source} applied. Press Search to list records for ${smartSummary()}.`);
     update();
@@ -150,8 +129,8 @@
   function clearUnitsFilter(source = "Residential-units filter cleared") {
     smartState.residentialOnly = false;
     smartState.minUnits = null;
-    updateUi();
     smartApplyLayerFilters();
+    restoreLayerControls();
     smartUpdateSummary();
     clearResults(`${source}. Press Search to list records.`);
   }
@@ -229,8 +208,8 @@
   function clearForGlobalAction() {
     smartState.residentialOnly = false;
     smartState.minUnits = null;
+    restoreLayerControls();
     updateUi();
-    syncNonResidentialLayers();
   }
 
   function bindGlobalClears() {
@@ -242,6 +221,7 @@
     injectStyles();
     injectPanel();
     bindGlobalClears();
+    restoreLayerControls();
     smartApplyLayerFilters();
     smartUpdateSummary();
   }
@@ -249,6 +229,7 @@
   window.RadharcResidentialUnits = {
     isActive,
     rangeLabel,
+    minimum: effectiveMinimum,
     syncUi: updateUi,
     applyState,
     clearState: clearForGlobalAction
