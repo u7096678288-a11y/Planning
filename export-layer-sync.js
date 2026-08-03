@@ -11,7 +11,7 @@
 
   function selectedKeys() {
     const inputs = layerInputs();
-    if (inputs.length) return inputs.filter(input => input.checked).map(input => input.dataset.k);
+    if (inputs.length) return inputs.filter(input => input.checked && !input.disabled).map(input => input.dataset.k);
     return Object.keys(layers).filter(key => map.hasLayer(layers[key]));
   }
 
@@ -25,8 +25,9 @@
       const key = input.dataset.k;
       const layer = layers[key];
       if (!layer) return;
-      if (input.checked && !map.hasLayer(layer)) layer.addTo(map);
-      if (!input.checked && map.hasLayer(layer)) map.removeLayer(layer);
+      const shouldShow = input.checked && !input.disabled;
+      if (shouldShow && !map.hasLayer(layer)) layer.addTo(map);
+      if (!shouldShow && map.hasLayer(layer)) map.removeLayer(layer);
     });
     return selectedKeys();
   }
@@ -78,18 +79,15 @@
   }, true);
 
   document.addEventListener("change", event => {
-    if (event.target.matches('#layerToggles input[data-k], #shareMapExtent')) {
-      updateLayerSummary();
-    }
+    if (event.target.matches('#layerToggles input[data-k], #shareMapExtent')) updateLayerSummary();
   });
 
   T.onReady?.(() => {
     updateLayerSummary();
+    if (document.querySelector("#exportLayerSyncStyles")) return;
     const style = document.createElement("style");
     style.id = "exportLayerSyncStyles";
-    style.textContent = `
-      .export-layer-summary{margin:0 0 9px;font-weight:700}
-    `;
+    style.textContent = `.export-layer-summary{margin:0 0 9px;font-weight:700}`;
     document.head.append(style);
   });
 })();
