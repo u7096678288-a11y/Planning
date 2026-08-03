@@ -88,7 +88,7 @@
     await loadScript("forecast-unit-ranking.js?v=20260803-2");
     await loadScript("leaderboard-record-view.js?v=20260803-1");
     await loadScript("authority-autosearch-fix.js?v=20260803-1");
-    await loadScript("sync-health.js?v=20260803-1");
+    await loadScript("sync-health.js?v=20260803-2");
 
     moduleStatus.ready = true;
     document.dispatchEvent(new CustomEvent("radharc:modules-ready", { detail: { ...moduleStatus, corkReady } }));
