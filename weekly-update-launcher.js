@@ -12,7 +12,7 @@
     link.target = "_blank";
     link.rel = "noopener noreferrer";
     link.textContent = "Weekly update";
-    link.title = "Open the rolling 30-day planning and ACP movements report in a new tab";
+    link.title = "Open the 28-day update for 90+ unit schemes, student housing and significant infrastructure";
     const performance = document.querySelector("#performanceButton");
     if (performance) performance.after(link);
     else document.querySelector("#shareViewButton")?.after(link) || actions.append(link);
