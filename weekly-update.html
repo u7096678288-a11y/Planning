@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="A simple 28-day Irish planning update for 90+ unit schemes, student housing and significant infrastructure." />
+  <meta name="description" content="A simple 28-day Irish planning update for 100+ unit schemes and Strategic Infrastructure Developments." />
   <title>Weekly Planning Update · Radharc Pleanála</title>
   <style>
     :root{font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#132538;background:#edf3f5;--navy:#102f49;--teal:#24747a;--line:#d7e2e6;--muted:#607783;--paper:#fff}
@@ -20,7 +20,7 @@
     <div>
       <p class="eyebrow">RADHARC PLEANÁLA · 28-DAY PLANNING INTELLIGENCE</p>
       <h1>Weekly Planning Update</h1>
-      <p>A simple national update for residential schemes of 90 units or more, student accommodation and significant infrastructure. Recent movements are shown first, followed by clearly labelled upcoming decisions.</p>
+      <p>A simple national update for residential schemes reporting 100 units or more, plus identifiable Strategic Infrastructure Developments regardless of residential-unit count. Recent movements are shown first, followed by clearly labelled upcoming decisions.</p>
     </div>
     <nav class="header-actions" aria-label="Report actions">
       <a class="button" href="./">Dashboard</a>
@@ -48,12 +48,10 @@
       <label for="typeFilterWeekly">Project type
         <select id="typeFilterWeekly">
           <option value="all">All qualifying projects</option>
-          <option value="residential">Residential — 90+ units</option>
-          <option value="student">Student housing</option>
-          <option value="infrastructure">Significant infrastructure</option>
+          <option value="residential">Residential — 100+ units</option>
           <option value="sid">SIDs</option>
-          <option value="roads">LA road developments</option>
-          <option value="cpo-rail">CPOs and rail orders</option>
+          <option value="roads">LA road developments — qualifying only</option>
+          <option value="cpo-rail">CPOs and rail orders — qualifying only</option>
         </select>
       </label>
       <div class="control-actions"><button id="clearReportFilters" class="button" type="button">Clear filters</button></div>
@@ -68,12 +66,13 @@
 
     <section class="section">
       <div class="method">
-        <strong>Coverage.</strong> The report uses a rolling 28-day buffer for submissions, FI movements, grants, ACP lodgements and ACP decisions. It includes residential projects reporting at least 90 units, student housing regardless of the residential-unit field, and significant infrastructure. The final Upcoming section contains qualifying applications with a published decision due date in the next 28 days and no recorded decision.
-        <div class="source-warning">SIDs, local-authority road developments, CPOs and rail orders are identified from published categories and descriptions. Applicant names, unit figures and dates are shown only where present in the official public feeds. The linked planning or ACP record remains authoritative.</div>
+        <strong>Coverage.</strong> The report uses a rolling 28-day buffer for submissions, FI movements, grants, ACP lodgements and ACP decisions. Ordinary residential projects are included only where the official feed reports at least 100 units. Identifiable SIDs remain included irrespective of residential-unit count. The final Upcoming section contains qualifying applications with a published decision due date in the next 28 days and no recorded decision.
+        <div class="source-warning">Local-authority road developments, CPOs and rail orders appear only where they meet the 100-unit rule or are identifiable SIDs. Applicant names, unit figures and dates are shown only where present in the official public feeds. The linked planning or ACP record remains authoritative.</div>
       </div>
     </section>
   </main>
 
   <script src="weekly-update.js?v=20260803-2"></script>
+  <script src="weekly-update-100-filter.js?v=20260803-1"></script>
 </body>
 </html>
