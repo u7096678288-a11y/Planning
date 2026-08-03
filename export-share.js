@@ -28,7 +28,8 @@
     "cork-city-tools.js?v=20260803-1",
     "cork-city-search-v2.js?v=20260803-1",
     "performance-launcher.js?v=20260803-1",
-    "performance-overall.js?v=20260803-2"
+    "performance-overall.js?v=20260803-2",
+    "performance-forecast.js?v=20260803-1"
   ];
   sources.reduce((chain, src) => chain.then(() => new Promise((resolve, reject) => {
     const script = document.createElement("script");
