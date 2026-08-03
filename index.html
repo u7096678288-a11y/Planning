@@ -185,8 +185,72 @@
   <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/esri-leaflet@3.0.15/dist/esri-leaflet.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
-  <script src="app.js?v=20260803-5"></script>
+  <script src="app.js?v=20260803-6"></script>
   <script>
+    const originalDashboardUpdate = update;
+
+    async function metricStat(url, field, where, geometry) {
+      const result = await q(url, {
+        where,
+        outStatistics: JSON.stringify([
+          { statisticType: "sum", onStatisticField: field, outStatisticFieldName: "total" },
+          { statisticType: "count", onStatisticField: field, outStatisticFieldName: "records" }
+        ]),
+        returnGeometry: false,
+        ...geometry
+      });
+      const values = result.features?.[0]?.attributes || {};
+      return {
+        total: Number(values.total) || 0,
+        records: Number(values.records) || 0
+      };
+    }
+
+    function bestMetric(pointResult, siteResult) {
+      const candidates = [];
+      if (pointResult.status === "fulfilled") candidates.push({ ...pointResult.value, source: "point layer" });
+      if (siteResult.status === "fulfilled") candidates.push({ ...siteResult.value, source: "site layer" });
+      candidates.sort((a, b) => (b.records - a.records) || (b.total - a.total));
+      return candidates[0] || null;
+    }
+
+    function showMetric(valueId, coverageId, metric, formatter, label) {
+      const value = document.querySelector(valueId);
+      const coverage = document.querySelector(coverageId);
+      if (!metric) {
+        value.textContent = "Unavailable";
+        coverage.textContent = `${label} feed could not be queried`;
+        return;
+      }
+      value.textContent = formatter(metric.total);
+      coverage.textContent = `${formatter(metric.total)} total from ${fmt(metric.records)} reporting records · ${metric.source}`;
+    }
+
+    async function populatePlanningTotals() {
+      const geometry = geom();
+      const where = cutoff();
+      const fields = ["NumResidentialUnits", "FloorArea", "AreaofSite"];
+      const results = await Promise.allSettled(
+        fields.flatMap(field => [
+          metricStat(S.planningPoints.url, field, where, geometry),
+          metricStat(S.planningSites.url, field, where, geometry)
+        ])
+      );
+
+      const units = bestMetric(results[0], results[1]);
+      const floorArea = bestMetric(results[2], results[3]);
+      const siteArea = bestMetric(results[4], results[5]);
+
+      showMetric("#unitCount", "#unitCoverage", units, fmt, "Residential units");
+      showMetric("#floorAreaCount", "#floorCoverage", floorArea, fmtArea, "Floor area");
+      showMetric("#siteAreaCount", "#siteCoverage", siteArea, fmtArea, "Site area");
+    }
+
+    update = async function robustDashboardUpdate() {
+      await Promise.allSettled([originalDashboardUpdate()]);
+      await populatePlanningTotals();
+    };
+
     function settlePlanningMap() {
       if (typeof map === "undefined" || !map) return;
       map.invalidateSize({ pan: false });
