@@ -28,9 +28,8 @@
   }
 
   function install() {
-    const grid = document.querySelector(".metric-grid");
     const status = document.querySelector("#buildingControlKpiStatus") || document.body;
-    new MutationObserver(schedule).observe(grid || status, { childList: true, subtree: true, characterData: true });
+    new MutationObserver(schedule).observe(status, { childList: true, subtree: true, characterData: true });
     document.addEventListener("click", event => {
       if (event.target.closest("#refreshButton, #clearSmartFilters, #applyCustomDates, #clearCustomDates")) setTimeout(schedule, 0);
     });
