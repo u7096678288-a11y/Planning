@@ -9,28 +9,37 @@
     }
     window.__radharcCorkSyncHookInstalled = true;
     const dashboardUpdate = update;
+
+    function refreshAfter(value) {
+      return Promise.resolve(value).finally(() => window.CorkCityCKAN.refreshLayer().catch(error => {
+        console.warn("Cork City layer refresh failed", error);
+      }));
+    }
+
     update = function corkSynchronizedUpdate(...args) {
-      const dashboard = dashboardUpdate(...args);
-      window.CorkCityCKAN.refreshLayer().catch(error => console.warn("Cork City layer refresh failed", error));
-      return dashboard;
+      return refreshAfter(dashboardUpdate(...args));
     };
 
     const originalSyncNow = window.RadharcDashboard.syncNow;
     window.RadharcDashboard.syncNow = function corkSynchronizedNow(...args) {
-      const dashboard = originalSyncNow ? originalSyncNow(...args) : update(...args);
-      const cork = window.CorkCityCKAN.refreshLayer().catch(error => {
-        console.warn("Cork City layer refresh failed", error);
-        return [];
-      });
-      return Promise.allSettled([Promise.resolve(dashboard), cork]);
+      const dashboard = originalSyncNow ? originalSyncNow(...args) : dashboardUpdate(...args);
+      return refreshAfter(dashboard);
     };
 
     document.querySelector("#refreshButton")?.addEventListener("click", () => {
       window.CorkCityCKAN.clearCache();
-      window.CorkCityCKAN.refreshLayer().catch(() => {});
     }, true);
+
     document.querySelector("#resetDashboardButton")?.addEventListener("click", () => {
-      setTimeout(() => window.CorkCityCKAN.refreshLayer().catch(() => {}), 80);
+      const waitForReset = () => {
+        const button = document.querySelector("#resetDashboardButton");
+        if (button?.disabled) {
+          setTimeout(waitForReset, 80);
+          return;
+        }
+        window.CorkCityCKAN.refreshLayer().catch(() => {});
+      };
+      setTimeout(waitForReset, 80);
     }, true);
   }
 
