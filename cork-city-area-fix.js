@@ -3,7 +3,7 @@
 (function scheduleCorkCityAreaFix() {
   function install() {
     if (window.__radharcCorkAreaFixInstalled) return;
-    if (!window.CorkCityCKAN || !window.map || !window.S) {
+    if (!window.CorkCityCKAN || typeof map === "undefined" || typeof S === "undefined") {
       setTimeout(install, 40);
       return;
     }
