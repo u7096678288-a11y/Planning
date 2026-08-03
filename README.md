@@ -1,4 +1,4 @@
-# Irish Planning Intelligence Map
+# Radharc Pleanála
 
 A live browser-based mapping dashboard for Irish planning and development intelligence.
 
