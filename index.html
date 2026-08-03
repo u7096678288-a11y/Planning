@@ -139,110 +139,44 @@
       </div>
 
       <section class="metric-grid" aria-label="Headline metrics">
-        <article class="metric-card">
-          <span>Planning applications</span>
-          <strong id="planningCount">—</strong>
-          <small>Records matching the active filters</small>
-        </article>
-        <article class="metric-card">
-          <span>ACP cases</span>
-          <strong id="acpCount">—</strong>
-          <small>Cases matching the active filters</small>
-        </article>
-        <article class="metric-card">
-          <span>Total residential units</span>
-          <strong id="unitCount">—</strong>
-          <small id="unitCoverage">Waiting for live data</small>
-        </article>
-        <article class="metric-card">
-          <span>Total floor area (m²)</span>
-          <strong id="floorAreaCount">—</strong>
-          <small id="floorCoverage">Waiting for live data</small>
-        </article>
-        <article class="metric-card">
-          <span>Total site area (ha)</span>
-          <strong id="siteAreaCount">—</strong>
-          <small id="siteCoverage">Waiting for live data</small>
-        </article>
-        <article class="metric-card">
-          <span>Freehold parcels</span>
-          <strong id="parcelCount">Zoom in</strong>
-          <small>Available at local map scales</small>
-        </article>
+        <article class="metric-card"><span>Planning applications</span><strong id="planningCount">—</strong><small>Records matching the active filters</small></article>
+        <article class="metric-card"><span>ACP cases</span><strong id="acpCount">—</strong><small>Cases matching the active filters</small></article>
+        <article class="metric-card"><span>Total residential units</span><strong id="unitCount">—</strong><small id="unitCoverage">Waiting for live data</small></article>
+        <article class="metric-card"><span>Total floor area (m²)</span><strong id="floorAreaCount">—</strong><small id="floorCoverage">Waiting for live data</small></article>
+        <article class="metric-card"><span>Total site area (ha)</span><strong id="siteAreaCount">—</strong><small id="siteCoverage">Waiting for live data</small></article>
+        <article class="metric-card"><span>Freehold parcels</span><strong id="parcelCount">Zoom in</strong><small>Available at local map scales</small></article>
       </section>
 
       <p class="data-quality-note">Residential units, floor area and site area are summed from the official planning feeds for the visible map area, selected period and smart filters. Null values are excluded. Floor area is shown in square metres and site area is shown in hectares; both area totals are rounded upward to whole numbers.</p>
 
       <section class="panel-section chart-section">
-        <div class="chart-filter-row">
-          <h2>Planning decisions</h2>
-          <span id="decisionSelection" class="selection-count">All</span>
-        </div>
-        <select id="decisionFilter" class="multi-filter-select" multiple size="5" aria-label="Select one or more planning decisions">
-          <option disabled>Loading decisions…</option>
-        </select>
+        <div class="chart-filter-row"><h2>Planning decisions</h2><span id="decisionSelection" class="selection-count">All</span></div>
+        <select id="decisionFilter" class="multi-filter-select" multiple size="5" aria-label="Select one or more planning decisions"><option disabled>Loading decisions…</option></select>
         <p class="filter-help">Tick one or more decisions, use Select all, or click a chart segment to toggle that decision.</p>
-        <div class="chart-wrap"><canvas id="planningDecisionChart"></canvas></div>
-        <div id="planningDecisionFallback" class="data-fallback"></div>
+        <div class="chart-wrap"><canvas id="planningDecisionChart"></canvas></div><div id="planningDecisionFallback" class="data-fallback"></div>
       </section>
 
       <section class="panel-section chart-section">
-        <div class="chart-filter-row">
-          <h2>Counties / planning authorities</h2>
-          <span id="authoritySelection" class="selection-count">All</span>
-        </div>
-        <select id="authorityFilter" class="multi-filter-select" multiple size="7" aria-label="Select one or more counties or planning authorities">
-          <option disabled>Loading authorities…</option>
-        </select>
+        <div class="chart-filter-row"><h2>Counties / planning authorities</h2><span id="authoritySelection" class="selection-count">All</span></div>
+        <select id="authorityFilter" class="multi-filter-select" multiple size="7" aria-label="Select one or more counties or planning authorities"><option disabled>Loading authorities…</option></select>
         <p class="filter-help">Tick several counties or authorities together, or use Select all to include the full current list.</p>
-        <div class="chart-wrap tall"><canvas id="authorityChart"></canvas></div>
-        <div id="authorityFallback" class="data-fallback"></div>
+        <div class="chart-wrap tall"><canvas id="authorityChart"></canvas></div><div id="authorityFallback" class="data-fallback"></div>
       </section>
 
       <section class="panel-section chart-section">
-        <div class="chart-filter-row">
-          <h2>ACP categories</h2>
-          <span id="categorySelection" class="selection-count">All</span>
-        </div>
-        <select id="categoryFilter" class="multi-filter-select" multiple size="5" aria-label="Select one or more ACP categories">
-          <option disabled>Loading ACP categories…</option>
-        </select>
+        <div class="chart-filter-row"><h2>ACP categories</h2><span id="categorySelection" class="selection-count">All</span></div>
+        <select id="categoryFilter" class="multi-filter-select" multiple size="5" aria-label="Select one or more ACP categories"><option disabled>Loading ACP categories…</option></select>
         <p class="filter-help">Tick several ACP categories together, or use Select all to include the full current list.</p>
-        <div class="chart-wrap"><canvas id="acpCategoryChart"></canvas></div>
-        <div id="acpCategoryFallback" class="data-fallback"></div>
+        <div class="chart-wrap"><canvas id="acpCategoryChart"></canvas></div><div id="acpCategoryFallback" class="data-fallback"></div>
       </section>
 
-      <section class="panel-section ai-panel">
-        <div class="section-title-row">
-          <h2>AI planning note</h2>
-          <span class="source-tag">GitHub Models</span>
-        </div>
-        <div id="aiInsight" class="ai-insight">
-          <p class="muted">The map works without AI. Run the included GitHub Action to create a refreshed planning intelligence note.</p>
-        </div>
-      </section>
+      <section class="panel-section ai-panel"><div class="section-title-row"><h2>AI planning note</h2><span class="source-tag">GitHub Models</span></div><div id="aiInsight" class="ai-insight"><p class="muted">The map works without AI. Run the included GitHub Action to create a refreshed planning intelligence note.</p></div></section>
 
-      <section class="panel-section source-panel">
-        <h2>Support Radharc Pleanála</h2>
-        <p>Support the continued development of this independent Irish planning intelligence platform.</p>
-        <a href="https://www.patreon.com/16538169/join" target="_blank" rel="noopener noreferrer">Join Radharc Pleanála on Patreon ↗</a>
-      </section>
+      <section class="panel-section source-panel"><h2>Support Radharc Pleanála</h2><p>Support the continued development of this independent Irish planning intelligence platform.</p><a href="https://www.patreon.com/16538169/join" target="_blank" rel="noopener noreferrer">Join Radharc Pleanála on Patreon ↗</a></section>
 
-      <section class="panel-section source-panel">
-        <h2>Housing evidence</h2>
-        <p>The CSO Housing Hub is a collection of regularly updated tables and themes rather than a single spatial layer.</p>
-        <a href="https://www.cso.ie/en/releasesandpublications/hubs/p-hh/housinghub/" target="_blank" rel="noopener">Open CSO Housing Hub ↗</a>
-      </section>
+      <section class="panel-section source-panel"><h2>Housing evidence</h2><p>The CSO Housing Hub is a collection of regularly updated tables and themes rather than a single spatial layer.</p><a href="https://www.cso.ie/en/releasesandpublications/hubs/p-hh/housinghub/" target="_blank" rel="noopener">Open CSO Housing Hub ↗</a></section>
 
-      <section class="panel-section source-panel">
-        <h2>Live sources</h2>
-        <ul class="source-list">
-          <li><a href="https://planning.geohive.ie/datasets/housinggovie::irishplanningapplications/explore?layer=0" target="_blank" rel="noopener">Irish Planning Applications</a></li>
-          <li><a href="https://data.corkcity.ie/dataset/planning-permission" target="_blank" rel="noopener">Cork City Planning Permission — direct feed</a></li>
-          <li><a href="https://www.geohive.ie/datasets/f16825677990483d9a12796c7e104622_3/explore" target="_blank" rel="noopener">ACP Cases 2016 Onwards</a></li>
-          <li><a href="https://data-osi.opendata.arcgis.com/datasets/osi::high-value-dataset-cadastral-parcels-freehold/about" target="_blank" rel="noopener">Cadastral Parcels – Freehold</a></li>
-        </ul>
-      </section>
+      <section class="panel-section source-panel"><h2>Live sources</h2><ul class="source-list"><li><a href="https://planning.geohive.ie/datasets/housinggovie::irishplanningapplications/explore?layer=0" target="_blank" rel="noopener">Irish Planning Applications</a></li><li><a href="https://data.corkcity.ie/dataset/planning-permission" target="_blank" rel="noopener">Cork City Planning Permission — direct feed</a></li><li><a href="https://www.geohive.ie/datasets/f16825677990483d9a12796c7e104622_3/explore" target="_blank" rel="noopener">ACP Cases 2016 Onwards</a></li><li><a href="https://data-osi.opendata.arcgis.com/datasets/osi::high-value-dataset-cadastral-parcels-freehold/about" target="_blank" rel="noopener">Cadastral Parcels – Freehold</a></li></ul></section>
     </aside>
   </main>
 
@@ -255,6 +189,6 @@
   <script src="smart-filters.js?v=20260803-2"></script>
   <script src="select-all.js?v=20260803-1"></script>
   <script src="sync-controller.js?v=20260803-4"></script>
-  <script src="export-share.js?v=20260803-18"></script>
+  <script src="export-share.js?v=20260803-19"></script>
 </body>
 </html>
