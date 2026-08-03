@@ -7,7 +7,7 @@
   <title>Irish Planning Intelligence Map</title>
   <link rel="preconnect" href="https://cdn.jsdelivr.net" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css" />
-  <link rel="stylesheet" href="styles.css?v=20260803-3" />
+  <link rel="stylesheet" href="styles.css?v=20260803-4" />
   <style>
     /* Local Leaflet fallback: keeps the basemap intact if the CDN stylesheet is delayed or blocked. */
     .leaflet-container{overflow:hidden;outline:0;background:#dfe7eb}
@@ -39,15 +39,15 @@
   <main class="app-shell">
     <aside class="sidebar left-panel" aria-label="Map controls">
       <section class="panel-section">
-        <h2>Search</h2>
+        <h2>Search and list records</h2>
         <form id="searchForm" class="search-form">
-          <label for="searchInput">Application number, ACP case, address or description</label>
+          <label for="searchInput">Enter a reference, address or description, or leave blank to list everything in the selected period.</label>
           <div class="search-row">
-            <input id="searchInput" name="search" type="search" placeholder="e.g. LRD, Dublin 4, 314485" autocomplete="off" />
-            <button type="submit">Find</button>
+            <input id="searchInput" name="search" type="search" placeholder="Blank = all recent records" autocomplete="off" />
+            <button type="submit">Search</button>
           </div>
         </form>
-        <div id="searchStatus" class="muted small" aria-live="polite"></div>
+        <div id="searchStatus" class="muted small" aria-live="polite">Choose a time period and press Search.</div>
         <div id="searchResults" class="result-list"></div>
       </section>
 
@@ -55,8 +55,9 @@
         <h2>Time period</h2>
         <label for="dateRange">Filter planning received / ACP lodged dates</label>
         <select id="dateRange">
+          <option value="7" selected>Last 7 days</option>
           <option value="90">Last 90 days</option>
-          <option value="365" selected>Last 12 months</option>
+          <option value="365">Last 12 months</option>
           <option value="1095">Last 3 years</option>
           <option value="all">All available records</option>
         </select>
@@ -158,7 +159,7 @@
   <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/esri-leaflet@3.0.15/dist/esri-leaflet.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
-  <script src="app.js?v=20260803-3"></script>
+  <script src="app.js?v=20260803-4"></script>
   <script>
     function settlePlanningMap() {
       if (typeof map === "undefined" || !map) return;
