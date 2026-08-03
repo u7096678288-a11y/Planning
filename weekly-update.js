@@ -291,7 +291,7 @@
   }
 
   function acpKey(record) {
-    return normaliseCaseReference(record.ABPCASEID || record.CASE_REF || record.CaseReference);
+    return normaliseCaseReference(record?.ABPCASEID || record?.CASE_REF || record?.CaseReference);
   }
 
   function buildRows(planningRecords, acpRecords, startTime, endTime) {
@@ -329,14 +329,15 @@
 
       const latest = Math.max(...movements.map(movement => parseTime(movement.date) || 0));
       const units = numeric(planning.NumResidentialUnits);
+      const planningRecordUrl = planningUrl(planning);
       rows.push({
         type: "planning",
         project: projectTitle(planning, acp),
-        projectUrl: planningUrl(planning),
-        planningUrl: planningUrl(planning),
+        projectUrl: planningRecordUrl,
+        planningUrl: planningRecordUrl,
         acpUrl: acp ? acpUrl(acp) : appealRef ? acpUrl(appealRef) : "",
         planningRef: text(planning.ApplicationNumber),
-        acpRef: acpKey(acp || appealRef),
+        acpRef: acp ? acpKey(acp) : appealRef,
         authority: canonicalAuthority(planning.PlanningAuthority || acp?.PLANINGATY),
         applicant: applicant(planning),
         units,
