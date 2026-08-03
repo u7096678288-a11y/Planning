@@ -244,6 +244,14 @@
     const toggles = document.querySelector("#layerToggles");
     if (!toggles) return;
     toggles.addEventListener("change", event => {
+      const input = event.target.closest('input[data-k]');
+      if (!input) return;
+      const key = input.dataset.k;
+      const layer = layers[key];
+      if (layer) {
+        if (input.checked && !map.hasLayer(layer)) layer.addTo(map);
+        if (!input.checked && map.hasLayer(layer)) map.removeLayer(layer);
+      }
       event.stopImmediatePropagation();
       schedule();
     }, true);
