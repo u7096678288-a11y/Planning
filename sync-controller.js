@@ -232,18 +232,28 @@
       : snapshot.zoom >= 13
         ? q(S.freehold.url, { where: "1=1", returnCountOnly: true, ...snapshot.geometry })
         : Promise.resolve({ skipped: true, label: "Zoom in" });
+    const emptyGroup = Promise.resolve({ features: [] });
+    const acpCountJob = snapshot.residentialActive
+      ? Promise.resolve({ count: 0 })
+      : q(S.acpCases.url, { where: snapshot.acpWhere, returnCountOnly: true, ...snapshot.geometry });
+    const categoryChartJob = snapshot.residentialActive
+      ? emptyGroup
+      : smartGrouped(S.acpCases.url, snapshot.acpWhere, "CATEGORY", snapshot.geometry);
+    const categoryOptionsJob = snapshot.residentialActive
+      ? emptyGroup
+      : smartGrouped(S.acpCases.url, snapshot.categoryWhere, "CATEGORY", snapshot.geometry);
 
     const jobs = {
       planningCount: q(S.planningPoints.url, { where: snapshot.planningWhere, returnCountOnly: true, ...snapshot.geometry }),
       planningSitesCount: q(S.planningSites.url, { where: snapshot.planningWhere, returnCountOnly: true, ...snapshot.geometry }),
-      acpCount: q(S.acpCases.url, { where: snapshot.acpWhere, returnCountOnly: true, ...snapshot.geometry }),
+      acpCount: acpCountJob,
       freeholdCount: freeholdJob,
       decisionChart: smartGrouped(S.planningPoints.url, snapshot.planningWhere, "Decision", snapshot.geometry),
       authorityChart: smartGrouped(S.planningPoints.url, snapshot.planningWhere, "PlanningAuthority", snapshot.geometry),
-      categoryChart: smartGrouped(S.acpCases.url, snapshot.acpWhere, "CATEGORY", snapshot.geometry),
+      categoryChart: categoryChartJob,
       decisionOptions: smartGrouped(S.planningPoints.url, snapshot.decisionWhere, "Decision", snapshot.geometry),
       authorityOptions: smartGrouped(S.planningPoints.url, snapshot.authorityWhere, "PlanningAuthority", snapshot.geometry),
-      categoryOptions: smartGrouped(S.acpCases.url, snapshot.categoryWhere, "CATEGORY", snapshot.geometry),
+      categoryOptions: categoryOptionsJob,
       unitsPoint: smartMetric(S.planningPoints.url, "NumResidentialUnits", snapshot.planningWhere, snapshot.geometry),
       unitsSite: smartMetric(S.planningSites.url, "NumResidentialUnits", snapshot.planningWhere, snapshot.geometry),
       floorPoint: smartMetric(S.planningPoints.url, "FloorArea", snapshot.planningWhere, snapshot.geometry),
