@@ -66,7 +66,7 @@
     await loadScript("cross-layer-sync.js?v=20260803-2");
     if (corkReady) await loadScript("cork-city-sync-hook.js?v=20260803-2");
     await loadScript("dynamic-performance.js?v=20260803-1");
-    await loadScript("selected-layer-query-sync.js?v=20260803-1");
+    await loadScript("selected-layer-query-sync.js?v=20260803-2");
     await loadScript("all-layer-search.js?v=20260803-2");
     await loadScript("export-core.js?v=20260803-2");
     await loadScript("share-links.js?v=20260803-5");
