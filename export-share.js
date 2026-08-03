@@ -12,9 +12,10 @@
 
   const sources = [
     "residential-units-filter.js?v=20260803-3",
+    "dynamic-performance.js?v=20260803-1",
     "all-layer-search.js?v=20260803-1",
     "export-core.js?v=20260803-2",
-    "share-links.js?v=20260803-4",
+    "share-links.js?v=20260803-5",
     "map-files.js?v=20260803-3",
     "export-layer-sync.js?v=20260803-2",
     "workbook-export.js?v=20260803-2"
