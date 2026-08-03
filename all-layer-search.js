@@ -5,7 +5,7 @@
 
   function selectedKeys() {
     return window.RadharcDashboard?.selectedLayerKeys?.()
-      || [...document.querySelectorAll('#layerToggles input[data-k]:checked:not(:disabled)')].map(input => input.dataset.k);
+      || [...document.querySelectorAll('#layerToggles input[data-k]:checked')].map(input => input.dataset.k);
   }
 
   function textClause(key, text) {
@@ -20,9 +20,9 @@
   }
 
   function sourceWhere(key, raw) {
-    const base = key === "planningPoints" || key === "planningSites"
+    const base = S[key].type === "planning"
       ? smartPlanningWhere()
-      : key === "acpCases"
+      : S[key].type === "acp"
         ? smartAcpWhere()
         : "1=1";
     return raw ? `(${base}) AND (${textClause(key, raw)})` : base;
@@ -59,17 +59,19 @@
     if (type === "planning") {
       reference = properties.ApplicationNumber || "Planning application";
       subtitle = `${S[key].label} · ${date(properties.ReceivedDate)}`;
-      detail = `${properties.DevelopmentAddress || ""}${properties.NumResidentialUnits != null ? ` · ${fmt(properties.NumResidentialUnits)} units` : ""}`;
+      const authority = properties.PlanningAuthority ? ` · ${properties.PlanningAuthority}` : "";
+      const units = properties.NumResidentialUnits != null ? ` · ${fmt(properties.NumResidentialUnits)} units` : "";
+      detail = `${properties.DevelopmentAddress || ""}${authority}${units}`;
     } else if (type === "acp") {
       reference = properties.ABPCASEID || "ACP case";
       subtitle = `${S[key].label} · ${date(properties.LODGEDON)}`;
-      detail = properties.DEVADDRESS || properties.DEVDESC || "";
+      detail = `${properties.DEVADDRESS || properties.DEVDESC || ""}${properties.CATEGORY ? ` · ${properties.CATEGORY}` : ""}`;
     } else {
       reference = properties.SP_ID || "Freehold parcel";
       subtitle = S[key].label;
       detail = properties.SHAPE_Area != null ? `Source area: ${properties.SHAPE_Area}` : "Cadastral parcel";
     }
-    return `<button data-i="${index}"><b>${esc(reference)}</b><span>${esc(subtitle)}</span><span>${esc(String(detail).slice(0, 150))}</span></button>`;
+    return `<button data-i="${index}"><b>${esc(reference)}</b><span>${esc(subtitle)}</span><span>${esc(String(detail).slice(0, 170))}</span></button>`;
   }
 
   async function searchAllLayers(event) {
@@ -78,8 +80,6 @@
     const statusText = document.querySelector("#searchStatus");
     const resultsElement = document.querySelector("#searchResults");
     let keys = selectedKeys();
-    const residentialActive = Boolean(window.RadharcResidentialUnits?.isActive?.());
-    if (residentialActive) keys = keys.filter(key => S[key]?.type === "planning");
 
     const skipped = [];
     if (!raw && keys.includes("freehold") && map.getZoom() < 13) {
@@ -88,9 +88,7 @@
     }
     if (!keys.length) {
       resultsElement.innerHTML = '<div class="empty-state">Select at least one searchable layer.</div>';
-      statusText.textContent = residentialActive
-        ? "Select Planning application points or Planning application sites."
-        : "Select one or more layers, then search.";
+      statusText.textContent = "Select one or more layers, then search.";
       return;
     }
 
@@ -124,7 +122,7 @@
     const form = document.querySelector("#searchForm");
     if (form) form.onsubmit = searchAllLayers;
     const label = form?.querySelector("label[for='searchInput']");
-    if (label) label.textContent = "Search references, addresses or descriptions across the selected layers, or leave blank to list filtered records.";
+    if (label) label.textContent = "Search references, addresses or descriptions across every selected layer. Residential-unit thresholds apply to planning layers only; ACP retains its own filters.";
   }
 
   window.RadharcLayerSearch = { search: searchAllLayers };
