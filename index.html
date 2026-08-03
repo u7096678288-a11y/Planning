@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Radharc Pleanála — a live Irish planning, ACP case and cadastral mapping dashboard powered by public ArcGIS REST services." />
+  <meta name="description" content="Radharc Pleanála — a live Irish planning, ACP case and cadastral mapping dashboard powered by public ArcGIS and CKAN services." />
   <title>Radharc Pleanála</title>
   <link rel="preconnect" href="https://cdn.jsdelivr.net" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css" />
@@ -171,7 +171,7 @@
         </article>
       </section>
 
-      <p class="data-quality-note">Residential units, floor area and site area are summed from the official planning feed for the visible map area, selected period and smart filters. Null values are excluded. Floor area is shown in square metres and site area is shown in hectares; both area totals are rounded upward to whole numbers.</p>
+      <p class="data-quality-note">Residential units, floor area and site area are summed from the official planning feeds for the visible map area, selected period and smart filters. Null values are excluded. Floor area is shown in square metres and site area is shown in hectares; both area totals are rounded upward to whole numbers.</p>
 
       <section class="panel-section chart-section">
         <div class="chart-filter-row">
@@ -238,6 +238,7 @@
         <h2>Live sources</h2>
         <ul class="source-list">
           <li><a href="https://planning.geohive.ie/datasets/housinggovie::irishplanningapplications/explore?layer=0" target="_blank" rel="noopener">Irish Planning Applications</a></li>
+          <li><a href="https://data.corkcity.ie/dataset/planning-permission" target="_blank" rel="noopener">Cork City Planning Permission — direct feed</a></li>
           <li><a href="https://www.geohive.ie/datasets/f16825677990483d9a12796c7e104622_3/explore" target="_blank" rel="noopener">ACP Cases 2016 Onwards</a></li>
           <li><a href="https://data-osi.opendata.arcgis.com/datasets/osi::high-value-dataset-cadastral-parcels-freehold/about" target="_blank" rel="noopener">Cadastral Parcels – Freehold</a></li>
         </ul>
@@ -245,7 +246,7 @@
     </aside>
   </main>
 
-  <noscript>This tool requires JavaScript to query the live ArcGIS REST services.</noscript>
+  <noscript>This tool requires JavaScript to query the live public ArcGIS and CKAN services.</noscript>
 
   <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/esri-leaflet@3.0.15/dist/esri-leaflet.js"></script>
@@ -254,6 +255,6 @@
   <script src="smart-filters.js?v=20260803-2"></script>
   <script src="select-all.js?v=20260803-1"></script>
   <script src="sync-controller.js?v=20260803-4"></script>
-  <script src="export-share.js?v=20260803-7"></script>
+  <script src="export-share.js?v=20260803-8"></script>
 </body>
 </html>
