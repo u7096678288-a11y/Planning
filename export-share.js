@@ -43,6 +43,24 @@
     });
   }
 
+  function ensureCorkFallback() {
+    if (window.CorkCityCKAN) return;
+    window.CorkCityCKAN = {
+      resourceId: "Unavailable",
+      sourceKey: "corkCityDirect",
+      canonicalAuthority(value) {
+        const authority = String(value ?? "").replace(/\s+/g, " ").trim();
+        const upper = authority.toUpperCase();
+        if (upper.includes("CORK CITY")) return "Cork City Council";
+        if (upper.includes("CORK COUNTY")) return "Cork County Council";
+        return authority;
+      },
+      currentRecords: () => [],
+      features: () => [],
+      clearCache() {}
+    };
+  }
+
   async function load() {
     await loadScript("residential-units-filter.js?v=20260803-4");
 
@@ -59,8 +77,10 @@
         await loadScript("cork-city-area-fix.js?v=20260803-2");
         await loadScript("cork-city-layer-toggle.js?v=20260803-1");
       }
-    } else {
-      moduleStatus.skipped.push("Cork City direct map modules — projection library unavailable");
+    }
+    if (!corkReady) {
+      moduleStatus.skipped.push("Cork City direct map modules — optional source unavailable");
+      ensureCorkFallback();
     }
 
     await loadScript("cross-layer-sync.js?v=20260803-2");
@@ -74,12 +94,8 @@
     if (corkReady) await loadScript("cork-city-map-bridge.js?v=20260803-2");
     await loadScript("export-layer-sync.js?v=20260803-2");
     await loadScript("workbook-export.js?v=20260803-3");
-
-    if (corkReady) {
-      await loadScript("cork-city-tools.js?v=20260803-1");
-      await loadScript("cork-city-search-v2.js?v=20260803-1");
-    }
-
+    await loadScript("cork-city-tools.js?v=20260803-1");
+    await loadScript("cork-city-search-v2.js?v=20260803-1");
     await loadScript("source-registry-bridge.js?v=20260803-1");
     await loadScript("record-links.js?v=20260803-1");
     await loadScript("performance-launcher.js?v=20260803-1");
