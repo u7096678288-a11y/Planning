@@ -7,7 +7,7 @@
   <title>Radharc Pleanála</title>
   <link rel="preconnect" href="https://cdn.jsdelivr.net" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css" />
-  <link rel="stylesheet" href="styles.css?v=20260803-5" />
+  <link rel="stylesheet" href="styles.css?v=20260803-7" />
   <style>
     /* Local Leaflet fallback: keeps the basemap intact if the CDN stylesheet is delayed or blocked. */
     .leaflet-container{overflow:hidden;outline:0;background:#dfe7eb}
@@ -111,12 +111,12 @@
           <small id="unitCoverage">Waiting for live data</small>
         </article>
         <article class="metric-card">
-          <span>Total floor area</span>
+          <span>Total floor area (m²)</span>
           <strong id="floorAreaCount">—</strong>
           <small id="floorCoverage">Waiting for live data</small>
         </article>
         <article class="metric-card">
-          <span>Total site area</span>
+          <span>Total site area (ha)</span>
           <strong id="siteAreaCount">—</strong>
           <small id="siteCoverage">Waiting for live data</small>
         </article>
@@ -127,7 +127,7 @@
         </article>
       </section>
 
-      <p class="data-quality-note">Residential units, floor area and site area are summed from the official planning feed for the visible map area and selected period. Null values are excluded. Area values are displayed in the source units supplied by participating local authorities.</p>
+      <p class="data-quality-note">Residential units, floor area and site area are summed from the official planning feed for the visible map area and selected period. Null values are excluded. Floor area is shown in square metres and site area is shown in hectares; both area totals are rounded upward to whole numbers.</p>
 
       <section class="panel-section chart-section">
         <h2>Planning decisions</h2>
@@ -185,9 +185,12 @@
   <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/esri-leaflet@3.0.15/dist/esri-leaflet.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
-  <script src="app.js?v=20260803-6"></script>
+  <script src="app.js?v=20260803-7"></script>
   <script>
     const originalDashboardUpdate = update;
+    const fmtWholeUp = value => new Intl.NumberFormat("en-IE", {
+      maximumFractionDigits: 0
+    }).format(Math.ceil(Number(value) || 0));
 
     async function metricStat(url, field, where, geometry) {
       const result = await q(url, {
@@ -214,7 +217,7 @@
       return candidates[0] || null;
     }
 
-    function showMetric(valueId, coverageId, metric, formatter, label) {
+    function showMetric(valueId, coverageId, metric, formatter, label, unit = "") {
       const value = document.querySelector(valueId);
       const coverage = document.querySelector(coverageId);
       if (!metric) {
@@ -222,8 +225,9 @@
         coverage.textContent = `${label} feed could not be queried`;
         return;
       }
-      value.textContent = formatter(metric.total);
-      coverage.textContent = `${formatter(metric.total)} total from ${fmt(metric.records)} reporting records · ${metric.source}`;
+      const formatted = formatter(metric.total);
+      value.textContent = formatted;
+      coverage.textContent = `${formatted}${unit ? ` ${unit}` : ""} total from ${fmt(metric.records)} reporting records · ${metric.source}`;
     }
 
     async function populatePlanningTotals() {
@@ -242,8 +246,8 @@
       const siteArea = bestMetric(results[4], results[5]);
 
       showMetric("#unitCount", "#unitCoverage", units, fmt, "Residential units");
-      showMetric("#floorAreaCount", "#floorCoverage", floorArea, fmtArea, "Floor area");
-      showMetric("#siteAreaCount", "#siteCoverage", siteArea, fmtArea, "Site area");
+      showMetric("#floorAreaCount", "#floorCoverage", floorArea, fmtWholeUp, "Floor area", "m²");
+      showMetric("#siteAreaCount", "#siteCoverage", siteArea, fmtWholeUp, "Site area", "ha");
     }
 
     update = async function robustDashboardUpdate() {
