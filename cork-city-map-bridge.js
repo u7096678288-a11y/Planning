@@ -16,22 +16,29 @@
     for (let index = 0; index < references.length; index += 400) {
       groups.push(`ApplicationNumber IN (${references.slice(index, index + 400).map(value => `'${escapeSql(value)}'`).join(",")})`);
     }
-    return groups.length === 1 ? groups[0] : `(${groups.join(" OR ")})`;
+    const referencesSql = groups.length === 1 ? groups[0] : `(${groups.join(" OR ")})`;
+    return `(UPPER(PlanningAuthority) LIKE 'CORK CITY%' AND ${referencesSql})`;
   }
 
   function restoreWhenFinished(button, restore) {
+    let restored = false;
+    const runRestore = () => {
+      if (restored) return;
+      restored = true;
+      restore();
+    };
     let sawBusy = button.getAttribute("aria-busy") === "true";
     const observer = new MutationObserver(() => {
       if (button.getAttribute("aria-busy") === "true") sawBusy = true;
       if (sawBusy && button.getAttribute("aria-busy") !== "true") {
         observer.disconnect();
-        restore();
+        runRestore();
       }
     });
     observer.observe(button, { attributes: true, attributeFilter: ["aria-busy"] });
     setTimeout(() => {
       observer.disconnect();
-      restore();
+      runRestore();
     }, 90000);
   }
 
@@ -39,6 +46,8 @@
     if (preparing) return;
     preparing = true;
     const directInput = document.querySelector('#layerToggles input[data-k="corkCityDirect"]');
+    const pointsInput = document.querySelector('#layerToggles input[data-k="planningPoints"]');
+    const sitesInput = document.querySelector('#layerToggles input[data-k="planningSites"]');
     const directSelected = Boolean(directInput?.checked && map.hasLayer(layers.corkCityDirect));
     if (!directSelected) {
       preparing = false;
@@ -51,6 +60,9 @@
     const directWasOnMap = map.hasLayer(layers.corkCityDirect);
     const pointsWasOnMap = map.hasLayer(layers.planningPoints);
     const sitesWasOnMap = map.hasLayer(layers.planningSites);
+    const directWasChecked = Boolean(directInput?.checked);
+    const pointsWasChecked = Boolean(pointsInput?.checked);
+    const sitesWasChecked = Boolean(sitesInput?.checked);
     const priorText = button.textContent;
 
     try {
@@ -74,16 +86,24 @@
         };
       }
 
+      if (directInput) directInput.checked = false;
       if (directWasOnMap) map.removeLayer(layers.corkCityDirect);
-      if (!pointsWasOnMap && !sitesWasOnMap) layers.planningPoints.addTo(map);
+      if (!pointsWasOnMap && !sitesWasOnMap) {
+        if (pointsInput) pointsInput.checked = true;
+        layers.planningPoints.addTo(map);
+      }
 
       const restore = () => {
         smartPlanningWhere = originalWhere;
+        if (directInput) directInput.checked = directWasChecked;
+        if (pointsInput) pointsInput.checked = pointsWasChecked;
+        if (sitesInput) sitesInput.checked = sitesWasChecked;
         if (!pointsWasOnMap && map.hasLayer(layers.planningPoints)) map.removeLayer(layers.planningPoints);
         if (!sitesWasOnMap && map.hasLayer(layers.planningSites)) map.removeLayer(layers.planningSites);
         if (directWasOnMap && !map.hasLayer(layers.corkCityDirect)) layers.corkCityDirect.addTo(map);
         button.disabled = false;
         button.textContent = priorText;
+        window.CorkCityCKAN.refreshLayer().catch(() => {});
       };
       restoreWhenFinished(button, restore);
       preparedClick = true;
@@ -92,7 +112,12 @@
       button.click();
     } catch (error) {
       console.error("Cork map export bridge failed", error);
+      if (directInput) directInput.checked = directWasChecked;
+      if (pointsInput) pointsInput.checked = pointsWasChecked;
+      if (sitesInput) sitesInput.checked = sitesWasChecked;
+      if (!pointsWasOnMap && map.hasLayer(layers.planningPoints)) map.removeLayer(layers.planningPoints);
       if (directWasOnMap && !map.hasLayer(layers.corkCityDirect)) layers.corkCityDirect.addTo(map);
+      smartPlanningWhere = originalWhere;
       button.disabled = false;
       button.textContent = priorText;
       window.RadharcTools?.showMessage?.(`Cork City map matching failed: ${window.RadharcTools?.errorMessage?.(error) || error.message}`, "error", 8000);
