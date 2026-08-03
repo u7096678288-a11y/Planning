@@ -20,6 +20,7 @@
     "export-core.js?v=20260803-2",
     "share-links.js?v=20260803-5",
     "map-files.js?v=20260803-3",
+    "cork-city-map-bridge.js?v=20260803-1",
     "export-layer-sync.js?v=20260803-2",
     "workbook-export.js?v=20260803-3",
     "cork-city-tools.js?v=20260803-1"
