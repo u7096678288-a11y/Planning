@@ -9,6 +9,8 @@ const smartState = {
   category: [],
   sequence: 0
 };
+const smartOptionData = { decision: [], authority: [], category: [] };
+const smartTools = {};
 const smartWholeUp = value => new Intl.NumberFormat("en-IE", { maximumFractionDigits: 0 })
   .format(Math.ceil(Number(value) || 0));
 const smartEscapeSql = value => String(value ?? "").replaceAll("'", "''");
@@ -114,7 +116,7 @@ function smartUpdateSelectionSummary(key) {
   const values = smartState[key];
   const summary = smartSelectionSummaryForKey(key);
   if (!summary) return;
-  summary.textContent = values.length ? `${values.length} selected` : "All";
+  summary.textContent = values.length ? `${values.length} selected` : "All included";
   summary.title = values.length ? smartFilterListLabel(values) : "No selections: all values included";
 }
 
@@ -134,6 +136,7 @@ function smartSyncSelect(key) {
   Array.from(select.options).forEach(option => {
     option.selected = selected.has(option.value);
   });
+  smartRenderFilterTool(key);
 }
 
 function smartApplyLayerFilters() {
@@ -173,6 +176,7 @@ function smartSetOptions(select, features, field, selectedValues, key) {
       options.unshift({ value: selected, label: smartFilterLabel(selected), count: 0 });
     }
   });
+  smartOptionData[key] = options;
   select.innerHTML = options.length
     ? options.map(option => `<option value="${esc(option.value)}">${esc(option.label)} (${fmt(option.count)})</option>`).join("")
     : '<option disabled>No options for the current filters</option>';
@@ -439,27 +443,108 @@ function smartBindDateControls() {
   };
 }
 
-function smartBindMultiSelect(key) {
+function smartToolConfig(key) {
+  if (key === "decision") return { label: "decisions", placeholder: "Find a decision" };
+  if (key === "authority") return { label: "authorities", placeholder: "Find an authority" };
+  return { label: "ACP categories", placeholder: "Find a category" };
+}
+
+function smartInjectIntuitiveStyles() {
+  if (document.querySelector("#intuitiveFilterStyles")) return;
+  const style = document.createElement("style");
+  style.id = "intuitiveFilterStyles";
+  style.textContent = `
+    .multi-filter-select{display:none!important}
+    .smart-choice-tool{border:1px solid #d5e0e5;border-radius:8px;background:#f8fbfb;overflow:hidden;margin-bottom:8px}
+    .smart-choice-toolbar{display:flex;gap:7px;padding:8px;border-bottom:1px solid #dce4e8;background:#fff}
+    .smart-choice-search{min-width:0;flex:1;border:1px solid #b8c8d0;border-radius:6px;padding:8px 9px;font-size:11px;color:#132538;background:#fff}
+    .smart-choice-clear{border:1px solid #b8c8d0;border-radius:6px;padding:7px 9px;background:#fff;color:#132538;font-size:11px;font-weight:bold;white-space:nowrap}
+    .smart-choice-clear:disabled{opacity:.42;cursor:not-allowed}
+    .smart-selected-chips{display:flex;flex-wrap:wrap;gap:5px;padding:8px 8px 0}
+    .smart-selected-chips:empty{display:none}
+    .smart-chip{display:inline-flex;align-items:center;gap:5px;border:1px solid #a8c9c6;background:#e9f5f3;color:#174d50;border-radius:18px;padding:5px 8px;font-size:10px;line-height:1.1}
+    .smart-chip button{border:0;background:transparent;color:inherit;padding:0;font:inherit;font-weight:bold;cursor:pointer}
+    .smart-all-note{margin:0;padding:8px 10px;font-size:10px;color:#546d7a;background:#f2f7f7;border-bottom:1px solid #dce4e8}
+    .smart-option-list{max-height:190px;overflow:auto;padding:5px;background:#fff}
+    .smart-option-row{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:8px;padding:7px 8px;border-radius:6px;cursor:pointer;font-size:11px;color:#193247}
+    .smart-option-row:hover{background:#eef5f5}
+    .smart-option-row.is-selected{background:#e5f3f1}
+    .smart-option-row input{margin:0;accent-color:#146f79}
+    .smart-option-label{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .smart-option-count{color:#607783;background:#edf2f4;border-radius:12px;padding:2px 6px;font-size:10px;font-variant-numeric:tabular-nums}
+    .smart-no-options{padding:12px;color:#687b88;font-size:11px;text-align:center}
+    .selection-count{background:#eef5f5;border:1px solid #d1e2e1;color:#315d61}
+    @media(max-width:700px){.smart-option-list{max-height:230px}.smart-choice-toolbar{align-items:stretch}.smart-choice-clear{padding-inline:12px}}
+  `;
+  document.head.append(style);
+}
+
+function smartBuildFilterTool(key) {
   const select = smartSelectForKey(key);
-  if (!select) return;
-  select.onchange = () => {
-    smartSetFilter(key, Array.from(select.selectedOptions).map(option => option.value));
-  };
-  select.addEventListener("mousedown", event => {
-    const option = event.target.closest("option");
-    if (!option || option.disabled) return;
-    event.preventDefault();
-    option.selected = !option.selected;
-    select.focus();
-    select.dispatchEvent(new Event("change", { bubbles: true }));
+  if (!select || smartTools[key]) return;
+  const config = smartToolConfig(key);
+  const tool = document.createElement("div");
+  tool.className = "smart-choice-tool";
+  tool.innerHTML = `
+    <div class="smart-choice-toolbar">
+      <input class="smart-choice-search" type="search" placeholder="${esc(config.placeholder)}" aria-label="${esc(config.placeholder)}" />
+      <button class="smart-choice-clear" type="button" disabled>Clear</button>
+    </div>
+    <div class="smart-selected-chips" aria-live="polite"></div>
+    <p class="smart-all-note">All ${esc(config.label)} are included until you tick one or more boxes.</p>
+    <div class="smart-option-list" role="group" aria-label="Choose ${esc(config.label)}"></div>
+  `;
+  select.before(tool);
+  select.hidden = true;
+  const search = tool.querySelector(".smart-choice-search");
+  const clear = tool.querySelector(".smart-choice-clear");
+  const list = tool.querySelector(".smart-option-list");
+  const chips = tool.querySelector(".smart-selected-chips");
+  const note = tool.querySelector(".smart-all-note");
+  smartTools[key] = { tool, search, clear, list, chips, note };
+  search.addEventListener("input", () => smartRenderFilterTool(key));
+  clear.addEventListener("click", () => smartSetFilter(key, []));
+  list.addEventListener("change", event => {
+    const input = event.target.closest('input[type="checkbox"]');
+    if (!input) return;
+    smartToggleFilterValue(key, input.value);
+  });
+  chips.addEventListener("click", event => {
+    const button = event.target.closest("button[data-value]");
+    if (!button) return;
+    smartToggleFilterValue(key, button.dataset.value);
   });
 }
 
+function smartRenderFilterTool(key) {
+  const refs = smartTools[key];
+  if (!refs) return;
+  const selected = new Set(smartState[key]);
+  const query = refs.search.value.trim().toLocaleLowerCase("en-IE");
+  const options = smartOptionData[key].filter(option =>
+    !query || option.label.toLocaleLowerCase("en-IE").includes(query)
+  );
+  refs.clear.disabled = selected.size === 0;
+  refs.note.hidden = selected.size > 0;
+  refs.chips.innerHTML = smartState[key].map(value => `
+    <span class="smart-chip">${esc(smartFilterLabel(value))}<button type="button" data-value="${esc(value)}" aria-label="Remove ${esc(smartFilterLabel(value))}">×</button></span>
+  `).join("");
+  refs.list.innerHTML = options.length ? options.map(option => {
+    const checked = selected.has(option.value);
+    return `
+      <label class="smart-option-row${checked ? " is-selected" : ""}">
+        <input type="checkbox" value="${esc(option.value)}" ${checked ? "checked" : ""} />
+        <span class="smart-option-label" title="${esc(option.label)}">${esc(option.label)}</span>
+        <span class="smart-option-count">${fmt(option.count)}</span>
+      </label>
+    `;
+  }).join("") : '<div class="smart-no-options">No matching options</div>';
+}
+
 function smartEnhance() {
+  smartInjectIntuitiveStyles();
+  ["decision", "authority", "category"].forEach(smartBuildFilterTool);
   smartBindDateControls();
-  smartBindMultiSelect("decision");
-  smartBindMultiSelect("authority");
-  smartBindMultiSelect("category");
   document.querySelector("#clearSmartFilters").onclick = () => {
     smartState.decision = [];
     smartState.authority = [];
