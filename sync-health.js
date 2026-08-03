@@ -10,7 +10,7 @@
     "Dashboard controller": () => Boolean(window.RadharcDashboard?.syncNow),
     "Layer-aware queries": () => Boolean(window.RadharcSelectedLayerQueries),
     "Search": () => Boolean(window.RadharcAuthoritySearch || window.RadharcLayerSearch),
-    "CSV/export core": () => Boolean(window.RadharcTools?.exportCsv || document.querySelector("#exportViewButton")),
+    "CSV/export core": () => Boolean(window.RadharcTools || document.querySelector("#exportViewButton")),
     "Map export": () => Boolean(document.querySelector("#shareViewButton")),
     "Workbook export": () => Boolean(window.RadharcWorkbookExport || document.querySelector("#exportWorkbookButton")),
     "Performance": () => Boolean(window.RadharcPerformanceLauncher),
@@ -25,34 +25,58 @@
   }
 
   function reconcileLayerVisibility() {
-    const mismatches = [];
+    const corrections = [];
     document.querySelectorAll('#layerToggles input[data-k]').forEach(input => {
       const key = input.dataset.k;
       const layer = layers[key];
-      if (!layer) {
-        mismatches.push(`${key}: layer missing`);
-        return;
-      }
+      if (!layer) return;
       const expected = input.checked && !input.disabled;
       const visible = map.hasLayer(layer);
       if (expected === visible) return;
-      mismatches.push(`${key}: checkbox/map mismatch corrected`);
+      corrections.push(`${key}: checkbox/map visibility reconciled`);
       if (expected) layer.addTo(map);
       else map.removeLayer(layer);
     });
-    return mismatches;
+    return corrections;
   }
 
   function reconcileLayerQueries() {
-    const issues = [];
+    const corrections = [];
     const planningWhere = smartPlanningWhere();
     const acpWhere = smartAcpWhere();
     [["planningPoints", planningWhere], ["planningSites", planningWhere], ["acpCases", acpWhere]].forEach(([key, expected]) => {
       const layer = layers[key];
       if (!layer?.setWhere) return;
       const current = typeof layer.getWhere === "function" ? layer.getWhere() : null;
-      if (current != null && String(current) !== String(expected)) issues.push(`${key}: query corrected`);
+      if (current != null && String(current) !== String(expected)) corrections.push(`${key}: active query reconciled`);
       layer.setWhere(expected);
+    });
+    return corrections;
+  }
+
+  function unresolvedLayerIssues() {
+    const issues = [];
+    document.querySelectorAll('#layerToggles input[data-k]').forEach(input => {
+      const key = input.dataset.k;
+      const layer = layers[key];
+      if (!layer) {
+        issues.push(`${key}: layer missing`);
+        return;
+      }
+      const expected = input.checked && !input.disabled;
+      if (map.hasLayer(layer) !== expected) issues.push(`${key}: checkbox and map remain inconsistent`);
+    });
+    return issues;
+  }
+
+  function unresolvedQueryIssues() {
+    const issues = [];
+    const planningWhere = smartPlanningWhere();
+    const acpWhere = smartAcpWhere();
+    [["planningPoints", planningWhere], ["planningSites", planningWhere], ["acpCases", acpWhere]].forEach(([key, expected]) => {
+      const layer = layers[key];
+      if (typeof layer?.getWhere !== "function") return;
+      if (String(layer.getWhere()) !== String(expected)) issues.push(`${key}: active query remains inconsistent`);
     });
     return issues;
   }
@@ -72,16 +96,19 @@
 
   function render(report) {
     const badge = ensureBadge();
-    if (badge) {
-      badge.textContent = report.ok ? "Integrity checked" : `${report.issues.length} sync issue${report.issues.length === 1 ? "" : "s"}`;
-      badge.title = report.ok ? `Selected layers: ${report.selectedLayers.join(", ") || "none"}` : report.issues.join(" · ");
-    }
+    if (!badge) return;
+    badge.textContent = report.ok ? "Integrity checked" : `${report.issues.length} sync issue${report.issues.length === 1 ? "" : "s"}`;
+    const details = report.ok
+      ? [`Selected layers: ${report.selectedLayers.join(", ") || "none"}`, ...report.corrections]
+      : report.issues;
+    badge.title = details.join(" · ");
   }
 
   async function check({ refresh = true } = {}) {
     if (running) return running;
     running = (async () => {
       const issues = [];
+      const corrections = [];
       const loader = window.RadharcModuleStatus || {};
       (loader.failed || []).forEach(item => issues.push(`Module failed: ${item}`));
       Object.entries(requiredModules).forEach(([label, test]) => {
@@ -91,8 +118,8 @@
           issues.push(`${label} check failed`);
         }
       });
-      issues.push(...reconcileLayerVisibility());
-      issues.push(...reconcileLayerQueries());
+
+      corrections.push(...reconcileLayerVisibility(), ...reconcileLayerQueries());
 
       if (refresh && window.RadharcDashboard?.syncNow) {
         try {
@@ -102,11 +129,13 @@
         }
       }
 
+      issues.push(...unresolvedLayerIssues(), ...unresolvedQueryIssues());
       latestReport = {
         ok: issues.length === 0,
         checkedAt: new Date(),
         selectedLayers: selectedKeys(),
         issues: [...new Set(issues)],
+        corrections: [...new Set(corrections)],
         modules: {
           loaded: [...(loader.loaded || [])],
           failed: [...(loader.failed || [])],
