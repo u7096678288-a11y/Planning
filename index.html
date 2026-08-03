@@ -7,7 +7,7 @@
   <title>Radharc Pleanála</title>
   <link rel="preconnect" href="https://cdn.jsdelivr.net" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css" />
-  <link rel="stylesheet" href="styles.css?v=20260803-4" />
+  <link rel="stylesheet" href="styles.css?v=20260803-5" />
   <style>
     /* Local Leaflet fallback: keeps the basemap intact if the CDN stylesheet is delayed or blocked. */
     .leaflet-container{overflow:hidden;outline:0;background:#dfe7eb}
@@ -90,27 +90,44 @@
           <p class="eyebrow">VISIBLE MAP AREA</p>
           <h2>Dashboard</h2>
         </div>
-        <span id="dashboardUpdated" class="muted small">Not yet updated</span>
+        <span id="dashboardUpdated" class="muted small">Not yet checked</span>
       </section>
+      <p id="sourceFreshness" class="source-freshness">Source update dates will appear after the live feeds are checked.</p>
 
       <section class="metric-grid" aria-label="Headline metrics">
         <article class="metric-card">
           <span>Planning applications</span>
           <strong id="planningCount">—</strong>
+          <small>Records in the selected period</small>
         </article>
         <article class="metric-card">
           <span>ACP cases</span>
           <strong id="acpCount">—</strong>
+          <small>Cases in the selected period</small>
         </article>
         <article class="metric-card">
-          <span>Residential units</span>
+          <span>Total residential units</span>
           <strong id="unitCount">—</strong>
+          <small id="unitCoverage">Waiting for live data</small>
+        </article>
+        <article class="metric-card">
+          <span>Total floor area</span>
+          <strong id="floorAreaCount">—</strong>
+          <small id="floorCoverage">Waiting for live data</small>
+        </article>
+        <article class="metric-card">
+          <span>Total site area</span>
+          <strong id="siteAreaCount">—</strong>
+          <small id="siteCoverage">Waiting for live data</small>
         </article>
         <article class="metric-card">
           <span>Freehold parcels</span>
           <strong id="parcelCount">Zoom in</strong>
+          <small>Available at local map scales</small>
         </article>
       </section>
+
+      <p class="data-quality-note">Residential units, floor area and site area are summed from the official planning feed for the visible map area and selected period. Null values are excluded. Area values are displayed in the source units supplied by participating local authorities.</p>
 
       <section class="panel-section chart-section">
         <h2>Planning decisions</h2>
@@ -168,7 +185,7 @@
   <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/esri-leaflet@3.0.15/dist/esri-leaflet.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
-  <script src="app.js?v=20260803-4"></script>
+  <script src="app.js?v=20260803-5"></script>
   <script>
     function settlePlanningMap() {
       if (typeof map === "undefined" || !map) return;
