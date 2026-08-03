@@ -12,7 +12,9 @@
 
   const sources = [
     "residential-units-filter.js?v=20260803-4",
-    "cork-city-ckan.js?v=20260803-1",
+    "https://cdn.jsdelivr.net/npm/proj4@2.11.0/dist/proj4.js",
+    "cork-city-coordinate-system.js?v=20260803-1",
+    "cork-city-ckan.js?v=20260803-2",
     "cork-city-area-fix.js?v=20260803-2",
     "cork-city-layer-toggle.js?v=20260803-1",
     "cross-layer-sync.js?v=20260803-2",
