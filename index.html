@@ -178,20 +178,20 @@
         <select id="decisionFilter" class="multi-filter-select" multiple size="5" aria-label="Select one or more planning decisions">
           <option disabled>Loading decisions…</option>
         </select>
-        <p class="filter-help">Click or tap any number of options to toggle them. No selection includes all decisions. Clicking a chart segment also toggles that decision.</p>
+        <p class="filter-help">Tick one or more decisions, use Select all, or click a chart segment to toggle that decision.</p>
         <div class="chart-wrap"><canvas id="planningDecisionChart"></canvas></div>
         <div id="planningDecisionFallback" class="data-fallback"></div>
       </section>
 
       <section class="panel-section chart-section">
         <div class="chart-filter-row">
-          <h2>Applications by authority</h2>
+          <h2>Counties / planning authorities</h2>
           <span id="authoritySelection" class="selection-count">All</span>
         </div>
-        <select id="authorityFilter" class="multi-filter-select" multiple size="7" aria-label="Select one or more planning authorities">
+        <select id="authorityFilter" class="multi-filter-select" multiple size="7" aria-label="Select one or more counties or planning authorities">
           <option disabled>Loading authorities…</option>
         </select>
-        <p class="filter-help">Select several authorities together. The list and counts respond to the active period and selected decisions.</p>
+        <p class="filter-help">Tick several counties or authorities together, or use Select all to include the full current list.</p>
         <div class="chart-wrap tall"><canvas id="authorityChart"></canvas></div>
         <div id="authorityFallback" class="data-fallback"></div>
       </section>
@@ -204,7 +204,7 @@
         <select id="categoryFilter" class="multi-filter-select" multiple size="5" aria-label="Select one or more ACP categories">
           <option disabled>Loading ACP categories…</option>
         </select>
-        <p class="filter-help">Select several ACP categories together. No selection includes all categories within the active date range and map area.</p>
+        <p class="filter-help">Tick several ACP categories together, or use Select all to include the full current list.</p>
         <div class="chart-wrap"><canvas id="acpCategoryChart"></canvas></div>
         <div id="acpCategoryFallback" class="data-fallback"></div>
       </section>
@@ -249,5 +249,6 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
   <script src="app.js?v=20260803-10"></script>
   <script src="smart-filters.js?v=20260803-2"></script>
+  <script src="select-all.js?v=20260803-1"></script>
 </body>
 </html>
