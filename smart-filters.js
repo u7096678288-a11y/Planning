@@ -4,9 +4,9 @@ const smartNull = "__NOT_STATED__";
 const smartState = {
   customDates: null,
   lastPreset: "7",
-  decision: "",
-  authority: "",
-  category: "",
+  decision: [],
+  authority: [],
+  category: [],
   sequence: 0
 };
 const smartWholeUp = value => new Intl.NumberFormat("en-IE", { maximumFractionDigits: 0 })
@@ -40,14 +40,20 @@ function smartTextClause(field, value) {
   return `${field} = '${smartEscapeSql(value)}'`;
 }
 
+function smartValuesClause(field, values) {
+  if (!Array.isArray(values) || !values.length) return "";
+  const clauses = values.map(value => smartTextClause(field, value)).filter(Boolean);
+  return clauses.length ? `(${clauses.join(" OR ")})` : "";
+}
+
 function smartPlanningWhere(exclude = "") {
   const clauses = [smartDateWhere("ReceivedDate")];
   if (exclude !== "decision") {
-    const decision = smartTextClause("Decision", smartState.decision);
+    const decision = smartValuesClause("Decision", smartState.decision);
     if (decision) clauses.push(decision);
   }
   if (exclude !== "authority") {
-    const authority = smartTextClause("PlanningAuthority", smartState.authority);
+    const authority = smartValuesClause("PlanningAuthority", smartState.authority);
     if (authority) clauses.push(authority);
   }
   return clauses.map(clause => `(${clause})`).join(" AND ");
@@ -56,7 +62,7 @@ function smartPlanningWhere(exclude = "") {
 function smartAcpWhere(exclude = "") {
   const clauses = [smartDateWhere("LODGEDON")];
   if (exclude !== "category") {
-    const category = smartTextClause("CATEGORY", smartState.category);
+    const category = smartValuesClause("CATEGORY", smartState.category);
     if (category) clauses.push(category);
   }
   return clauses.map(clause => `(${clause})`).join(" AND ");
@@ -80,19 +86,54 @@ function smartFilterLabel(value) {
   return value === smartNull ? "Not stated" : value;
 }
 
+function smartFilterListLabel(values) {
+  const labels = values.map(smartFilterLabel);
+  if (labels.length <= 3) return labels.join(", ");
+  return `${labels.slice(0, 3).join(", ")} +${labels.length - 3}`;
+}
+
 function smartSummary() {
   const parts = [`Period: ${smartPeriodLabel()}`];
-  if (smartState.decision) parts.push(`Decision: ${smartFilterLabel(smartState.decision)}`);
-  if (smartState.authority) parts.push(`Authority: ${smartFilterLabel(smartState.authority)}`);
-  if (smartState.category) parts.push(`ACP category: ${smartFilterLabel(smartState.category)}`);
+  if (smartState.decision.length) parts.push(`Decisions: ${smartFilterListLabel(smartState.decision)}`);
+  if (smartState.authority.length) parts.push(`Authorities: ${smartFilterListLabel(smartState.authority)}`);
+  if (smartState.category.length) parts.push(`ACP categories: ${smartFilterListLabel(smartState.category)}`);
   return parts.join(" · ");
+}
+
+function smartSelectForKey(key) {
+  const id = key === "decision" ? "#decisionFilter" : key === "authority" ? "#authorityFilter" : "#categoryFilter";
+  return document.querySelector(id);
+}
+
+function smartSelectionSummaryForKey(key) {
+  const id = key === "decision" ? "#decisionSelection" : key === "authority" ? "#authoritySelection" : "#categorySelection";
+  return document.querySelector(id);
+}
+
+function smartUpdateSelectionSummary(key) {
+  const values = smartState[key];
+  const summary = smartSelectionSummaryForKey(key);
+  if (!summary) return;
+  summary.textContent = values.length ? `${values.length} selected` : "All";
+  summary.title = values.length ? smartFilterListLabel(values) : "No selections: all values included";
 }
 
 function smartUpdateSummary() {
   const summary = document.querySelector("#activeFilterSummary");
   if (summary) summary.textContent = smartSummary();
+  ["decision", "authority", "category"].forEach(smartUpdateSelectionSummary);
   const clearButton = document.querySelector("#clearSmartFilters");
-  if (clearButton) clearButton.disabled = !(smartState.decision || smartState.authority || smartState.category);
+  const hasSelections = smartState.decision.length || smartState.authority.length || smartState.category.length;
+  if (clearButton) clearButton.disabled = !hasSelections;
+}
+
+function smartSyncSelect(key) {
+  const select = smartSelectForKey(key);
+  if (!select) return;
+  const selected = new Set(smartState[key]);
+  Array.from(select.options).forEach(option => {
+    option.selected = selected.has(option.value);
+  });
 }
 
 function smartApplyLayerFilters() {
@@ -116,7 +157,7 @@ async function smartGrouped(url, where, field, geometry, limit = 250) {
   });
 }
 
-function smartSetOptions(select, features, field, selected, allLabel) {
+function smartSetOptions(select, features, field, selectedValues, key) {
   if (!select) return;
   const options = (features || []).map(feature => {
     const attributes = feature.attributes || {};
@@ -127,13 +168,16 @@ function smartSetOptions(select, features, field, selected, allLabel) {
       count: Number(attributes.n) || 0
     };
   });
-  if (selected && !options.some(option => option.value === selected)) {
-    options.unshift({ value: selected, label: smartFilterLabel(selected), count: 0 });
-  }
-  select.innerHTML = `<option value="">${esc(allLabel)}</option>` + options.map(option =>
-    `<option value="${esc(option.value)}">${esc(option.label)} (${fmt(option.count)})</option>`
-  ).join("");
-  select.value = selected;
+  selectedValues.forEach(selected => {
+    if (!options.some(option => option.value === selected)) {
+      options.unshift({ value: selected, label: smartFilterLabel(selected), count: 0 });
+    }
+  });
+  select.innerHTML = options.length
+    ? options.map(option => `<option value="${esc(option.value)}">${esc(option.label)} (${fmt(option.count)})</option>`).join("")
+    : '<option disabled>No options for the current filters</option>';
+  smartSyncSelect(key);
+  smartUpdateSelectionSummary(key);
 }
 
 async function smartRefreshFilterOptions(geometry, sequence) {
@@ -144,18 +188,19 @@ async function smartRefreshFilterOptions(geometry, sequence) {
   ]);
   if (sequence !== smartState.sequence) return;
   if (results[0].status === "fulfilled") {
-    smartSetOptions(document.querySelector("#decisionFilter"), results[0].value.features, "Decision", smartState.decision, "All decisions");
+    smartSetOptions(document.querySelector("#decisionFilter"), results[0].value.features, "Decision", smartState.decision, "decision");
   }
   if (results[1].status === "fulfilled") {
-    smartSetOptions(document.querySelector("#authorityFilter"), results[1].value.features, "PlanningAuthority", smartState.authority, "All authorities");
+    smartSetOptions(document.querySelector("#authorityFilter"), results[1].value.features, "PlanningAuthority", smartState.authority, "authority");
   }
   if (results[2].status === "fulfilled") {
-    smartSetOptions(document.querySelector("#categoryFilter"), results[2].value.features, "CATEGORY", smartState.category, "All ACP categories");
+    smartSetOptions(document.querySelector("#categoryFilter"), results[2].value.features, "CATEGORY", smartState.category, "category");
   }
 }
 
-function smartSetFilter(key, value) {
-  smartState[key] = value;
+function smartSetFilter(key, values) {
+  smartState[key] = [...new Set((values || []).filter(Boolean))];
+  smartSyncSelect(key);
   smartApplyLayerFilters();
   smartUpdateSummary();
   const results = document.querySelector("#searchResults");
@@ -163,6 +208,14 @@ function smartSetFilter(key, value) {
   const searchStatus = document.querySelector("#searchStatus");
   if (searchStatus) searchStatus.textContent = `Filters updated. Press Search to list records for ${smartPeriodLabel()}.`;
   update();
+}
+
+function smartToggleFilterValue(key, value) {
+  const current = smartState[key];
+  const values = current.includes(value)
+    ? current.filter(item => item !== value)
+    : [...current, value];
+  smartSetFilter(key, values);
 }
 
 function smartDrawChart(id, features, field, type, filterKey) {
@@ -181,10 +234,7 @@ function smartDrawChart(id, features, field, type, filterKey) {
         if (!elements.length) return;
         const label = labels[elements[0].index];
         const value = label === "Not stated" ? smartNull : label;
-        const selectId = filterKey === "decision" ? "#decisionFilter" : filterKey === "authority" ? "#authorityFilter" : "#categoryFilter";
-        const select = document.querySelector(selectId);
-        if (select) select.value = value;
-        smartSetFilter(filterKey, value);
+        smartToggleFilterValue(filterKey, value);
       }
     }
   });
@@ -389,18 +439,32 @@ function smartBindDateControls() {
   };
 }
 
+function smartBindMultiSelect(key) {
+  const select = smartSelectForKey(key);
+  if (!select) return;
+  select.onchange = () => {
+    smartSetFilter(key, Array.from(select.selectedOptions).map(option => option.value));
+  };
+  select.addEventListener("mousedown", event => {
+    const option = event.target.closest("option");
+    if (!option || option.disabled) return;
+    event.preventDefault();
+    option.selected = !option.selected;
+    select.focus();
+    select.dispatchEvent(new Event("change", { bubbles: true }));
+  });
+}
+
 function smartEnhance() {
   smartBindDateControls();
-  document.querySelector("#decisionFilter").onchange = event => smartSetFilter("decision", event.target.value);
-  document.querySelector("#authorityFilter").onchange = event => smartSetFilter("authority", event.target.value);
-  document.querySelector("#categoryFilter").onchange = event => smartSetFilter("category", event.target.value);
+  smartBindMultiSelect("decision");
+  smartBindMultiSelect("authority");
+  smartBindMultiSelect("category");
   document.querySelector("#clearSmartFilters").onclick = () => {
-    smartState.decision = "";
-    smartState.authority = "";
-    smartState.category = "";
-    document.querySelector("#decisionFilter").value = "";
-    document.querySelector("#authorityFilter").value = "";
-    document.querySelector("#categoryFilter").value = "";
+    smartState.decision = [];
+    smartState.authority = [];
+    smartState.category = [];
+    ["decision", "authority", "category"].forEach(smartSyncSelect);
     smartApplyLayerFilters();
     smartUpdateSummary();
     update();
