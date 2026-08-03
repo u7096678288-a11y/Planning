@@ -223,8 +223,10 @@
       let exportedRows = 0;
       keys.forEach(key => {
         const result = layerResults[key];
-        if (!result || (!result.rows.length && result.skipped)) return;
-        const rows = result.rows.length ? result.rows : [{ Status: result.error || "No matching records", ActiveFilters: smartSummary() }];
+        if (!result) return;
+        const rows = result.rows.length
+          ? result.rows
+          : [{ Status: result.error || result.skipped || "No matching records", ActiveFilters: smartSummary() }];
         exportedRows += result.rows.length;
         const sheet = XLSX.utils.json_to_sheet(rows);
         setSheetLayout(sheet, rows);
