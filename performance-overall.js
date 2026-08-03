@@ -10,10 +10,9 @@
     coverage: 10
   };
   let installed = false;
-  let timer = null;
 
   const el = selector => document.querySelector(selector);
-  const finite = value => Number.isFinite(Number(value));
+  const finite = value => value !== null && value !== undefined && value !== "" && Number.isFinite(Number(value));
   const number = value => finite(value) ? Number(value) : null;
   const clamp = value => Math.max(0, Math.min(100, Number(value) || 0));
   const format = value => new Intl.NumberFormat("en-IE", { maximumFractionDigits: 0 }).format(Number(value) || 0);
@@ -340,7 +339,6 @@
   function installAgainstEngine() {
     if (installed || !window.RadharcPerformance || !el("#performanceDialog")) return false;
     installed = true;
-    clearInterval(timer);
     injectStyles();
     injectInterface();
 
@@ -365,10 +363,16 @@
     return true;
   }
 
+  function waitForEngine(attempt = 0) {
+    if (installAgainstEngine() || attempt >= 600) return;
+    setTimeout(() => waitForEngine(attempt + 1), 50);
+  }
+
   function start() {
     if (installAgainstEngine()) return;
-    timer = setInterval(installAgainstEngine, 40);
-    setTimeout(() => clearInterval(timer), 300000);
+    document.addEventListener("click", event => {
+      if (event.target.closest("#performanceButton")) waitForEngine();
+    }, true);
   }
 
   window.RadharcOverallPerformance = {
