@@ -16,7 +16,7 @@
   function unitParam(value) {
     if (value == null || value === "") return null;
     const number = Number(value);
-    return Number.isSafeInteger(number) && number >= 0 && number <= 10000000 ? number : null;
+    return Number.isSafeInteger(number) && number >= 1 && number <= 10000000 ? number : null;
   }
 
   T.buildShareUrl = function buildShareUrl() {
@@ -34,7 +34,6 @@
     repeated(params, "category", smartState.category);
     if (smartState.residentialOnly) params.set("residential", "1");
     if (smartState.minUnits != null) params.set("minUnits", String(smartState.minUnits));
-    if (smartState.maxUnits != null) params.set("maxUnits", String(smartState.maxUnits));
     const bounds = map.getBounds();
     params.set("bbox", [bounds.getWest(), bounds.getSouth(), bounds.getEast(), bounds.getNorth()].map(value => value.toFixed(5)).join(","));
     params.set("layers", activeLayerKeys().join(","));
@@ -122,11 +121,7 @@
 
     smartState.residentialOnly = params.get("residential") === "1";
     smartState.minUnits = unitParam(params.get("minUnits"));
-    smartState.maxUnits = unitParam(params.get("maxUnits"));
-    const effectiveMinimum = smartState.minUnits != null ? Math.max(1, smartState.minUnits) : (smartState.residentialOnly || smartState.maxUnits != null ? 1 : null);
-    if (effectiveMinimum != null && smartState.maxUnits != null && effectiveMinimum > smartState.maxUnits) {
-      smartState.maxUnits = null;
-    }
+    delete smartState.maxUnits;
     window.RadharcResidentialUnits?.syncUi();
 
     const searchText = params.get("search") || "";
