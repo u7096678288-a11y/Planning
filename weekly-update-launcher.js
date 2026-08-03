@@ -12,7 +12,7 @@
     link.target = "_blank";
     link.rel = "noopener noreferrer";
     link.textContent = "Weekly update";
-    link.title = "Open the 28-day update for 90+ unit schemes, student housing and significant infrastructure";
+    link.title = "Open the 28-day update for 100+ unit schemes and Strategic Infrastructure Developments";
     const performance = document.querySelector("#performanceButton");
     if (performance) performance.after(link);
     else document.querySelector("#shareViewButton")?.after(link) || actions.append(link);
