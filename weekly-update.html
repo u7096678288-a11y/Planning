@@ -3,76 +3,52 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="A simple 28-day Irish planning update for 100+ unit schemes and Strategic Infrastructure Developments." />
+  <meta name="description" content="Fast 28-day Irish planning update for 100+ unit schemes and Strategic Infrastructure Developments." />
   <title>Weekly Planning Update · Radharc Pleanála</title>
   <style>
-    :root{font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#132538;background:#edf3f5;--navy:#102f49;--teal:#24747a;--line:#d7e2e6;--muted:#607783;--paper:#fff}
-    *{box-sizing:border-box}body{margin:0}.topbar{display:flex;justify-content:space-between;gap:20px;align-items:flex-start;padding:20px clamp(16px,3vw,42px);background:var(--navy);color:#fff}.eyebrow{margin:0 0 5px;color:#b8d8df;font-size:10px;font-weight:800;letter-spacing:.09em}.topbar h1{margin:0;font-size:clamp(24px,4vw,38px)}.topbar p{max-width:900px;margin:7px 0 0;color:#d7e4ea;font-size:13px;line-height:1.45}.header-actions{display:flex;gap:7px;flex-wrap:wrap;justify-content:flex-end}.button{display:inline-flex;align-items:center;justify-content:center;gap:5px;border:1px solid #b7c8d0;border-radius:7px;background:#fff;color:#16364d;padding:9px 12px;font-size:11px;font-weight:800;text-decoration:none;cursor:pointer}.button.primary{border-color:#2d7c82;background:#2d7c82;color:#fff}.button:disabled{opacity:.55;cursor:wait}
-    main{width:min(1540px,calc(100% - 24px));margin:16px auto 44px}.report-status{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:11px 13px;border:1px solid var(--line);border-radius:9px;background:#fff;color:#496271;font-size:11px}.report-status[data-mode="loading"]{border-color:#a8ccca;color:#225b5f}.report-status[data-mode="error"]{border-color:#deb8b0;background:#fff7f5;color:#7a3028}.plain-summary{margin-top:12px;padding:15px 17px;border:1px solid #bfd7d6;border-left:4px solid var(--teal);border-radius:9px;background:#f5fbfa;color:#294d59;font-size:13px;line-height:1.55}.plain-summary strong{color:#102f49}
-    .controls{display:grid;grid-template-columns:minmax(230px,1fr) 210px 210px auto;gap:9px;align-items:end;margin-top:12px;padding:12px;border:1px solid var(--line);border-radius:9px;background:#fff}.controls label{display:grid;gap:5px;color:#506875;font-size:10px;font-weight:800}.controls input,.controls select{width:100%;border:1px solid #b7c8d0;border-radius:7px;background:#fff;color:#132538;padding:9px;font-size:11px}.control-actions{display:flex;gap:7px;flex-wrap:wrap;justify-content:flex-end}
-    .metrics{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:9px;margin-top:12px}.metric{padding:13px;border:1px solid var(--line);border-radius:9px;background:#fff}.metric span{display:block;color:#607783;font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.04em}.metric strong{display:block;margin-top:5px;color:#102f49;font-size:23px}.metric small{display:block;margin-top:4px;color:#6a7f8b;font-size:10px;line-height:1.35}
-    .section{margin-top:12px;border:1px solid var(--line);border-radius:9px;background:#fff;overflow:hidden}.section-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;padding:13px 14px;border-bottom:1px solid #e0e8eb;background:#f9fbfb}.section-head h2{margin:0;color:#102f49;font-size:16px}.section-head p{margin:4px 0 0;color:#607783;font-size:10px;line-height:1.45}.table-wrap{overflow:auto;max-height:68vh}.report-table{width:100%;border-collapse:collapse;font-size:10px}.report-table th{position:sticky;top:0;z-index:2;padding:9px 8px;background:#eaf2f3;color:#385360;text-align:left;white-space:nowrap;border-bottom:1px solid #cddadd}.report-table td{padding:9px 8px;border-bottom:1px solid #e5ecef;vertical-align:top;line-height:1.4}.report-table tbody tr:hover{background:#f7fafb}.report-table .rank{font-weight:800;color:#607783}.project-link,.record-link{color:#0a5f7a;font-weight:800;text-decoration:underline;text-underline-offset:2px}.project-title{min-width:260px;max-width:400px}.project-title small,.report-table td small{display:block;margin-top:4px;color:#607783;font-weight:500}.units{font-weight:900;color:#173f56;text-align:right}.tag{display:inline-flex;margin:2px 4px 0 0;border-radius:999px;padding:3px 6px;background:#e9f2f3;color:#315e63;font-size:8px;font-weight:800;white-space:nowrap}.empty{padding:28px;text-align:center;color:#607783}.method{padding:13px 15px;color:#4e6673;font-size:10px;line-height:1.55}.method strong{color:#173a51}.source-warning{margin-top:10px;padding:10px 12px;border-left:3px solid #d39a35;background:#fff9e9;color:#66521e;font-size:10px;line-height:1.45}
-    @media(max-width:1200px){.metrics{grid-template-columns:repeat(4,minmax(0,1fr))}}@media(max-width:1050px){.topbar{flex-direction:column}.header-actions{justify-content:flex-start}.controls{grid-template-columns:1fr 1fr}.metrics{grid-template-columns:repeat(3,minmax(0,1fr))}}@media(max-width:650px){.controls{grid-template-columns:1fr}.control-actions{justify-content:stretch}.control-actions .button{flex:1}.metrics{grid-template-columns:1fr 1fr}.report-status{align-items:flex-start;flex-direction:column}}
+    :root{font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#132538;background:#edf3f5;--navy:#102f49;--teal:#24747a;--line:#d7e2e6;--muted:#607783}
+    *{box-sizing:border-box}body{margin:0}.topbar{display:flex;justify-content:space-between;gap:20px;align-items:flex-start;padding:20px clamp(16px,3vw,42px);background:var(--navy);color:#fff}.eyebrow{margin:0 0 5px;color:#b8d8df;font-size:10px;font-weight:800;letter-spacing:.09em}.topbar h1{margin:0;font-size:clamp(24px,4vw,38px)}.topbar p{max-width:850px;margin:7px 0 0;color:#d7e4ea;font-size:13px;line-height:1.45}.header-actions{display:flex;gap:7px;flex-wrap:wrap;justify-content:flex-end}.button{display:inline-flex;align-items:center;justify-content:center;border:1px solid #b7c8d0;border-radius:7px;background:#fff;color:#16364d;padding:9px 12px;font-size:11px;font-weight:800;text-decoration:none;cursor:pointer}.button.primary{border-color:#2d7c82;background:#2d7c82;color:#fff}.button:disabled{opacity:.5;cursor:wait}
+    main{width:min(1540px,calc(100% - 24px));margin:16px auto 44px}.report-status{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:11px 13px;border:1px solid var(--line);border-radius:9px;background:#fff;color:#496271;font-size:11px}.report-status[data-mode="loading"]{border-color:#a8ccca;color:#225b5f}.report-status[data-mode="error"]{border-color:#deb8b0;background:#fff7f5;color:#7a3028}.plain-summary{margin-top:12px;padding:15px 17px;border:1px solid #bfd7d6;border-left:4px solid var(--teal);border-radius:9px;background:#f5fbfa;color:#294d59;font-size:13px;line-height:1.55}.plain-summary strong{color:#102f49}.speed-note{margin-top:8px;color:#607783;font-size:10px}
+    .controls{display:grid;grid-template-columns:minmax(230px,1fr) 210px 210px auto;gap:9px;align-items:end;margin-top:12px;padding:12px;border:1px solid var(--line);border-radius:9px;background:#fff}.controls label{display:grid;gap:5px;color:#506875;font-size:10px;font-weight:800}.controls input,.controls select{width:100%;border:1px solid #b7c8d0;border-radius:7px;background:#fff;color:#132538;padding:9px;font-size:11px}.control-actions{display:flex;justify-content:flex-end}.metrics{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:9px;margin-top:12px}.metric{padding:13px;border:1px solid var(--line);border-radius:9px;background:#fff}.metric span{display:block;color:#607783;font-size:9px;font-weight:800;text-transform:uppercase}.metric strong{display:block;margin-top:5px;color:#102f49;font-size:23px}.metric small{display:block;margin-top:4px;color:#6a7f8b;font-size:10px}
+    .section{margin-top:12px;border:1px solid var(--line);border-radius:9px;background:#fff;overflow:hidden}.section-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;padding:13px 14px;border-bottom:1px solid #e0e8eb;background:#f9fbfb}.section-head h2{margin:0;color:#102f49;font-size:16px}.section-head p{margin:4px 0 0;color:#607783;font-size:10px}.table-wrap{overflow:auto;max-height:68vh}.report-table{width:100%;border-collapse:collapse;font-size:10px}.report-table th{position:sticky;top:0;z-index:2;padding:9px 8px;background:#eaf2f3;color:#385360;text-align:left;white-space:nowrap;border-bottom:1px solid #cddadd}.report-table td{padding:9px 8px;border-bottom:1px solid #e5ecef;vertical-align:top;line-height:1.4}.report-table tbody tr:hover{background:#f7fafb}.rank{font-weight:800;color:#607783}.project-link,.record-link{color:#0a5f7a;font-weight:800;text-decoration:underline;text-underline-offset:2px}.project-title{min-width:260px;max-width:400px}.project-title small,.report-table td small{display:block;margin-top:4px;color:#607783}.units{font-weight:900;color:#173f56;text-align:right}.tag{display:inline-flex;margin:2px 4px 0 0;border-radius:999px;padding:3px 6px;background:#e9f2f3;color:#315e63;font-size:8px;font-weight:800}.empty{padding:28px;text-align:center;color:#607783}.method{padding:13px 15px;color:#4e6673;font-size:10px;line-height:1.55}.source-warning{margin-top:10px;padding:10px 12px;border-left:3px solid #d39a35;background:#fff9e9;color:#66521e}
+    @media(max-width:1200px){.metrics{grid-template-columns:repeat(4,minmax(0,1fr))}}@media(max-width:1050px){.topbar{flex-direction:column}.header-actions{justify-content:flex-start}.controls{grid-template-columns:1fr 1fr}.metrics{grid-template-columns:repeat(3,minmax(0,1fr))}}@media(max-width:650px){.controls{grid-template-columns:1fr}.header-actions .button,.control-actions .button{flex:1}.metrics{grid-template-columns:1fr 1fr}.report-status{align-items:flex-start;flex-direction:column}}
   </style>
 </head>
 <body>
   <header class="topbar">
     <div>
-      <p class="eyebrow">RADHARC PLEANÁLA · 28-DAY PLANNING INTELLIGENCE</p>
+      <p class="eyebrow">RADHARC PLEANÁLA · FAST 28-DAY REPORT</p>
       <h1>Weekly Planning Update</h1>
-      <p>A simple national update for residential schemes reporting 100 units or more, plus identifiable Strategic Infrastructure Developments regardless of residential-unit count. Recent movements are shown first, followed by clearly labelled upcoming decisions.</p>
+      <p>Residential schemes reporting 100 units or more, plus identifiable Strategic Infrastructure Developments. Cork City Council is included through its direct planning datastore.</p>
     </div>
     <nav class="header-actions" aria-label="Report actions">
       <a class="button" href="./">Dashboard</a>
-      <button id="refreshReport" class="button primary" type="button">Refresh report</button>
-      <button id="exportCsv" class="button" type="button" disabled>Export CSV</button>
-      <button id="exportExcel" class="button" type="button" disabled>Export Excel</button>
-      <button id="emailReport" class="button" type="button" disabled>Email link</button>
+      <button id="refreshReport" class="button" type="button">Refresh live</button>
+      <button id="exportExcel" class="button primary" type="button" disabled>Download Excel</button>
+      <button id="exportCsv" class="button" type="button" disabled>Download CSV</button>
+      <button id="copyLink" class="button" type="button" disabled>Copy report link</button>
     </nav>
   </header>
 
   <main>
-    <div id="reportStatus" class="report-status" data-mode="loading" role="status" aria-live="polite">
-      <span>Loading the previous 28 days…</span><span id="reportWindow"></span>
-    </div>
-
+    <div id="reportStatus" class="report-status" data-mode="loading" role="status" aria-live="polite"><span>Loading the 28-day report…</span><span id="reportWindow"></span></div>
     <div id="plainSummary" class="plain-summary">Preparing the summary…</div>
+    <p class="speed-note">The last successful report is stored in this browser for 12 hours, so repeat visits and exports can open immediately while live sources refresh in the background.</p>
 
     <section class="controls" aria-label="Report filters">
-      <label for="reportSearch">Search project, reference, applicant or place
-        <input id="reportSearch" type="search" placeholder="Search the update" />
-      </label>
-      <label for="authorityFilterWeekly">Planning authority
-        <select id="authorityFilterWeekly"><option value="all">All authorities</option></select>
-      </label>
-      <label for="typeFilterWeekly">Project type
-        <select id="typeFilterWeekly">
-          <option value="all">All qualifying projects</option>
-          <option value="residential">Residential — 100+ units</option>
-          <option value="sid">SIDs</option>
-          <option value="roads">LA road developments — qualifying only</option>
-          <option value="cpo-rail">CPOs and rail orders — qualifying only</option>
-        </select>
-      </label>
+      <label for="reportSearch">Search project, reference, applicant or place<input id="reportSearch" type="search" placeholder="Search the update" /></label>
+      <label for="authorityFilterWeekly">Planning authority<select id="authorityFilterWeekly"><option value="all">All authorities</option></select></label>
+      <label for="typeFilterWeekly">Project type<select id="typeFilterWeekly"><option value="all">All qualifying projects</option><option value="residential">Residential — 100+ units</option><option value="sid">SIDs</option><option value="roads">LA road developments</option><option value="cpo-rail">CPOs and rail orders</option></select></label>
       <div class="control-actions"><button id="clearReportFilters" class="button" type="button">Clear filters</button></div>
     </section>
 
     <section id="reportMetrics" class="metrics" aria-label="Weekly update totals"></section>
-
-    <div class="section" aria-label="Report sections summary">
-      <header class="section-head"><div><h2>Ordered update</h2><p>Each section is sorted by the highest reported residential-unit count first, then by movement date.</p></div><strong id="visibleSummary">—</strong></header>
-    </div>
+    <div class="section"><header class="section-head"><div><h2>Ordered update</h2><p>Highest reported unit count first, followed by the latest movement date.</p></div><strong id="visibleSummary">—</strong></header></div>
     <div id="reportSections"><div class="section"><div class="empty">Loading report…</div></div></div>
 
-    <section class="section">
-      <div class="method">
-        <strong>Coverage.</strong> The report uses a rolling 28-day buffer for submissions, FI movements, grants, ACP lodgements and ACP decisions. Ordinary residential projects are included only where the official feed reports at least 100 units. Identifiable SIDs remain included irrespective of residential-unit count. The final Upcoming section contains qualifying applications with a published decision due date in the next 28 days and no recorded decision.
-        <div class="source-warning">Local-authority road developments, CPOs and rail orders appear only where they meet the 100-unit rule or are identifiable SIDs. Applicant names, unit figures and dates are shown only where present in the official public feeds. The linked planning or ACP record remains authoritative.</div>
-      </div>
-    </section>
+    <section class="section"><div class="method"><strong>Coverage.</strong> Submissions, FI movements, grants, ACP lodgements and ACP decisions use a rolling 28-day window. Upcoming decisions cover the next 28 days. Ordinary projects require at least 100 reported residential units; identifiable SIDs remain included regardless of units.<div class="source-warning">The faster report sends the 100-unit condition to the planning services before downloading records, requests only the fields used in the report, and loads Cork City Council directly. Applicant names and other fields are shown only where published.</div></div></section>
   </main>
 
-  <script src="weekly-update.js?v=20260803-2"></script>
-  <script src="weekly-update-100-filter.js?v=20260803-1"></script>
+  <script src="weekly-update-fast.js?v=20260803-1"></script>
 </body>
 </html>
