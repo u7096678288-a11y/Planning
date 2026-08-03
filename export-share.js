@@ -105,7 +105,7 @@
     await loadScript("leaderboard-record-view.js?v=20260803-1");
     await loadScript("planning-record-route.js?v=20260803-1");
     await loadScript("authority-autosearch-fix.js?v=20260803-1");
-    await loadScript("weekly-update-launcher.js?v=20260803-2");
+    await loadScript("weekly-update-launcher.js?v=20260803-3");
     await loadScript("sync-health.js?v=20260803-2");
 
     moduleStatus.ready = true;
