@@ -172,6 +172,52 @@
     return delegatedQuery(url, parameters);
   };
 
+  const originalBestMetric = smartBestMetric;
+  smartBestMetric = function selectedLayerBestMetric(pointResult, siteResult) {
+    const state = planningState();
+    if (!state.points && !state.sites && !state.cork) return null;
+    const metric = originalBestMetric(pointResult, siteResult);
+    if (!metric) return null;
+    if (state.cork && !state.points && !state.sites) metric.source = "Cork City direct layer";
+    else if (state.cork) metric.source = `${metric.source} + Cork City direct`;
+    return metric;
+  };
+
+  function updateSelectionLabels() {
+    const state = planningState();
+    const planningSelected = state.points || state.sites || state.cork;
+    if (!planningSelected) {
+      const count = document.querySelector("#planningCount");
+      if (count) count.textContent = "Not selected";
+      [["#unitCount", "#unitCoverage", "Residential units"], ["#floorAreaCount", "#floorCoverage", "Floor area"], ["#siteAreaCount", "#siteCoverage", "Site area"]].forEach(([valueSelector, coverageSelector, label]) => {
+        const value = document.querySelector(valueSelector);
+        const coverage = document.querySelector(coverageSelector);
+        if (value) value.textContent = "—";
+        if (coverage) coverage.textContent = `Select a planning layer to calculate ${label.toLowerCase()}`;
+      });
+    }
+    if (!selected("acpCases")) {
+      const count = document.querySelector("#acpCount");
+      if (count) count.textContent = "Not selected";
+    }
+    if (!selected("freehold")) {
+      const count = document.querySelector("#parcelCount");
+      if (count) count.textContent = "Not selected";
+    }
+  }
+
+  const priorUpdate = update;
+  update = function selectedLayerSynchronizedUpdate(...args) {
+    return Promise.resolve(priorUpdate(...args)).finally(updateSelectionLabels);
+  };
+
+  if (window.RadharcDashboard?.syncNow) {
+    const priorSyncNow = window.RadharcDashboard.syncNow;
+    window.RadharcDashboard.syncNow = function selectedLayerSynchronizedNow(...args) {
+      return Promise.resolve(priorSyncNow(...args)).finally(updateSelectionLabels);
+    };
+  }
+
   window.RadharcSelectedLayerQueries = {
     selected,
     clearCache() {
