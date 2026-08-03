@@ -50,10 +50,8 @@
   }
 
   function selectedKeys() {
-    const keys = window.RadharcDashboard?.selectedLayerKeys?.()
-      || [...document.querySelectorAll('#layerToggles input[data-k]:checked:not(:disabled)')].map(input => input.dataset.k);
-    if (window.RadharcResidentialUnits?.isActive?.()) return keys.filter(key => S[key]?.type === "planning");
-    return keys;
+    return window.RadharcDashboard?.selectedLayerKeys?.()
+      || [...document.querySelectorAll('#layerToggles input[data-k]:checked')].map(input => input.dataset.k);
   }
 
   function whereFor(key) {
@@ -147,6 +145,7 @@
       ["Radharc Pleanála export", "Layered research workbook"],
       ["Generated", new Date().toLocaleString("en-IE")],
       ["Active filters", smartSummary()],
+      ["Filter scope", "Residential-unit thresholds apply to planning layers only; ACP and freehold use their own active filters."],
       ["Map west", parsedGeometry.xmin],
       ["Map south", parsedGeometry.ymin],
       ["Map east", parsedGeometry.xmax],
@@ -217,7 +216,7 @@
 
       const workbook = XLSX.utils.book_new();
       const summary = XLSX.utils.aoa_to_sheet(summaryRows(layerResults, geometry));
-      summary["!cols"] = [{ wch: 30 }, { wch: 60 }, { wch: 14 }, { wch: 42 }, { wch: 80 }];
+      summary["!cols"] = [{ wch: 30 }, { wch: 70 }, { wch: 14 }, { wch: 42 }, { wch: 80 }];
       XLSX.utils.book_append_sheet(workbook, summary, "Summary");
 
       let exportedRows = 0;
