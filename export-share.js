@@ -12,7 +12,7 @@
 
   const sources = [
     "residential-units-filter.js?v=20260803-4",
-    "cross-layer-sync.js?v=20260803-1",
+    "cross-layer-sync.js?v=20260803-2",
     "dynamic-performance.js?v=20260803-1",
     "all-layer-search.js?v=20260803-2",
     "export-core.js?v=20260803-2",
