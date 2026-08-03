@@ -33,11 +33,14 @@
     .smart-filter-summary p{margin:0;flex:1;font-size:11px;line-height:1.4;color:#425c6c}
     .smart-filter-summary button{border:1px solid #b9c7cf;background:#fff;color:#132538;border-radius:6px;padding:7px 9px;font-size:11px;font-weight:bold;white-space:nowrap}
     .smart-filter-summary button:disabled{opacity:.45;cursor:not-allowed}
-    .chart-filter-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}
+    .chart-filter-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px}
     .chart-filter-row h2{margin:0!important}
-    .chart-filter-row select{width:min(175px,58%);padding:7px;font-size:11px;border:1px solid #b8c8d0;border-radius:6px;background:#fff;color:#132538}
-    .filter-help{margin:0 0 8px;font-size:10px;color:#687b88;line-height:1.35}
-    @media(max-width:700px){.chart-filter-row{align-items:flex-start;flex-direction:column}.chart-filter-row select{width:100%;max-width:none}.smart-filter-summary{align-items:flex-start;flex-direction:column}.smart-filter-summary button{width:100%}}
+    .selection-count{background:#eef5f5;border:1px solid #d5e3e4;border-radius:999px;color:#425c6c;font-size:10px;font-weight:bold;padding:5px 8px;white-space:nowrap}
+    .multi-filter-select{display:block;width:100%;min-height:102px;border:1px solid #b8c8d0;border-radius:6px;background:#fff;color:#132538;padding:4px;font-size:11px}
+    .multi-filter-select option{padding:6px 7px;border-radius:4px;margin:1px 0;white-space:normal}
+    .multi-filter-select option:checked{background:#dcecee linear-gradient(0deg,#dcecee,#dcecee);color:#102f49}
+    .filter-help{margin:7px 0 8px;font-size:10px;color:#687b88;line-height:1.4}
+    @media(max-width:700px){.smart-filter-summary{align-items:flex-start;flex-direction:column}.smart-filter-summary button{width:100%}.multi-filter-select{min-height:120px}}
   </style>
 </head>
 <body>
@@ -170,11 +173,12 @@
       <section class="panel-section chart-section">
         <div class="chart-filter-row">
           <h2>Planning decisions</h2>
-          <select id="decisionFilter" aria-label="Filter by planning decision">
-            <option value="">Loading decisions…</option>
-          </select>
+          <span id="decisionSelection" class="selection-count">All</span>
         </div>
-        <p class="filter-help">Options and counts update automatically. You can also click a chart segment to filter.</p>
+        <select id="decisionFilter" class="multi-filter-select" multiple size="5" aria-label="Select one or more planning decisions">
+          <option disabled>Loading decisions…</option>
+        </select>
+        <p class="filter-help">Click or tap any number of options to toggle them. No selection includes all decisions. Clicking a chart segment also toggles that decision.</p>
         <div class="chart-wrap"><canvas id="planningDecisionChart"></canvas></div>
         <div id="planningDecisionFallback" class="data-fallback"></div>
       </section>
@@ -182,11 +186,12 @@
       <section class="panel-section chart-section">
         <div class="chart-filter-row">
           <h2>Applications by authority</h2>
-          <select id="authorityFilter" aria-label="Filter by planning authority">
-            <option value="">Loading authorities…</option>
-          </select>
+          <span id="authoritySelection" class="selection-count">All</span>
         </div>
-        <p class="filter-help">The authority list responds to the chosen period and decision filter.</p>
+        <select id="authorityFilter" class="multi-filter-select" multiple size="7" aria-label="Select one or more planning authorities">
+          <option disabled>Loading authorities…</option>
+        </select>
+        <p class="filter-help">Select several authorities together. The list and counts respond to the active period and selected decisions.</p>
         <div class="chart-wrap tall"><canvas id="authorityChart"></canvas></div>
         <div id="authorityFallback" class="data-fallback"></div>
       </section>
@@ -194,11 +199,12 @@
       <section class="panel-section chart-section">
         <div class="chart-filter-row">
           <h2>ACP categories</h2>
-          <select id="categoryFilter" aria-label="Filter by ACP category">
-            <option value="">Loading ACP categories…</option>
-          </select>
+          <span id="categorySelection" class="selection-count">All</span>
         </div>
-        <p class="filter-help">ACP categories filter ACP cases independently while using the same date range and map area.</p>
+        <select id="categoryFilter" class="multi-filter-select" multiple size="5" aria-label="Select one or more ACP categories">
+          <option disabled>Loading ACP categories…</option>
+        </select>
+        <p class="filter-help">Select several ACP categories together. No selection includes all categories within the active date range and map area.</p>
         <div class="chart-wrap"><canvas id="acpCategoryChart"></canvas></div>
         <div id="acpCategoryFallback" class="data-fallback"></div>
       </section>
@@ -242,6 +248,6 @@
   <script src="https://cdn.jsdelivr.net/npm/esri-leaflet@3.0.15/dist/esri-leaflet.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
   <script src="app.js?v=20260803-10"></script>
-  <script src="smart-filters.js?v=20260803-1"></script>
+  <script src="smart-filters.js?v=20260803-2"></script>
 </body>
 </html>
