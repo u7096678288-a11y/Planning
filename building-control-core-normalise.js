@@ -46,10 +46,52 @@
     planningRecord(planning),
     commencementRecord(commencement)
   );
-  core.matchCommencements = (planningRows, commencementRows) => originalMatchCommencements(
-    (planningRows || []).map(planningRecord),
-    (commencementRows || []).map(commencementRecord)
-  );
+
+  function retainLocationOnlyReviews(result, planningRows) {
+    const retainedUnmatched = [];
+    result.unmatched.forEach(item => {
+      const commencement = commencementRecord(item.commencement);
+      const authority = core.canonicalAuthority(commencement.LocalAuthority || commencement.CN_County);
+      const ranked = planningRows
+        .filter(record => core.canonicalAuthority(record.PlanningAuthority) === authority)
+        .map(record => ({
+          planning: record,
+          commencement,
+          ...originalScoreCandidate(record, commencement)
+        }))
+        .filter(candidate => {
+          if (candidate.referenceType || !candidate.authorityMatch) return false;
+          const strongLocation = candidate.eircodeMatch
+            || candidate.addressScore >= 0.22
+            || (candidate.distance != null && candidate.distance <= 750);
+          return strongLocation && candidate.score >= 55;
+        })
+        .sort((left, right) => right.score - left.score
+          || String(left.planning.ApplicationNumber || "").localeCompare(String(right.planning.ApplicationNumber || "")));
+
+      const best = ranked[0];
+      if (!best) {
+        retainedUnmatched.push(item);
+        return;
+      }
+
+      result.review.push({
+        ...best,
+        margin: best.score - (ranked[1]?.score ?? 0),
+        candidates: ranked.slice(0, 3),
+        reasons: `${best.reasons} · location-only review`
+      });
+    });
+    result.unmatched = retainedUnmatched;
+    return result;
+  }
+
+  core.matchCommencements = (planningRows, commencementRows) => {
+    const planning = (planningRows || []).map(planningRecord);
+    const commencements = (commencementRows || []).map(commencementRecord);
+    const result = originalMatchCommencements(planning, commencements);
+    return retainLocationOnlyReviews(result, result.planning || planning);
+  };
 
   core.asciiAuthorityText = ascii;
   core.__authorityNormaliserInstalled = true;
