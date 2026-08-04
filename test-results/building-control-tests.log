@@ -10,8 +10,11 @@ All 5 building-control tests passed.
 
 Running live planning, NBCO and Cork City smoke tests
 ✓ live Irish Planning Applications query
+⚠ NBCO SQL API returned 403 to GitHub Actions; public resource page is live and the website retains its browser JSONP connection
 Error: 403 FORBIDDEN
-    at fetchJson (/home/runner/work/Planning/Planning/tests/building-control-live-smoke.js:18:31)
+    at fetchJson (/home/runner/work/Planning/Planning/tests/building-control-live-smoke.js:25:23)
     at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
-    at async testNbcoService (/home/runner/work/Planning/Planning/tests/building-control-live-smoke.js:60:16)
-    at async /home/runner/work/Planning/Planning/tests/building-control-live-smoke.js:79:3
+    at async testCorkService (/home/runner/work/Planning/Planning/tests/building-control-live-smoke.js:90:16)
+    at async /home/runner/work/Planning/Planning/tests/building-control-live-smoke.js:99:3 {
+  status: 403
+}
