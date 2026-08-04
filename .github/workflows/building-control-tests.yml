@@ -14,7 +14,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   test:
@@ -29,11 +29,49 @@ jobs:
         with:
           node-version: "22"
 
-      - name: Check JavaScript syntax
+      - name: Run syntax and matching tests
+        shell: bash
         run: |
-          node --check building-control-match-core.js
-          node --check completions-five-year.js
-          node --check dashboard-building-control-five-year.js
+          set +e
+          mkdir -p test-results
+          {
+            echo "Checking JavaScript syntax"
+            node --check building-control-match-core.js
+            node --check completions-five-year.js
+            node --check dashboard-building-control-five-year.js
+            echo
+            echo "Running matching and consolidation tests"
+            node tests/building-control-match-core.test.js
+          } > test-results/building-control-tests.log 2>&1
+          status=$?
+          echo "$status" > /tmp/building-control-test-status
+          cat test-results/building-control-tests.log
+          exit 0
 
-      - name: Run matching and consolidation tests
-        run: node tests/building-control-match-core.test.js
+      - name: Publish test result
+        if: always()
+        shell: bash
+        run: |
+          status="$(cat /tmp/building-control-test-status 2>/dev/null || echo 1)"
+          generated="$(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+          if [ "$status" = "0" ]; then outcome="PASS"; else outcome="FAIL"; fi
+          {
+            echo "Building control test result: $outcome"
+            echo "Generated: $generated"
+            echo "Commit tested: $GITHUB_SHA"
+            echo
+            cat test-results/building-control-tests.log
+          } > test-results/building-control-tests.txt
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add test-results/building-control-tests.txt test-results/building-control-tests.log
+          if ! git diff --cached --quiet; then
+            git commit -m "Record building-control test result"
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
+
+      - name: Fail when tests fail
+        if: always()
+        shell: bash
+        run: test "$(cat /tmp/building-control-test-status 2>/dev/null || echo 1)" = "0"
