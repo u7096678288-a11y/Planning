@@ -22,7 +22,7 @@ concurrency:
 jobs:
   validate:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 12
     steps:
       - uses: actions/checkout@v4
         with:
@@ -45,7 +45,6 @@ jobs:
           import sys
           import time
           import urllib.parse
-          import urllib.request
 
           result = {
               "status": "running",
@@ -53,21 +52,40 @@ jobs:
               "commit": os.environ.get("GITHUB_SHA_VALUE", ""),
               "checks": {}
           }
-          exit_code = 0
+          required = []
 
-          def request_json(url, data=None, timeout=60):
-              headers = {"User-Agent": "Radharc-Planning-Validation/1.0"}
-              encoded = None if data is None else urllib.parse.urlencode(data).encode()
-              request = urllib.request.Request(url, data=encoded, headers=headers)
-              with urllib.request.urlopen(request, timeout=timeout) as response:
-                  return json.loads(response.read().decode("utf-8"))
+          def curl_text(url, timeout=60, referer="https://data.nbco.gov.ie/"):
+              command = [
+                  "curl", "--fail", "--silent", "--show-error", "--location", "--compressed",
+                  "--retry", "2", "--retry-delay", "2", "--max-time", str(timeout),
+                  "--user-agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/127 Safari/537.36",
+                  "--header", "Accept: application/json,text/plain,text/html,*/*",
+                  "--header", f"Referer: {referer}",
+                  url
+              ]
+              completed = subprocess.run(command, check=True, capture_output=True, text=True)
+              return completed.stdout
 
-          def request_text(url, timeout=30):
-              request = urllib.request.Request(url, headers={"User-Agent": "Radharc-Planning-Validation/1.0"})
-              with urllib.request.urlopen(request, timeout=timeout) as response:
-                  return response.read().decode("utf-8", errors="replace")
+          def curl_json(url, timeout=60, referer="https://data.nbco.gov.ie/"):
+              return json.loads(curl_text(url, timeout=timeout, referer=referer))
 
-          try:
+          def check(name, function, required_check=True):
+              if required_check:
+                  required.append(name)
+              try:
+                  value = function()
+                  if isinstance(value, dict):
+                      value = {"status": "passed", **value}
+                  else:
+                      value = {"status": "passed", "value": value}
+                  result["checks"][name] = value
+              except Exception as error:
+                  result["checks"][name] = {
+                      "status": "failed",
+                      "error": repr(error)
+                  }
+
+          def syntax_check():
               files = [
                   "building-control-match-core.js",
                   "completions-five-year.js",
@@ -75,105 +93,111 @@ jobs:
               ]
               for filename in files:
                   subprocess.run(["node", "--check", filename], check=True, capture_output=True, text=True)
-              result["checks"]["javascript_syntax"] = {"status": "passed", "files": files}
+              return {"files": files}
 
+          def matching_check():
               unit = subprocess.run(
                   ["node", "tests/building-control-core.test.js"],
                   check=True,
                   capture_output=True,
                   text=True
               )
-              result["checks"]["matching_tests"] = json.loads(unit.stdout)
+              return json.loads(unit.stdout)
 
-              today = dt.date.today()
-              try:
-                  start = today.replace(year=today.year - 5)
-              except ValueError:
-                  start = today.replace(year=today.year - 5, day=28)
-              start_text = start.isoformat()
+          today = dt.date.today()
+          try:
+              start = today.replace(year=today.year - 5)
+          except ValueError:
+              start = today.replace(year=today.year - 5, day=28)
+          start_text = start.isoformat()
 
-              nbco_resource = "0774e781-7af8-46da-b623-872e74cf541e"
+          def nbco_check():
+              resource = "0774e781-7af8-46da-b623-872e74cf541e"
               unit_clause = 'GREATEST(COALESCE("CN_Units_for_phase",0),COALESCE("CN_Total_Number_of_Dwelling_Units",0),COALESCE("CN_Total_Number_Multiple_Unit_Dwellings",0),COALESCE("CCC_Units_Completed",0)) >= 3'
               date_clause = f'''("CN_Date_Submitted_or_Received" >= '{start_text}'::timestamp OR "CN_Validation_Date" >= '{start_text}'::timestamp OR "CN_Commencement_Date" >= '{start_text}'::timestamp OR "CCC_Date_Validated" >= '{start_text}'::timestamp)'''
-              nbco_sql = f'''SELECT count(*)::integer AS count FROM "{nbco_resource}" WHERE "CN_Number" IS NOT NULL AND {unit_clause} AND {date_clause}'''
-              nbco_url = "https://data.nbco.gov.ie/api/3/action/datastore_search_sql?" + urllib.parse.urlencode({"sql": nbco_sql})
-              nbco = request_json(nbco_url)
-              if not nbco.get("success"):
-                  raise RuntimeError(f"NBCO query failed: {nbco}")
-              nbco_count = int(nbco.get("result", {}).get("records", [{}])[0].get("count", 0))
-              if nbco_count <= 0:
+              sql = f'''SELECT count(*) AS count FROM "{resource}" WHERE "CN_Number" IS NOT NULL AND {unit_clause} AND {date_clause}'''
+              url = "https://data.nbco.gov.ie/api/3/action/datastore_search_sql?" + urllib.parse.urlencode({"sql": sql})
+              payload = curl_json(url, referer="https://data.nbco.gov.ie/dataset/bcnccc/resource/0774e781-7af8-46da-b623-872e74cf541e")
+              if not payload.get("success"):
+                  raise RuntimeError(f"NBCO query failed: {payload}")
+              count = int(payload.get("result", {}).get("records", [{}])[0].get("count", 0))
+              if count <= 0:
                   raise RuntimeError("NBCO five-year 3+ dwelling query returned no records")
-              result["checks"]["nbco_live"] = {
-                  "status": "passed",
-                  "window_start": start_text,
-                  "qualifying_relationship_rows": nbco_count
+              return {"window_start": start_text, "qualifying_relationship_rows": count}
+
+          def planning_check():
+              parameters = {
+                  "f": "json",
+                  "where": "NumResidentialUnits >= 3 AND ReceivedDate >= DATE '2014-01-01'",
+                  "returnCountOnly": "true"
               }
-
-              planning = request_json(
-                  "https://services.arcgis.com/NzlPQPKn5QF9v2US/arcgis/rest/services/IrishPlanningApplications/FeatureServer/0/query",
-                  {
-                      "f": "json",
-                      "where": "NumResidentialUnits >= 3 AND ReceivedDate >= DATE '2014-01-01'",
-                      "returnCountOnly": "true"
-                  }
-              )
-              if planning.get("error"):
-                  raise RuntimeError(f"Planning query failed: {planning['error']}")
-              planning_count = int(planning.get("count", 0))
-              if planning_count <= 0:
+              url = "https://services.arcgis.com/NzlPQPKn5QF9v2US/arcgis/rest/services/IrishPlanningApplications/FeatureServer/0/query?" + urllib.parse.urlencode(parameters)
+              payload = curl_json(url, referer="https://u7096678288-a11y.github.io/Planning/")
+              if payload.get("error"):
+                  raise RuntimeError(f"Planning query failed: {payload['error']}")
+              count = int(payload.get("count", 0))
+              if count <= 0:
                   raise RuntimeError("Planning 3+ dwelling query returned no records")
-              result["checks"]["planning_live"] = {"status": "passed", "qualifying_records": planning_count}
+              return {"qualifying_records": count}
 
-              cork_resource = "8d5bbfa9-3b0c-40ac-8630-4243bed94b2d"
-              cork_sql = f'''SELECT count(*)::integer AS count FROM "{cork_resource}" WHERE COALESCE("NumResidentialUnits",0) >= 3'''
-              cork_url = "https://data.corkcity.ie/api/3/action/datastore_search_sql?" + urllib.parse.urlencode({"sql": cork_sql})
-              cork = request_json(cork_url)
-              if not cork.get("success"):
-                  raise RuntimeError(f"Cork City query failed: {cork}")
-              cork_count = int(cork.get("result", {}).get("records", [{}])[0].get("count", 0))
-              result["checks"]["cork_city_live"] = {"status": "passed", "qualifying_records": cork_count}
+          def cork_check():
+              resource = "8d5bbfa9-3b0c-40ac-8630-4243bed94b2d"
+              sql = f'''SELECT count(*) AS count FROM "{resource}" WHERE COALESCE("NumResidentialUnits",0) >= 3'''
+              url = "https://data.corkcity.ie/api/3/action/datastore_search_sql?" + urllib.parse.urlencode({"sql": sql})
+              payload = curl_json(url, referer="https://data.corkcity.ie/dataset/planning-permission")
+              if not payload.get("success"):
+                  raise RuntimeError(f"Cork City query failed: {payload}")
+              count = int(payload.get("result", {}).get("records", [{}])[0].get("count", 0))
+              return {"qualifying_records": count}
 
+          def pages_check():
               page_url = "https://u7096678288-a11y.github.io/Planning/completions.html"
               expected = [
                   "building-control-match-core.js?v=20260804-1",
                   "completions-five-year.js?v=20260804-1",
-                  "Commencements &amp; Completions"
+                  "Commencements & Completions"
               ]
               page = ""
-              for attempt in range(12):
+              last_error = None
+              for _attempt in range(12):
                   try:
-                      page = request_text(page_url)
+                      page = curl_text(page_url, timeout=30, referer="https://github.com/u7096678288-a11y/Planning")
                       if all(value in page for value in expected):
                           break
-                  except Exception:
-                      pass
+                  except Exception as error:
+                      last_error = error
                   time.sleep(10)
               missing = [value for value in expected if value not in page]
               if missing:
-                  raise RuntimeError(f"GitHub Pages did not expose the new completions page assets: {missing}")
-
+                  raise RuntimeError(f"GitHub Pages missing expected content {missing}; last error={last_error!r}")
+              asset_lengths = {}
               for asset in [
                   "building-control-match-core.js?v=20260804-1",
                   "completions-five-year.js?v=20260804-1",
                   "dashboard-building-control-five-year.js?v=20260804-1"
               ]:
-                  body = request_text("https://u7096678288-a11y.github.io/Planning/" + asset)
+                  body = curl_text("https://u7096678288-a11y.github.io/Planning/" + asset, timeout=30, referer=page_url)
+                  asset_lengths[asset] = len(body)
                   if len(body) < 1000:
                       raise RuntimeError(f"Published asset is unexpectedly short: {asset}")
-              result["checks"]["github_pages"] = {"status": "passed", "page": page_url}
+              return {"page": page_url, "asset_lengths": asset_lengths}
 
-              result["status"] = "passed"
-          except Exception as error:
-              result["status"] = "failed"
-              result["error"] = repr(error)
-              exit_code = 1
-          finally:
-              path = pathlib.Path("validation/building-control-test.json")
-              path.parent.mkdir(parents=True, exist_ok=True)
-              path.write_text(json.dumps(result, indent=2, sort_keys=True) + "\n", encoding="utf-8")
-              print(json.dumps(result, indent=2, sort_keys=True))
+          check("javascript_syntax", syntax_check)
+          check("matching_tests", matching_check)
+          check("nbco_live", nbco_check)
+          check("planning_live", planning_check)
+          check("cork_city_live", cork_check)
+          check("github_pages", pages_check)
 
-          sys.exit(exit_code)
+          failed = [name for name in required if result["checks"].get(name, {}).get("status") != "passed"]
+          result["status"] = "passed" if not failed else "failed"
+          result["failed_checks"] = failed
+
+          path = pathlib.Path("validation/building-control-test.json")
+          path.parent.mkdir(parents=True, exist_ok=True)
+          path.write_text(json.dumps(result, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+          print(json.dumps(result, indent=2, sort_keys=True))
+          sys.exit(0 if not failed else 1)
           PY
 
       - name: Commit validation result
