@@ -1,0 +1,126 @@
+{
+  "checked_at_utc": "2026-08-04T02:16:49.966265+00:00",
+  "checks": {
+    "cork_count": {
+      "body_preview": "{\"help\": \"https://data.corkcity.ie/api/3/action/help_show?name=datastore_search_sql\", \"success\": true, \"result\": {\"sql\": \"SELECT count(*) AS count FROM \\\"8d5bbfa9-3b0c-40ac-8630-4243bed94b2d\\\" WHERE \\\"NumResidentialUnits\\\" >= 3\", \"records\": [{\"count\": 0}], \"fields\": [{\"id\": \"count\", \"type\": \"int8\"}]}}",
+      "curl_exit": 0,
+      "http_status": 200,
+      "record_count": 1,
+      "records": [
+        {
+          "count": 0
+        }
+      ],
+      "success": true
+    },
+    "cork_sample": {
+      "body_preview": "{\"help\": \"https://data.corkcity.ie/api/3/action/help_show?name=datastore_search_sql\", \"success\": true, \"result\": {\"sql\": \"SELECT \\\"ApplicationNumber\\\",\\\"NumResidentialUnits\\\",\\\"ReceivedDate\\\",\\\"PlanningAuthority\\\" FROM \\\"8d5bbfa9-3b0c-40ac-8630-4243bed94b2d\\\" WHERE \\\"NumResidentialUnits\\\" >= 3 ORDER BY \\\"ReceivedDate\\\" DESC NULLS LAST LIMIT 5\", \"records\": [], \"fields\": [{\"id\": \"ApplicationNumber\", \"type\": \"text\"}, {\"id\": \"NumResidentialUnits\", \"type\": \"numeric\"}, {\"id\": \"ReceivedDate\", \"type\": \"",
+      "curl_exit": 0,
+      "http_status": 200,
+      "record_count": 0,
+      "records": [],
+      "success": true
+    },
+    "nbco_count": {
+      "body_preview": "{\"help\": \"https://data.nbco.gov.ie/api/3/action/help_show?name=datastore_search_sql\", \"success\": true, \"result\": {\"sql\": \"SELECT count(*) AS count FROM \\\"0774e781-7af8-46da-b623-872e74cf541e\\\" WHERE \\\"CN_Number\\\" IS NOT NULL AND ((\\\"CN_Units_for_phase\\\" >= 3) OR (\\\"CN_Total_Number_of_Dwelling_Units\\\" >= 3) OR (\\\"CN_Total_Number_Multiple_Unit_Dwellings\\\" >= 3) OR (\\\"CCC_Units_Completed\\\" >= 3)) AND (\\\"CN_Date_Submitted_or_Received\\\" >= '2021-08-04'::timestamp OR \\\"CN_Validation_Date\\\" >= '2021-08",
+      "curl_exit": 0,
+      "http_status": 200,
+      "record_count": 1,
+      "records": [
+        {
+          "count": 63020
+        }
+      ],
+      "success": true
+    },
+    "nbco_reference_ilike": {
+      "body_preview": "{\"help\": \"https://data.nbco.gov.ie/api/3/action/help_show?name=datastore_search_sql\", \"success\": true, \"result\": {\"sql\": \"SELECT \\\"CN_Number\\\",\\\"CN_Planning_Permission_Number\\\" FROM \\\"0774e781-7af8-46da-b623-872e74cf541e\\\" WHERE \\\"CN_Number\\\" IS NOT NULL AND ((\\\"CN_Units_for_phase\\\" >= 3) OR (\\\"CN_Total_Number_of_Dwelling_Units\\\" >= 3) OR (\\\"CN_Total_Number_Multiple_Unit_Dwellings\\\" >= 3) OR (\\\"CCC_Units_Completed\\\" >= 3)) AND (\\\"CN_Date_Submitted_or_Received\\\" >= '2021-08-04'::timestamp OR \\\"CN",
+      "curl_exit": 0,
+      "http_status": 200,
+      "record_count": 5,
+      "records": [
+        {
+          "CN_Number": "CN0120633WD",
+          "CN_Planning_Permission_Number": "2360432"
+        },
+        {
+          "CN_Number": "CN0136842WD",
+          "CN_Planning_Permission_Number": "2560299"
+        },
+        {
+          "CN_Number": "CN0112871WD",
+          "CN_Planning_Permission_Number": "2360032"
+        },
+        {
+          "CN_Number": "CN0112871WD",
+          "CN_Planning_Permission_Number": "2360032"
+        },
+        {
+          "CN_Number": "CN0112871WD",
+          "CN_Planning_Permission_Number": "2360032"
+        }
+      ],
+      "success": true
+    },
+    "nbco_sample": {
+      "body_preview": "{\"help\": \"https://data.nbco.gov.ie/api/3/action/help_show?name=datastore_search_sql\", \"success\": true, \"result\": {\"sql\": \"SELECT \\\"CN_Number\\\",\\\"CN_Planning_Permission_Number\\\",\\\"CN_Commencement_Date\\\",\\\"CN_Units_for_phase\\\",\\\"CCC_Number\\\",\\\"CCC_Date_Validated\\\",\\\"CCC_Units_Completed\\\",\\\"LocalAuthority\\\" FROM \\\"0774e781-7af8-46da-b623-872e74cf541e\\\" WHERE \\\"CN_Number\\\" IS NOT NULL AND ((\\\"CN_Units_for_phase\\\" >= 3) OR (\\\"CN_Total_Number_of_Dwelling_Units\\\" >= 3) OR (\\\"CN_Total_Number_Multiple_Un",
+      "curl_exit": 0,
+      "http_status": 200,
+      "record_count": 5,
+      "records": [
+        {
+          "CCC_Date_Validated": null,
+          "CCC_Number": null,
+          "CCC_Units_Completed": null,
+          "CN_Commencement_Date": "2026-06-22T00:00:00",
+          "CN_Number": "SN0014331DC",
+          "CN_Planning_Permission_Number": "ABP-320106-24",
+          "CN_Units_for_phase": "283",
+          "LocalAuthority": "Dublin City Council"
+        },
+        {
+          "CCC_Date_Validated": null,
+          "CCC_Number": null,
+          "CCC_Units_Completed": null,
+          "CN_Commencement_Date": "2026-06-26T00:00:00",
+          "CN_Number": "CN0144029CY",
+          "CN_Planning_Permission_Number": "ABP-320996-24 [24/42789]",
+          "CN_Units_for_phase": "6",
+          "LocalAuthority": "Cork City Council"
+        },
+        {
+          "CCC_Date_Validated": null,
+          "CCC_Number": null,
+          "CCC_Units_Completed": null,
+          "CN_Commencement_Date": "2026-06-26T00:00:00",
+          "CN_Number": "CN0144029CY",
+          "CN_Planning_Permission_Number": "ABP-320996-24 [24/42789]",
+          "CN_Units_for_phase": "6",
+          "LocalAuthority": "Cork City Council"
+        },
+        {
+          "CCC_Date_Validated": null,
+          "CCC_Number": null,
+          "CCC_Units_Completed": null,
+          "CN_Commencement_Date": "2026-06-26T00:00:00",
+          "CN_Number": "CN0144029CY",
+          "CN_Planning_Permission_Number": "ABP-320996-24 [24/42789]",
+          "CN_Units_for_phase": "6",
+          "LocalAuthority": "Cork City Council"
+        },
+        {
+          "CCC_Date_Validated": null,
+          "CCC_Number": null,
+          "CCC_Units_Completed": null,
+          "CN_Commencement_Date": "2026-06-26T00:00:00",
+          "CN_Number": "CN0143976KE",
+          "CN_Planning_Permission_Number": "2360353",
+          "CN_Units_for_phase": "1",
+          "LocalAuthority": "Kildare County Council"
+        }
+      ],
+      "success": true
+    }
+  },
+  "status": "passed"
+}
