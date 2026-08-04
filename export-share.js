@@ -89,6 +89,7 @@
     await loadScript("selected-layer-query-sync.js?v=20260803-2");
     await loadScript("all-layer-search.js?v=20260803-2");
     await loadScript("export-core.js?v=20260803-2");
+    await loadScript("reload-defaults.js?v=20260804-1");
     await loadScript("share-links.js?v=20260803-5");
     await loadScript("map-files.js?v=20260803-3");
     if (corkReady) await loadScript("cork-city-map-bridge.js?v=20260803-2");
