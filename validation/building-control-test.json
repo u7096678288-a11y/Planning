@@ -1,6 +1,19 @@
 {
-  "checked_at_utc": "2026-08-04T02:02:21.887857+00:00",
+  "checked_at_utc": "2026-08-04T02:05:49.188864+00:00",
   "checks": {
+    "cork_city_live": {
+      "error": "CalledProcessError(22, ['curl', '--fail', '--silent', '--show-error', '--location', '--compressed', '--retry', '2', '--retry-delay', '2', '--max-time', '60', '--user-agent', 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/127 Safari/537.36', '--header', 'Accept: application/json,text/plain,text/html,*/*', '--header', 'Referer: https://data.corkcity.ie/dataset/planning-permission', 'https://data.corkcity.ie/api/3/action/datastore_search_sql?sql=SELECT+count%28%2A%29+AS+count+FROM+%228d5bbfa9-3b0c-40ac-8630-4243bed94b2d%22+WHERE+COALESCE%28%22NumResidentialUnits%22%2C0%29+%3E%3D+3'])",
+      "status": "failed"
+    },
+    "github_pages": {
+      "asset_lengths": {
+        "building-control-match-core.js?v=20260804-1": 26289,
+        "completions-five-year.js?v=20260804-1": 32514,
+        "dashboard-building-control-five-year.js?v=20260804-1": 29132
+      },
+      "page": "https://u7096678288-a11y.github.io/Planning/completions.html",
+      "status": "passed"
+    },
     "javascript_syntax": {
       "files": [
         "building-control-match-core.js",
@@ -25,9 +38,20 @@
         "unitsCompleted": 120
       },
       "status": "passed"
+    },
+    "nbco_live": {
+      "error": "CalledProcessError(22, ['curl', '--fail', '--silent', '--show-error', '--location', '--compressed', '--retry', '2', '--retry-delay', '2', '--max-time', '60', '--user-agent', 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/127 Safari/537.36', '--header', 'Accept: application/json,text/plain,text/html,*/*', '--header', 'Referer: https://data.nbco.gov.ie/dataset/bcnccc/resource/0774e781-7af8-46da-b623-872e74cf541e', 'https://data.nbco.gov.ie/api/3/action/datastore_search_sql?sql=SELECT+count%28%2A%29+AS+count+FROM+%220774e781-7af8-46da-b623-872e74cf541e%22+WHERE+%22CN_Number%22+IS+NOT+NULL+AND+GREATEST%28COALESCE%28%22CN_Units_for_phase%22%2C0%29%2CCOALESCE%28%22CN_Total_Number_of_Dwelling_Units%22%2C0%29%2CCOALESCE%28%22CN_Total_Number_Multiple_Unit_Dwellings%22%2C0%29%2CCOALESCE%28%22CCC_Units_Completed%22%2C0%29%29+%3E%3D+3+AND+%28%22CN_Date_Submitted_or_Received%22+%3E%3D+%272021-08-04%27%3A%3Atimestamp+OR+%22CN_Validation_Date%22+%3E%3D+%272021-08-04%27%3A%3Atimestamp+OR+%22CN_Commencement_Date%22+%3E%3D+%272021-08-04%27%3A%3Atimestamp+OR+%22CCC_Date_Validated%22+%3E%3D+%272021-08-04%27%3A%3Atimestamp%29'])",
+      "status": "failed"
+    },
+    "planning_live": {
+      "qualifying_records": 6783,
+      "status": "passed"
     }
   },
-  "commit": "d1625b79bf42d2719b4c5bc471fe8ef233285142",
-  "error": "<HTTPError 403: 'FORBIDDEN'>",
+  "commit": "5e0fe2eb74dbb793c236d16b3ff0e04de4f70646",
+  "failed_checks": [
+    "nbco_live",
+    "cork_city_live"
+  ],
   "status": "failed"
 }
