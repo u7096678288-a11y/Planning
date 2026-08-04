@@ -1,0 +1,46 @@
+name: Clean temporary building-control workflows
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/cleanup-building-control-temporary.yml
+
+permissions:
+  contents: write
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Remove one-off workflows and obsolete failed results
+        run: |
+          rm -f \
+            .github/workflows/apply-ckan-compatible-sql.yml \
+            .github/workflows/apply-ckan-compatible-sql-v2.yml \
+            .github/workflows/apply-ckan-runtime-sql.yml \
+            .github/workflows/building-control-compatible-live-test.yml \
+            .github/workflows/building-control-pages-v2-test.yml \
+            .github/workflows/building-control-pages-v3-test.yml \
+            .github/workflows/building-control-post-test.yml \
+            .github/workflows/building-control-spatial-sql-test.yml \
+            .github/workflows/building-control-validation.yml \
+            .github/workflows/bump-building-control-cache.yml \
+            .github/workflows/cleanup-building-control-temporary.yml \
+            validation/building-control-test.json \
+            validation/building-control-post-test.json \
+            validation/building-control-pages-v2-test.json
+
+      - name: Commit cleanup against current main
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Clean temporary building-control validation workflows"
+          git pull --rebase origin main
+          git push origin main
