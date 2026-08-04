@@ -10,8 +10,8 @@
     link.href="completions.html";
     link.target="_blank";
     link.rel="noopener noreferrer";
-    link.textContent="Completions";
-    link.title="Match planning permissions to NBCO commencement and completion records";
+    link.textContent="Commencements & completions";
+    link.title="Open the five-year 3+ dwelling NBCO commencement and completion pipeline";
     const weekly=document.querySelector("#weeklyUpdateButton");
     if(weekly)weekly.after(link);else actions.append(link);
   }
