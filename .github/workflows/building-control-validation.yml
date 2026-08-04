@@ -59,15 +59,25 @@ jobs:
                   "curl", "--fail", "--silent", "--show-error", "--location", "--compressed",
                   "--retry", "2", "--retry-delay", "2", "--max-time", str(timeout),
                   "--user-agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/127 Safari/537.36",
-                  "--header", "Accept: application/json,text/plain,text/html,*/*",
+                  "--header", "Accept: application/json,text/javascript,text/plain,text/html,*/*",
                   "--header", f"Referer: {referer}",
                   url
               ]
               completed = subprocess.run(command, check=True, capture_output=True, text=True)
               return completed.stdout
 
+          def parse_json_or_jsonp(body):
+              value = body.strip()
+              if value.startswith("{") or value.startswith("["):
+                  return json.loads(value)
+              first = value.find("(")
+              last = value.rfind(")")
+              if first >= 0 and last > first:
+                  return json.loads(value[first + 1:last])
+              raise ValueError(f"Response was neither JSON nor JSONP: {value[:180]}")
+
           def curl_json(url, timeout=60, referer="https://data.nbco.gov.ie/"):
-              return json.loads(curl_text(url, timeout=timeout, referer=referer))
+              return parse_json_or_jsonp(curl_text(url, timeout=timeout, referer=referer))
 
           def check(name, function, required_check=True):
               if required_check:
@@ -116,14 +126,14 @@ jobs:
               unit_clause = 'GREATEST(COALESCE("CN_Units_for_phase",0),COALESCE("CN_Total_Number_of_Dwelling_Units",0),COALESCE("CN_Total_Number_Multiple_Unit_Dwellings",0),COALESCE("CCC_Units_Completed",0)) >= 3'
               date_clause = f'''("CN_Date_Submitted_or_Received" >= '{start_text}'::timestamp OR "CN_Validation_Date" >= '{start_text}'::timestamp OR "CN_Commencement_Date" >= '{start_text}'::timestamp OR "CCC_Date_Validated" >= '{start_text}'::timestamp)'''
               sql = f'''SELECT count(*) AS count FROM "{resource}" WHERE "CN_Number" IS NOT NULL AND {unit_clause} AND {date_clause}'''
-              url = "https://data.nbco.gov.ie/api/3/action/datastore_search_sql?" + urllib.parse.urlencode({"sql": sql})
-              payload = curl_json(url, referer="https://data.nbco.gov.ie/dataset/bcnccc/resource/0774e781-7af8-46da-b623-872e74cf541e")
+              url = "https://data.nbco.gov.ie/api/3/action/datastore_search_sql?" + urllib.parse.urlencode({"sql": sql, "callback": "__nbcoValidation"})
+              payload = curl_json(url, referer="https://u7096678288-a11y.github.io/Planning/completions.html")
               if not payload.get("success"):
-                  raise RuntimeError(f"NBCO query failed: {payload}")
+                  raise RuntimeError(f"NBCO JSONP query failed: {payload}")
               count = int(payload.get("result", {}).get("records", [{}])[0].get("count", 0))
               if count <= 0:
                   raise RuntimeError("NBCO five-year 3+ dwelling query returned no records")
-              return {"window_start": start_text, "qualifying_relationship_rows": count}
+              return {"transport": "JSONP", "window_start": start_text, "qualifying_relationship_rows": count}
 
           def planning_check():
               parameters = {
@@ -143,12 +153,12 @@ jobs:
           def cork_check():
               resource = "8d5bbfa9-3b0c-40ac-8630-4243bed94b2d"
               sql = f'''SELECT count(*) AS count FROM "{resource}" WHERE COALESCE("NumResidentialUnits",0) >= 3'''
-              url = "https://data.corkcity.ie/api/3/action/datastore_search_sql?" + urllib.parse.urlencode({"sql": sql})
-              payload = curl_json(url, referer="https://data.corkcity.ie/dataset/planning-permission")
+              url = "https://data.corkcity.ie/api/3/action/datastore_search_sql?" + urllib.parse.urlencode({"sql": sql, "callback": "__corkValidation"})
+              payload = curl_json(url, referer="https://u7096678288-a11y.github.io/Planning/completions.html")
               if not payload.get("success"):
-                  raise RuntimeError(f"Cork City query failed: {payload}")
+                  raise RuntimeError(f"Cork City JSONP query failed: {payload}")
               count = int(payload.get("result", {}).get("records", [{}])[0].get("count", 0))
-              return {"qualifying_records": count}
+              return {"transport": "JSONP", "qualifying_records": count}
 
           def pages_check():
               page_url = "https://u7096678288-a11y.github.io/Planning/completions.html"
@@ -184,9 +194,9 @@ jobs:
 
           check("javascript_syntax", syntax_check)
           check("matching_tests", matching_check)
-          check("nbco_live", nbco_check)
+          check("nbco_live_jsonp", nbco_check)
           check("planning_live", planning_check)
-          check("cork_city_live", cork_check)
+          check("cork_city_live_jsonp", cork_check)
           check("github_pages", pages_check)
 
           failed = [name for name in required if result["checks"].get(name, {}).get("status") != "passed"]
