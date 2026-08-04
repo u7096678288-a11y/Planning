@@ -1,0 +1,15 @@
+{
+  "checked_at_utc": "2026-08-04T02:19:41.669608+00:00",
+  "checks": {
+    "audit_asset_length": 32514,
+    "completions_page_v2": false,
+    "dashboard_asset_length": 29132,
+    "dashboard_loader_v2": false,
+    "restricted_sql_remaining": [
+      "GREATEST(COALESCE",
+      "COALESCE(\"NumResidentialUnits\",0)",
+      "regexp_replace(upper(COALESCE"
+    ]
+  },
+  "status": "failed"
+}
