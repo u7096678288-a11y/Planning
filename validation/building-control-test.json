@@ -1,0 +1,33 @@
+{
+  "checked_at_utc": "2026-08-04T02:02:21.887857+00:00",
+  "checks": {
+    "javascript_syntax": {
+      "files": [
+        "building-control-match-core.js",
+        "completions-five-year.js",
+        "dashboard-building-control-five-year.js"
+      ],
+      "status": "passed"
+    },
+    "matching_tests": {
+      "ambiguitySafeguard": {
+        "automaticMatches": 0,
+        "reviewOrUnmatched": 1
+      },
+      "automaticMatches": 2,
+      "consolidatedProject": {
+        "commencementNotices": 2,
+        "completionCertificates": 2,
+        "firstAppearance": "2024-01-10",
+        "planningReference": "LRD6007/23-S3",
+        "status": "Completed",
+        "unitsCommenced": 120,
+        "unitsCompleted": 120
+      },
+      "status": "passed"
+    }
+  },
+  "commit": "d1625b79bf42d2719b4c5bc471fe8ef233285142",
+  "error": "<HTTPError 403: 'FORBIDDEN'>",
+  "status": "failed"
+}
