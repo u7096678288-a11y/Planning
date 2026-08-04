@@ -108,9 +108,9 @@
     await loadScript("weekly-update-launcher.js?v=20260803-3");
     await loadScript("completions-launcher.js?v=20260803-1");
     await loadScript("sync-health.js?v=20260803-2");
-    await loadScript("building-control-match-core.js?v=20260804-1");
+    await loadScript("building-control-match-core.js?v=20260804-2");
     await loadScript("building-control-core-normalise.js?v=20260804-1");
-    await loadScript("dashboard-building-control-five-year.js?v=20260804-1");
+    await loadScript("dashboard-building-control-five-year.js?v=20260804-2");
 
     moduleStatus.ready = true;
     document.dispatchEvent(new CustomEvent("radharc:modules-ready", { detail: { ...moduleStatus, corkReady } }));
