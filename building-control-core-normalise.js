@@ -61,10 +61,11 @@
         }))
         .filter(candidate => {
           if (candidate.referenceType || !candidate.authorityMatch) return false;
-          const strongLocation = candidate.eircodeMatch
-            || candidate.addressScore >= 0.22
-            || (candidate.distance != null && candidate.distance <= 750);
-          return strongLocation && candidate.score >= 55;
+          const addressSignal = candidate.addressScore >= 0.22;
+          const pointSignal = candidate.distance != null && candidate.distance <= 750;
+          const evidenceCount = [candidate.eircodeMatch, addressSignal, pointSignal].filter(Boolean).length;
+          const strongLocation = candidate.eircodeMatch || evidenceCount >= 2;
+          return strongLocation && candidate.score >= 45;
         })
         .sort((left, right) => right.score - left.score
           || String(left.planning.ApplicationNumber || "").localeCompare(String(right.planning.ApplicationNumber || "")));
