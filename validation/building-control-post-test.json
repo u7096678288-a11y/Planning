@@ -1,0 +1,18 @@
+{
+  "checked_at_utc": "2026-08-04T02:09:41.264970+00:00",
+  "checks": {
+    "cork_post": {
+      "body_preview": "{\"help\": \"https://data.corkcity.ie/api/3/action/help_show?name=datastore_search_sql\", \"error\": {\"__type\": \"Authorization Error\", \"message\": \"Access denied: {'permissions': ['Not authorized to call function COALESCE']}\"}, \"success\": false}",
+      "curl_exit": 0,
+      "http_status": 403,
+      "success": false
+    },
+    "nbco_post": {
+      "body_preview": "{\"help\": \"https://data.nbco.gov.ie/api/3/action/help_show?name=datastore_search_sql\", \"error\": {\"__type\": \"Authorization Error\", \"message\": \"Access denied: {'permissions': ['Not authorized to call function GREATEST']}\"}, \"success\": false}",
+      "curl_exit": 0,
+      "http_status": 403,
+      "success": false
+    }
+  },
+  "status": "failed"
+}
