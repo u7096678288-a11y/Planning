@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - "building-control-match-core.js"
+      - "building-control-core-normalise.js"
       - "completions-five-year.js"
       - "dashboard-building-control-five-year.js"
       - "completions.html"
@@ -37,6 +38,7 @@ jobs:
           {
             echo "Checking JavaScript syntax"
             node --check building-control-match-core.js
+            node --check building-control-core-normalise.js
             node --check completions-five-year.js
             node --check dashboard-building-control-five-year.js
             echo
