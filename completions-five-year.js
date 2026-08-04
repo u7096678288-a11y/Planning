@@ -167,7 +167,7 @@
       "DevelopmentDescription", "NumResidentialUnits", "ReceivedDate", "GrantDate",
       "DecisionDate", "Decision", "LinkAppDetails", "Latitude", "Longitude"
     ];
-    const sql = `SELECT ${fields.map(field => `"${field}"`).join(",")} FROM "${CORK_RESOURCE}" WHERE COALESCE("NumResidentialUnits",0) >= ${minUnits} AND "ReceivedDate" >= '2014-01-01'::timestamp ORDER BY "ReceivedDate" DESC NULLS LAST LIMIT 15000`;
+    const sql = `SELECT ${fields.map(field => `"${field}"`).join(",")} FROM "${CORK_RESOURCE}" WHERE "NumResidentialUnits" >= ${minUnits} AND "ReceivedDate" >= '2014-01-01'::timestamp ORDER BY "ReceivedDate" DESC NULLS LAST LIMIT 15000`;
     try {
       const rows = await jsonp(CORK_API, sql, signal, 30000);
       return rows.map((record, index) => ({
@@ -187,11 +187,11 @@
   async function nbcoRows(startDate, minUnits, signal) {
     const output = [];
     const start = startDate.toISOString().slice(0, 10);
-    const unitClause = `GREATEST(COALESCE("CN_Units_for_phase",0),COALESCE("CN_Total_Number_of_Dwelling_Units",0),COALESCE("CN_Total_Number_Multiple_Unit_Dwellings",0),COALESCE("CCC_Units_Completed",0)) >= ${minUnits}`;
+    const unitClause = `(("CN_Units_for_phase" >= ${minUnits}) OR ("CN_Total_Number_of_Dwelling_Units" >= ${minUnits}) OR ("CN_Total_Number_Multiple_Unit_Dwellings" >= ${minUnits}) OR ("CCC_Units_Completed" >= ${minUnits}))`;
     const dateClause = `("CN_Date_Submitted_or_Received" >= '${start}'::timestamp OR "CN_Validation_Date" >= '${start}'::timestamp OR "CN_Commencement_Date" >= '${start}'::timestamp OR "CCC_Date_Validated" >= '${start}'::timestamp)`;
     const selected = NBCO_FIELDS.map(field => `"${field}"`).join(",");
     for (let offset = 0; offset < MAX_NBCO_ROWS; offset += PAGE_SIZE) {
-      const sql = `SELECT ${selected} FROM "${NBCO_RESOURCE}" WHERE "CN_Number" IS NOT NULL AND ${unitClause} AND ${dateClause} ORDER BY COALESCE("CN_Date_Submitted_or_Received","CN_Validation_Date","CN_Commencement_Date","CCC_Date_Validated") DESC NULLS LAST LIMIT ${PAGE_SIZE} OFFSET ${offset}`;
+      const sql = `SELECT ${selected} FROM "${NBCO_RESOURCE}" WHERE "CN_Number" IS NOT NULL AND ${unitClause} AND ${dateClause} ORDER BY "CN_Date_Submitted_or_Received" DESC NULLS LAST, "CN_Validation_Date" DESC NULLS LAST, "CN_Commencement_Date" DESC NULLS LAST, "CCC_Date_Validated" DESC NULLS LAST LIMIT ${PAGE_SIZE} OFFSET ${offset}`;
       const batch = await jsonp(NBCO_API, sql, signal);
       output.push(...batch);
       setStatus("Loading five years of commencement and completion notices…", "loading", `${format(output.length)} NBCO relationship rows`, 28 + Math.min(28, output.length / 1400));

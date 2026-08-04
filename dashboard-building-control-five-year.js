@@ -200,7 +200,7 @@
   }
 
   function corkFilterSql(box) {
-    const clauses = [`COALESCE("NumResidentialUnits",0) >= ${MIN_UNITS}`, `"ReceivedDate" >= '2014-01-01'::timestamp`];
+    const clauses = [`"NumResidentialUnits" >= ${MIN_UNITS}`, `"ReceivedDate" >= '2014-01-01'::timestamp`];
     if (box) clauses.push(`"Longitude" BETWEEN ${box.west} AND ${box.east} AND "Latitude" BETWEEN ${box.south} AND ${box.north}`);
     try {
       if (smartState.authority.length && !smartState.authority.some(value => core.canonicalAuthority(value) === "CORK CITY COUNCIL")) clauses.push("FALSE");
@@ -251,7 +251,7 @@
 
   function fiveYearNbcoClauses() {
     const start = startDate().toISOString().slice(0, 10);
-    const unitClause = `GREATEST(COALESCE("CN_Units_for_phase",0),COALESCE("CN_Total_Number_of_Dwelling_Units",0),COALESCE("CN_Total_Number_Multiple_Unit_Dwellings",0),COALESCE("CCC_Units_Completed",0)) >= ${MIN_UNITS}`;
+    const unitClause = `(("CN_Units_for_phase" >= ${MIN_UNITS}) OR ("CN_Total_Number_of_Dwelling_Units" >= ${MIN_UNITS}) OR ("CN_Total_Number_Multiple_Unit_Dwellings" >= ${MIN_UNITS}) OR ("CCC_Units_Completed" >= ${MIN_UNITS}))`;
     const dateClause = `("CN_Date_Submitted_or_Received" >= '${start}'::timestamp OR "CN_Validation_Date" >= '${start}'::timestamp OR "CN_Commencement_Date" >= '${start}'::timestamp OR "CCC_Date_Validated" >= '${start}'::timestamp)`;
     return { start, unitClause, dateClause };
   }
@@ -288,7 +288,7 @@
 
     const spatial = coordinateClause(box);
     if (spatial) {
-      await collect(`SELECT ${selected} FROM "${NBCO_RESOURCE}" WHERE "CN_Number" IS NOT NULL AND ${unitClause} AND ${dateClause} AND ${spatial} ORDER BY COALESCE("CN_Date_Submitted_or_Received","CN_Validation_Date","CN_Commencement_Date","CCC_Date_Validated") DESC NULLS LAST`);
+      await collect(`SELECT ${selected} FROM "${NBCO_RESOURCE}" WHERE "CN_Number" IS NOT NULL AND ${unitClause} AND ${dateClause} AND ${spatial} ORDER BY "CN_Date_Submitted_or_Received" DESC NULLS LAST, "CN_Validation_Date" DESC NULLS LAST, "CN_Commencement_Date" DESC NULLS LAST, "CCC_Date_Validated" DESC NULLS LAST`);
     }
 
     for (let index = 0; index < records.length; index += 18) {
@@ -297,10 +297,13 @@
       group.forEach(record => {
         [...core.referenceTokens(record.ApplicationNumber), core.acpReference(record.AppealRefNumber)]
           .filter(Boolean)
-          .forEach(token => clauses.push(`regexp_replace(upper(COALESCE("CN_Planning_Permission_Number",'')),'[^A-Z0-9]','','g') LIKE '%${sqlText(token)}%'`));
+          .forEach(token => {
+  const pattern = `%${String(token).split("").map(character => sqlText(character)).join("%")}%`;
+  clauses.push(`"CN_Planning_Permission_Number" ILIKE '${pattern}'`);
+});
       });
       if (!clauses.length) continue;
-      const sql = `SELECT ${selected} FROM "${NBCO_RESOURCE}" WHERE "CN_Number" IS NOT NULL AND ${unitClause} AND ${dateClause} AND (${[...new Set(clauses)].join(" OR ")}) ORDER BY COALESCE("CN_Date_Submitted_or_Received","CN_Validation_Date","CN_Commencement_Date","CCC_Date_Validated") DESC NULLS LAST`;
+      const sql = `SELECT ${selected} FROM "${NBCO_RESOURCE}" WHERE "CN_Number" IS NOT NULL AND ${unitClause} AND ${dateClause} AND (${[...new Set(clauses)].join(" OR ")}) ORDER BY "CN_Date_Submitted_or_Received" DESC NULLS LAST, "CN_Validation_Date" DESC NULLS LAST, "CN_Commencement_Date" DESC NULLS LAST, "CCC_Date_Validated" DESC NULLS LAST`;
       await collect(sql);
       updateStatus(`Matching planning references · ${format(Math.min(index + group.length, records.length))} of ${format(records.length)} schemes`);
     }
