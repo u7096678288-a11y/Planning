@@ -1,0 +1,71 @@
+name: Test NBCO spatial SQL
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/building-control-spatial-sql-test.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Run exact dashboard spatial query
+        run: |
+          python - <<'PY'
+          import datetime as dt
+          import json
+          import pathlib
+          import subprocess
+
+          start = dt.date.today().replace(year=dt.date.today().year - 5).isoformat()
+          unit_clause = '(("CN_Units_for_phase" >= 3) OR ("CN_Total_Number_of_Dwelling_Units" >= 3) OR ("CN_Total_Number_Multiple_Unit_Dwellings" >= 3) OR ("CCC_Units_Completed" >= 3))'
+          date_clause = f'''("CN_Date_Submitted_or_Received" >= '{start}'::timestamp OR "CN_Validation_Date" >= '{start}'::timestamp OR "CN_Commencement_Date" >= '{start}'::timestamp OR "CCC_Date_Validated" >= '{start}'::timestamp)'''
+          latitude = '''CASE WHEN "CN_LAT" ~ '^-?[0-9]+(\\.[0-9]+)?$' THEN "CN_LAT"::numeric END'''
+          longitude = '''CASE WHEN "CN_LNG" ~ '^-?[0-9]+(\\.[0-9]+)?$' THEN "CN_LNG"::numeric END'''
+          spatial = f'''(({latitude}) BETWEEN 51 AND 56 AND ({longitude}) BETWEEN -11 AND -5)'''
+          sql = f'''SELECT "CN_Number","CN_LAT","CN_LNG" FROM "0774e781-7af8-46da-b623-872e74cf541e" WHERE "CN_Number" IS NOT NULL AND {unit_clause} AND {date_clause} AND {spatial} LIMIT 5'''
+          command = [
+              "curl","--silent","--show-error","--location","--compressed","--max-time","120",
+              "--user-agent","Mozilla/5.0 Chrome/127 Safari/537.36",
+              "--header","Accept: application/json,text/plain,*/*",
+              "--data-urlencode",f"sql={sql}",
+              "--write-out","\n__STATUS__:%{http_code}",
+              "https://data.nbco.gov.ie/api/3/action/datastore_search_sql"
+          ]
+          run = subprocess.run(command,capture_output=True,text=True)
+          body,_,status = run.stdout.rpartition("\n__STATUS__:")
+          result = {"checked_at_utc":dt.datetime.now(dt.timezone.utc).isoformat(),"http_status":int(status or 0),"curl_exit":run.returncode,"body_preview":body[:1000]}
+          try:
+              payload=json.loads(body)
+              result["success"]=payload.get("success")
+              result["records"]=payload.get("result",{}).get("records",[])[:5]
+          except Exception as error:
+              result["parse_error"]=repr(error)
+          result["status"]="passed" if result.get("http_status")==200 and result.get("success") is True else "failed"
+          path=pathlib.Path("validation/building-control-spatial-sql-test.json")
+          path.parent.mkdir(parents=True,exist_ok=True)
+          path.write_text(json.dumps(result,indent=2,sort_keys=True)+"\n",encoding="utf-8")
+          print(json.dumps(result,indent=2,sort_keys=True))
+          PY
+
+      - name: Commit spatial test
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add validation/building-control-spatial-sql-test.json
+          if ! git diff --cached --quiet; then
+            git commit -m "Record NBCO spatial SQL test"
+            git pull --rebase origin main
+            git push origin main
+          fi
