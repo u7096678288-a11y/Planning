@@ -1,35 +1,13 @@
-Building control test result: FAIL
-Generated: 2026-08-04T02:16:22Z
-Commit tested: 1e8b105fb06d4b2bb497732d10e92027db0c8d45
+Building control test result: PASS
+Generated: 2026-08-04T02:17:33Z
+Commit tested: 1318e25c80b633d2b2d260693df8bdf36fa760eb
 
 Checking JavaScript syntax
 
 Running matching and consolidation tests
 ✓ testReferenceAndAuthorityNormalisation
 ✓ testConsolidationAndProjectAggregation
-node:assert:150
-  throw new AssertionError(obj);
-  ^
-
-AssertionError [ERR_ASSERTION]: a plausible location-only result should be retained for review
-
-0 !== 1
-
-    at testLocationOnlyCandidatesAreNotAutomatic (/home/runner/work/Planning/Planning/tests/building-control-match-core.test.js:131:10)
-    at Object.<anonymous> (/home/runner/work/Planning/Planning/tests/building-control-match-core.test.js:168:3)
-    at Module._compile (node:internal/modules/cjs/loader:1781:14)
-    at Object..js (node:internal/modules/cjs/loader:1913:10)
-    at Module.load (node:internal/modules/cjs/loader:1505:32)
-    at Function._load (node:internal/modules/cjs/loader:1309:12)
-    at wrapModuleLoad (node:internal/modules/cjs/loader:254:19)
-    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)
-    at node:internal/main/run_main_module:36:49 {
-  generatedMessage: false,
-  code: 'ERR_ASSERTION',
-  actual: 0,
-  expected: 1,
-  operator: 'strictEqual',
-  diff: 'simple'
-}
-
-Node.js v22.23.1
+✓ testLocationOnlyCandidatesAreNotAutomatic
+✓ testAuthorityConflictBlocksAutomaticMatch
+✓ testPublishedConfiguration
+All 5 building-control tests passed.
