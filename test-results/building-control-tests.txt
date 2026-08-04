@@ -1,22 +1,22 @@
 Building control test result: FAIL
-Generated: 2026-08-04T02:12:01Z
-Commit tested: 9bd80018f5003a201b333c9385bf804a13935b75
+Generated: 2026-08-04T02:13:42Z
+Commit tested: 7019e37ddb9bd81d8834218a34b8bf4aa79a0b17
 
 Checking JavaScript syntax
 
 Running matching and consolidation tests
+✓ testReferenceAndAuthorityNormalisation
+✓ testConsolidationAndProjectAggregation
 node:assert:150
   throw new AssertionError(obj);
   ^
 
-AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
-+ actual - expected
+AssertionError [ERR_ASSERTION]: a plausible location-only result should be retained for review
 
-+ 'D N LAOGHAIRE RATHDOWN COUNTY COUNCIL'
-- 'DUN LAOGHAIRE RATHDOWN COUNTY COUNCIL'
+0 !== 1
 
-    at testReferenceAndAuthorityNormalisation (/home/runner/work/Planning/Planning/tests/building-control-match-core.test.js:51:10)
-    at Object.<anonymous> (/home/runner/work/Planning/Planning/tests/building-control-match-core.test.js:166:3)
+    at testLocationOnlyCandidatesAreNotAutomatic (/home/runner/work/Planning/Planning/tests/building-control-match-core.test.js:131:10)
+    at Object.<anonymous> (/home/runner/work/Planning/Planning/tests/building-control-match-core.test.js:168:3)
     at Module._compile (node:internal/modules/cjs/loader:1781:14)
     at Object..js (node:internal/modules/cjs/loader:1913:10)
     at Module.load (node:internal/modules/cjs/loader:1505:32)
@@ -24,10 +24,10 @@ AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
     at wrapModuleLoad (node:internal/modules/cjs/loader:254:19)
     at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)
     at node:internal/main/run_main_module:36:49 {
-  generatedMessage: true,
+  generatedMessage: false,
   code: 'ERR_ASSERTION',
-  actual: 'D N LAOGHAIRE RATHDOWN COUNTY COUNCIL',
-  expected: 'DUN LAOGHAIRE RATHDOWN COUNTY COUNCIL',
+  actual: 0,
+  expected: 1,
   operator: 'strictEqual',
   diff: 'simple'
 }
