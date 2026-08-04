@@ -1,0 +1,35 @@
+{
+  "body_preview": "{\"help\": \"https://data.nbco.gov.ie/api/3/action/help_show?name=datastore_search_sql\", \"success\": true, \"result\": {\"sql\": \"SELECT \\\"CN_Number\\\",\\\"CN_LAT\\\",\\\"CN_LNG\\\" FROM \\\"0774e781-7af8-46da-b623-872e74cf541e\\\" WHERE \\\"CN_Number\\\" IS NOT NULL AND ((\\\"CN_Units_for_phase\\\" >= 3) OR (\\\"CN_Total_Number_of_Dwelling_Units\\\" >= 3) OR (\\\"CN_Total_Number_Multiple_Unit_Dwellings\\\" >= 3) OR (\\\"CCC_Units_Completed\\\" >= 3)) AND (\\\"CN_Date_Submitted_or_Received\\\" >= '2021-08-04'::timestamp OR \\\"CN_Validation_Date\\\" >= '2021-08-04'::timestamp OR \\\"CN_Commencement_Date\\\" >= '2021-08-04'::timestamp OR \\\"CCC_Date_Validated\\\" >= '2021-08-04'::timestamp) AND ((CASE WHEN \\\"CN_LAT\\\" ~ '^-?[0-9]+(\\\\.[0-9]+)?$' THEN \\\"CN_LAT\\\"::numeric END) BETWEEN 51 AND 56 AND (CASE WHEN \\\"CN_LNG\\\" ~ '^-?[0-9]+(\\\\.[0-9]+)?$' THEN \\\"CN_LNG\\\"::numeric END) BETWEEN -11 AND -5) LIMIT 5\", \"records\": [{\"CN_Number\": \"CN0136842WD\", \"CN_LAT\": \"52.23635039050324\", \"CN_LNG\": \"-7.085743277957315\"}, {\"CN_Number\": \"SN0010280WD\", \"CN_LAT\"",
+  "checked_at_utc": "2026-08-04T02:26:08.444829+00:00",
+  "curl_exit": 0,
+  "http_status": 200,
+  "records": [
+    {
+      "CN_LAT": "52.23635039050324",
+      "CN_LNG": "-7.085743277957315",
+      "CN_Number": "CN0136842WD"
+    },
+    {
+      "CN_LAT": "52.170660637302454",
+      "CN_LNG": "-7.161508135285479",
+      "CN_Number": "SN0010280WD"
+    },
+    {
+      "CN_LAT": "52.08982540103737",
+      "CN_LNG": "-7.852134092710896",
+      "CN_Number": "CN0112871WD"
+    },
+    {
+      "CN_LAT": "52.08982540103737",
+      "CN_LNG": "-7.852134092710896",
+      "CN_Number": "CN0112871WD"
+    },
+    {
+      "CN_LAT": "52.08982540103737",
+      "CN_LNG": "-7.852134092710896",
+      "CN_Number": "CN0112871WD"
+    }
+  ],
+  "status": "passed",
+  "success": true
+}
