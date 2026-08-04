@@ -3,7 +3,7 @@
 const assert = require("node:assert/strict");
 const fs = require("node:fs");
 const path = require("node:path");
-const core = require("../building-control-match-core.js");
+const core = require("../building-control-core-normalise.js");
 
 function planning(overrides = {}) {
   return {
@@ -146,10 +146,12 @@ function testPublishedConfiguration() {
   assert.match(page, /value="3"/);
   assert.match(page, /value="5"/);
   assert.match(page, /building-control-match-core\.js/);
+  assert.match(page, /building-control-core-normalise\.js/);
   assert.match(page, /completions-five-year\.js/);
   assert.match(dashboard, /const MIN_UNITS = 3;/);
   assert.match(dashboard, /const YEARS = 5;/);
   assert.match(loader, /building-control-match-core\.js/);
+  assert.match(loader, /building-control-core-normalise\.js/);
   assert.match(loader, /dashboard-building-control-five-year\.js/);
   assert.doesNotMatch(loader, /dashboard-building-control\.js\?v=/);
 }
