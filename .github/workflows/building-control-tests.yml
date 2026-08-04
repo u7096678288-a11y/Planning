@@ -1,0 +1,39 @@
+name: Building control tests
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "building-control-match-core.js"
+      - "completions-five-year.js"
+      - "dashboard-building-control-five-year.js"
+      - "completions.html"
+      - "export-share.js"
+      - "tests/building-control-match-core.test.js"
+      - ".github/workflows/building-control-tests.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Check JavaScript syntax
+        run: |
+          node --check building-control-match-core.js
+          node --check completions-five-year.js
+          node --check dashboard-building-control-five-year.js
+
+      - name: Run matching and consolidation tests
+        run: node tests/building-control-match-core.test.js
