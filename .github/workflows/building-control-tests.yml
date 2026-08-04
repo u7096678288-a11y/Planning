@@ -11,6 +11,7 @@ on:
       - "completions.html"
       - "export-share.js"
       - "tests/building-control-match-core.test.js"
+      - "tests/building-control-live-smoke.js"
       - ".github/workflows/building-control-tests.yml"
   workflow_dispatch:
 
@@ -20,7 +21,7 @@ permissions:
 jobs:
   test:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 8
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -30,7 +31,7 @@ jobs:
         with:
           node-version: "22"
 
-      - name: Run syntax and matching tests
+      - name: Run syntax, matching and live-source tests
         shell: bash
         run: |
           set +e
@@ -41,9 +42,13 @@ jobs:
             node --check building-control-core-normalise.js
             node --check completions-five-year.js
             node --check dashboard-building-control-five-year.js
+            node --check tests/building-control-live-smoke.js
             echo
             echo "Running matching and consolidation tests"
             node tests/building-control-match-core.test.js
+            echo
+            echo "Running live planning, NBCO and Cork City smoke tests"
+            node tests/building-control-live-smoke.js
           } > test-results/building-control-tests.log 2>&1
           status=$?
           echo "$status" > /tmp/building-control-test-status
