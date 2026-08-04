@@ -7,3 +7,11 @@ Running matching and consolidation tests
 ✓ testAuthorityConflictBlocksAutomaticMatch
 ✓ testPublishedConfiguration
 All 5 building-control tests passed.
+
+Running live planning, NBCO and Cork City smoke tests
+✓ live Irish Planning Applications query
+Error: 403 FORBIDDEN
+    at fetchJson (/home/runner/work/Planning/Planning/tests/building-control-live-smoke.js:18:31)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+    at async testNbcoService (/home/runner/work/Planning/Planning/tests/building-control-live-smoke.js:60:16)
+    at async /home/runner/work/Planning/Planning/tests/building-control-live-smoke.js:79:3

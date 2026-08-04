@@ -1,6 +1,6 @@
-Building control test result: PASS
-Generated: 2026-08-04T02:17:33Z
-Commit tested: 1318e25c80b633d2b2d260693df8bdf36fa760eb
+Building control test result: FAIL
+Generated: 2026-08-04T02:20:45Z
+Commit tested: 6f633fdd86cba41a4dca535ae46622d64c3ec073
 
 Checking JavaScript syntax
 
@@ -11,3 +11,11 @@ Running matching and consolidation tests
 ✓ testAuthorityConflictBlocksAutomaticMatch
 ✓ testPublishedConfiguration
 All 5 building-control tests passed.
+
+Running live planning, NBCO and Cork City smoke tests
+✓ live Irish Planning Applications query
+Error: 403 FORBIDDEN
+    at fetchJson (/home/runner/work/Planning/Planning/tests/building-control-live-smoke.js:18:31)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+    at async testNbcoService (/home/runner/work/Planning/Planning/tests/building-control-live-smoke.js:60:16)
+    at async /home/runner/work/Planning/Planning/tests/building-control-live-smoke.js:79:3
