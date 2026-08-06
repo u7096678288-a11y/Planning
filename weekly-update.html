@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Fast 28-day Irish planning and An Coimisiún Pleanála update for 100+ unit schemes and Strategic Infrastructure Developments." />
+  <meta name="description" content="Fast 28-day Irish planning, Cork City Council and An Coimisiún Pleanála appeals update for 100+ unit schemes and Strategic Infrastructure Developments." />
   <title>Weekly Planning Update · Radharc Pleanála</title>
   <style>
     :root{font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#132538;background:#edf3f5;--navy:#102f49;--teal:#24747a;--line:#d7e2e6;--muted:#607783}
@@ -19,7 +19,7 @@
     <div>
       <p class="eyebrow">RADHARC PLEANÁLA · FAST 28-DAY REPORT</p>
       <h1>Weekly Planning Update</h1>
-      <p>Residential schemes reporting 100 units or more, plus identifiable Strategic Infrastructure Developments, with a dedicated ACP / An Coimisiún Pleanála breakdown and case list. Cork City Council is included through its direct planning datastore.</p>
+      <p>Residential schemes reporting 100 units or more, plus identifiable Strategic Infrastructure Developments. Cork City Council is included, with appeals lodged and decided drawn directly from the An Coimisiún Pleanála Cases list and matched back to planning records.</p>
     </div>
     <nav class="header-actions" aria-label="Report actions">
       <a class="button" href="./">Dashboard</a>
@@ -46,9 +46,10 @@
     <div class="section"><header class="section-head"><div><h2>Ordered update</h2><p>Highest reported unit count first, followed by the latest movement date.</p></div><strong id="visibleSummary">—</strong></header></div>
     <div id="reportSections"><div class="section"><div class="empty">Loading report…</div></div></div>
 
-    <section class="section"><div class="method"><strong>Coverage.</strong> Submissions, FI movements, grants, An Coimisiún Pleanála lodgements and An Coimisiún Pleanála decisions use a rolling 28-day window. Upcoming decisions cover the next 28 days. Ordinary projects require at least 100 reported residential units; identifiable SIDs remain included regardless of units.<div class="source-warning">The faster report sends the 100-unit condition to the planning services before downloading records, requests only the fields used in the report, and loads Cork City Council directly. Applicant names and other fields are shown only where published. The Excel workbook includes dedicated ACP Updates and ACP Breakdown sheets.</div></div></section>
+    <section class="section"><div class="method"><strong>Coverage.</strong> Submissions, FI movements, grants, An Coimisiún Pleanála lodgements, planning appeals lodged and planning appeals decided use a rolling 28-day window. Upcoming decisions cover the next 28 days. Ordinary projects require at least 100 reported residential units; identifiable SIDs remain included regardless of units.<div class="source-warning">Appeals are taken from the official An Coimisiún Pleanála Cases 2016 Onwards list, matched by ACP reference to the national planning layers and the Cork City Council planning datastore, and rationalised by planning authority. The Excel and CSV exports include the matched appeal rows through the lodged and decided sections.</div></div></section>
   </main>
 
+  <script src="weekly-cork-appeals.js?v=20260806-1"></script>
   <script src="weekly-update-fast.js?v=20260803-1"></script>
   <script src="weekly-acp-enhancement.js?v=20260806-1"></script>
 </body>
