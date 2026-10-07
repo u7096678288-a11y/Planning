@@ -126,6 +126,21 @@ function bind(){
   $("#refreshButton").onclick=refreshAll;
   $("#searchForm").onsubmit=search;
   $("#copyBriefButton").onclick=copyBrief;
+  $("#shareViewButton").onclick=async()=>{try{await navigator.clipboard.writeText(location.href);status("View link copied","ok")}catch{status("Copy link unavailable","error")}};
+  $("#resetDashboardButton").onclick=()=>{
+    $("#residentialType").value="all";$("#authorityExplorer").value="";
+    $("#customStartDate").value="";$("#customEndDate").value="";
+    $("#customDateStatus").textContent="All available dates";
+    $("#searchInput").value="";$("#searchResults").innerHTML="";
+    layers.planningPoints.setWhere(cutoff());layers.planningSites.setWhere(cutoff());layers.acpCases.setWhere(acpCutoff());
+    updateExplorerSummary();update();
+  };
+  $("#exportViewButton").onclick=()=>{
+    const ids=[["Residential applications","planningCount"],["Residential units","unitCount"],["Floor area (m²)","floorAreaCount"],["Site area","siteAreaCount"],["ACP matching cases","acpCount"]];
+    const csv=[["Metric","Value"],...ids.map(([name,id])=>[name,$("#"+id).textContent])].map(row=>row.map(v=>JSON.stringify(v)).join(",")).join("\\r\\n");
+    const url=URL.createObjectURL(new Blob([csv],{type:"text/csv;charset=utf-8"}));
+    const link=document.createElement("a");link.href=url;link.download="residential-overview.csv";link.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
+  };
 }
 
 async function loadAuthorities(){
