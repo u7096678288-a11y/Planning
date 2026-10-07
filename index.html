@@ -82,25 +82,23 @@
           <select id="residentialType">
             <option value="all" selected>All residential</option>
             <option value="oneoff">One-off housing · 1 unit</option>
-            <option value="small">Small schemes · 2–49 units</option>
-            <option value="medium">Medium schemes · 50–199 units</option>
-            <option value="large">Large schemes · 200+ units</option>
             <option value="lrd">Large Residential Development (LRD)</option>
             <option value="shd">Strategic Housing Development (SHD)</option>
             <option value="sdz">Strategic Development Zone (SDZ)</option>
-            <option value="priority">Strategic / priority residential</option>
           </select>
           <label for="authorityExplorer" style="margin-top:12px">County / local authority</label>
           <select id="authorityExplorer"><option value="">All authorities</option></select>
-          <label for="dateRange" style="margin-top:12px">Time period</label>
-          <select id="dateRange">
-            <option value="7">Last 7 days</option>
-            <option value="30">Last 30 days</option>
-            <option value="90">Last 90 days</option>
-            <option value="365" selected>Last 12 months</option>
-            <option value="1095">Last 3 years</option>
-            <option value="all">All available records</option>
-          </select>
+          <label style="margin-top:12px">Date range</label>
+          <div class="date-input-grid">
+            <label for="customStartDate">From<input id="customStartDate" type="date"></label>
+            <label for="customEndDate">To<input id="customEndDate" type="date"></label>
+          </div>
+          <div class="date-actions">
+            <button id="applyCustomDates" class="apply-date-button" type="button">Apply dates</button>
+            <button id="clearCustomDates" type="button">Clear</button>
+          </div>
+          <p id="customDateStatus" class="date-status">All available dates</p>
+          <select id="dateRange" hidden><option value="all" selected>All available records</option><option value="custom">Custom calendar range</option></select>
         </section>
       </details>
 
@@ -130,8 +128,8 @@
       <section class="metric-grid residential-metrics" aria-label="Residential headline metrics">
         <article class="metric-card"><span>Residential applications</span><strong id="planningCount">—</strong><small>Matching the selected housing type</small></article>
         <article class="metric-card"><span>Residential units</span><strong id="unitCount">—</strong><small id="unitCoverage">Waiting for live data</small></article>
-        <article class="metric-card"><span>Floor area (m²)</span><strong id="floorAreaCount">—</strong><small id="floorCoverage">Waiting for live data</small></article>
-        <article class="metric-card"><span>Site area (ha)</span><strong id="siteAreaCount">—</strong><small id="siteCoverage">Waiting for live data</small></article>
+        <article class="metric-card"><span>Floor area (m²)</span><strong id="floorAreaCount">—</strong><small id="floorCoverage">Rounded to nearest m²</small></article>
+        <article class="metric-card"><span>Site area (ha)</span><strong id="siteAreaCount">—</strong><small id="siteCoverage">Rounded to nearest hectare</small></article>
       </section>
 
       <div class="compat-hidden" aria-hidden="true">
@@ -154,7 +152,7 @@
   <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/esri-leaflet@3.0.15/dist/esri-leaflet.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
-  <script src="app.js?v=20261007-2"></script>
+  <script src="app.js?v=20261007-3"></script>
   <script src="smart-filters.js?v=20260803-2"></script>
   <script src="select-all.js?v=20260803-1"></script>
   <script src="sync-controller.js?v=20260803-4"></script>
