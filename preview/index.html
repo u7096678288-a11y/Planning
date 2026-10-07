@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Radharc Pleanála — a live Irish planning, ACP case and cadastral mapping dashboard powered by public ArcGIS and CKAN services." />
+  <title>Radharc Pleanála</title>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="styles.css?v=20261007-1" />
+  <style>
+    /* Local Leaflet fallback: keeps the basemap intact if the CDN stylesheet is delayed or blocked. */
+    .leaflet-container{overflow:hidden;outline:0;background:#dfe7eb}
+    .leaflet-pane,.leaflet-tile,.leaflet-marker-icon,.leaflet-marker-shadow,
+    .leaflet-tile-container,.leaflet-pane>svg,.leaflet-pane>canvas,
+    .leaflet-zoom-box,.leaflet-image-layer,.leaflet-layer{position:absolute;left:0;top:0}
+    .leaflet-tile{visibility:hidden;user-select:none;-webkit-user-drag:none}
+    .leaflet-tile-loaded{visibility:inherit}
+    .leaflet-top,.leaflet-bottom{position:absolute;z-index:1000;pointer-events:none}
+    .leaflet-top{top:0}.leaflet-right{right:0}.leaflet-bottom{bottom:0}.leaflet-left{left:0}
+    .leaflet-control{position:relative;z-index:800;pointer-events:auto}
+    .patreon-button{display:inline-flex;align-items:center;text-decoration:none;white-space:nowrap}
+    .custom-date-panel{margin-top:12px;padding:12px;background:#f3f6f7;border:1px solid #dce4e8;border-radius:7px}
+    .custom-date-panel h3{font-size:12px;margin:0 0 9px}
+    .date-input-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+    .date-input-grid label{margin:0!important}
+    .date-input-grid input{width:100%;margin-top:5px;border:1px solid #cbd6dc;border-radius:6px;padding:8px;background:#fff;color:#132538}
+    .date-actions{display:flex;gap:7px;margin-top:9px}
+    .date-actions button{flex:1;border:1px solid #b9c7cf;background:#fff;color:#132538;border-radius:6px;padding:8px;font-weight:bold}
+    .date-actions .apply-date-button{background:#102f49;color:#fff;border-color:#102f49}
+    .date-status{min-height:16px;margin:8px 0 0;font-size:11px;color:#687b88;line-height:1.4}
+    .smart-filter-summary{margin:0;padding:10px 14px;background:#eef5f5;border-bottom:1px solid #dce4e8;display:flex;align-items:center;gap:10px}
+    .smart-filter-summary p{margin:0;flex:1;font-size:11px;line-height:1.4;color:#425c6c}
+    .smart-filter-summary button{border:1px solid #b9c7cf;background:#fff;color:#132538;border-radius:6px;padding:7px 9px;font-size:11px;font-weight:bold;white-space:nowrap}
+    .smart-filter-summary button:disabled{opacity:.45;cursor:not-allowed}
+    .chart-filter-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px}
+    .chart-filter-row h2{margin:0!important}
+    .selection-count{background:#eef5f5;border:1px solid #d5e3e4;border-radius:999px;color:#425c6c;font-size:10px;font-weight:bold;padding:5px 8px;white-space:nowrap}
+    .multi-filter-select{display:block;width:100%;min-height:102px;border:1px solid #b8c8d0;border-radius:6px;background:#fff;color:#132538;padding:4px;font-size:11px}
+    .multi-filter-select option{padding:6px 7px;border-radius:4px;margin:1px 0;white-space:normal}
+    .multi-filter-select option:checked{background:#dcecee linear-gradient(0deg,#dcecee,#dcecee);color:#102f49}
+    .filter-help{margin:7px 0 8px;font-size:10px;color:#687b88;line-height:1.4}
+    @media(max-width:700px){.smart-filter-summary{align-items:flex-start;flex-direction:column}.smart-filter-summary button{width:100%}.multi-filter-select{min-height:120px}}
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <p class="eyebrow">LIVE PUBLIC DATA</p>
+      <h1>Radharc Pleanála</h1>
+      <p class="subtitle">Residential planning applications and housing development intelligence in one lighter browser-based view.</p>
+    </div>
+    <div class="topbar-actions">
+      <a class="secondary-button patreon-button" href="https://www.patreon.com/16538169/join" target="_blank" rel="noopener noreferrer" aria-label="Support Radharc Pleanála on Patreon">Support on Patreon</a>
+      <span id="connectionStatus" class="status-pill">Connecting…</span>
+      <button id="refreshButton" class="secondary-button" type="button">Refresh data</button>
+      <button id="exportViewButton" class="secondary-button" type="button">Export CSV</button>
+      <button id="shareViewButton" class="secondary-button" type="button">Share view</button>
+      <button id="resetDashboardButton" class="secondary-button" type="button">Reset dashboard</button>
+    </div>
+  </header>
+
+  <main class="app-shell residential-shell">
+    <aside class="sidebar left-panel light-panel" aria-label="Residential planning search">
+      <section class="panel-section search-primary">
+        <p class="eyebrow panel-eyebrow">RESIDENTIAL PLANNING</p>
+        <h2>Find residential schemes</h2>
+        <form id="searchForm" class="search-form">
+          <div class="search-row">
+            <input id="searchInput" name="search" type="search" placeholder="Reference, address or description" autocomplete="off" />
+            <button type="submit">Search</button>
+          </div>
+        </form>
+        <div id="searchStatus" class="muted small" aria-live="polite">Search live residential planning records.</div>
+        <div id="searchResults" class="result-list"></div>
+      </section>
+
+      <details class="light-filter">
+        <summary>Filters</summary>
+        <section class="panel-section compact-section">
+          <label for="dateRange">Time period</label>
+          <select id="dateRange">
+            <option value="7">Last 7 days</option>
+            <option value="30">Last 30 days</option>
+            <option value="90">Last 90 days</option>
+            <option value="365" selected>Last 12 months</option>
+            <option value="1095">Last 3 years</option>
+            <option value="all">All available records</option>
+          </select>
+        </section>
+      </details>
+
+      <section class="panel-section selected-light">
+        <h2>Selected scheme</h2>
+        <div id="selectedRecord" class="empty-state">Select a residential planning record on the map.</div>
+        <button id="copyBriefButton" class="secondary-button full-width" type="button" disabled>Copy record brief</button>
+      </section>
+
+      <div id="layerToggles" class="layer-toggle-list hidden-layer-controls" aria-hidden="true"></div>
+    </aside>
+
+    <section class="map-column">
+      <div id="map" role="application" aria-label="Interactive map of Irish residential planning data"></div>
+      <div class="map-help">Residential planning · move or zoom the map to refresh.</div>
+    </section>
+
+    <aside class="sidebar right-panel light-dashboard" aria-label="Residential dashboard">
+      <section class="panel-section dashboard-heading">
+        <div><p class="eyebrow panel-eyebrow">VISIBLE MAP AREA</p><h2>Residential overview</h2></div>
+        <span id="dashboardUpdated" class="muted small">Not yet synced</span>
+      </section>
+      <p id="sourceFreshness" class="source-freshness">Source update date will appear after synchronisation.</p>
+      <div id="activeFilterSummary" class="residential-filter-note">Residential records · Last 12 months</div>
+      <button id="clearSmartFilters" type="button" hidden disabled>Clear filters</button>
+
+      <section class="metric-grid residential-metrics" aria-label="Residential headline metrics">
+        <article class="metric-card"><span>Applications</span><strong id="planningCount">—</strong><small>Residential records in view</small></article>
+        <article class="metric-card"><span>Residential units</span><strong id="unitCount">—</strong><small id="unitCoverage">Waiting for live data</small></article>
+        <article class="metric-card"><span>Floor area (m²)</span><strong id="floorAreaCount">—</strong><small id="floorCoverage">Waiting for live data</small></article>
+        <article class="metric-card"><span>Site area (ha)</span><strong id="siteAreaCount">—</strong><small id="siteCoverage">Waiting for live data</small></article>
+      </section>
+
+      <div class="compat-hidden" aria-hidden="true">
+        <strong id="acpCount">—</strong><strong id="parcelCount">—</strong>
+        <select id="decisionFilter" multiple></select><span id="decisionSelection"></span>
+        <select id="authorityFilter" multiple></select><span id="authoritySelection"></span>
+        <select id="categoryFilter" multiple></select><span id="categorySelection"></span>
+        <canvas id="planningDecisionChart"></canvas><div id="planningDecisionFallback"></div>
+        <canvas id="authorityChart"></canvas><div id="authorityFallback"></div>
+        <canvas id="acpCategoryChart"></canvas><div id="acpCategoryFallback"></div>
+        <div id="aiInsight"></div>
+      </div>
+
+      <p class="data-quality-note">Headline figures are calculated from the live planning feed for the visible map area. Records without reported residential-unit data are excluded from the unit total.</p>
+    </aside>
+  </main>
+
+  <noscript>This tool requires JavaScript to query the live public ArcGIS and CKAN services.</noscript>
+
+  <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/esri-leaflet@3.0.15/dist/esri-leaflet.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+  <script src="app.js?v=20260803-10"></script>
+  <script src="smart-filters.js?v=20260803-2"></script>
+  <script src="select-all.js?v=20260803-1"></script>
+  <script src="sync-controller.js?v=20260803-4"></script>
+  <script src="export-share.js?v=20260804-2"></script>
+</body>
+</html>
