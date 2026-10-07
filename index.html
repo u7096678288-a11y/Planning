@@ -7,7 +7,7 @@
   <title>Radharc Pleanála</title>
   <link rel="preconnect" href="https://cdn.jsdelivr.net" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css" />
-  <link rel="stylesheet" href="styles.css?v=20260803-8" />
+  <link rel="stylesheet" href="styles.css?v=20261007-1" />
   <style>
     /* Local Leaflet fallback: keeps the basemap intact if the CDN stylesheet is delayed or blocked. */
     .leaflet-container{overflow:hidden;outline:0;background:#dfe7eb}
@@ -48,7 +48,7 @@
     <div>
       <p class="eyebrow">LIVE PUBLIC DATA</p>
       <h1>Radharc Pleanála</h1>
-      <p class="subtitle">Planning applications, ACP cases, freehold parcels and housing evidence in one browser-based tool.</p>
+      <p class="subtitle">Residential planning applications and housing development intelligence in one lighter browser-based view.</p>
     </div>
     <div class="topbar-actions">
       <a class="secondary-button patreon-button" href="https://www.patreon.com/16538169/join" target="_blank" rel="noopener noreferrer" aria-label="Support Radharc Pleanála on Patreon">Support on Patreon</a>
@@ -60,123 +60,78 @@
     </div>
   </header>
 
-  <main class="app-shell">
-    <aside class="sidebar left-panel" aria-label="Map controls">
-      <section class="panel-section">
-        <h2>Search and list records</h2>
+  <main class="app-shell residential-shell">
+    <aside class="sidebar left-panel light-panel" aria-label="Residential planning search">
+      <section class="panel-section search-primary">
+        <p class="eyebrow panel-eyebrow">RESIDENTIAL PLANNING</p>
+        <h2>Find residential schemes</h2>
         <form id="searchForm" class="search-form">
-          <label for="searchInput">Enter a reference, address or description, or leave blank to list everything in the selected period and filters.</label>
           <div class="search-row">
-            <input id="searchInput" name="search" type="search" placeholder="Blank = all filtered records" autocomplete="off" />
+            <input id="searchInput" name="search" type="search" placeholder="Reference, address or description" autocomplete="off" />
             <button type="submit">Search</button>
           </div>
         </form>
-        <div id="searchStatus" class="muted small" aria-live="polite">Choose a time period and press Search.</div>
+        <div id="searchStatus" class="muted small" aria-live="polite">Search live residential planning records.</div>
         <div id="searchResults" class="result-list"></div>
       </section>
 
-      <section class="panel-section">
-        <h2>Time period</h2>
-        <label for="dateRange">Use a quick period or choose exact dates below</label>
-        <select id="dateRange">
-          <option value="7">Last 7 days</option>
-          <option value="30">Last 30 days</option>
-          <option value="90">Last 90 days</option>
-          <option value="365" selected>Last 12 months</option>
-          <option value="1095">Last 3 years</option>
-          <option value="all">All available records</option>
-          <option value="custom" disabled>Custom calendar range</option>
-        </select>
+      <details class="light-filter">
+        <summary>Filters</summary>
+        <section class="panel-section compact-section">
+          <label for="dateRange">Time period</label>
+          <select id="dateRange">
+            <option value="7">Last 7 days</option>
+            <option value="30">Last 30 days</option>
+            <option value="90">Last 90 days</option>
+            <option value="365" selected>Last 12 months</option>
+            <option value="1095">Last 3 years</option>
+            <option value="all">All available records</option>
+          </select>
+        </section>
+      </details>
 
-        <div class="custom-date-panel">
-          <h3>Custom calendar range</h3>
-          <div class="date-input-grid">
-            <label for="customStartDate">From
-              <input id="customStartDate" type="date" />
-            </label>
-            <label for="customEndDate">To
-              <input id="customEndDate" type="date" />
-            </label>
-          </div>
-          <div class="date-actions">
-            <button id="applyCustomDates" class="apply-date-button" type="button">Apply dates</button>
-            <button id="clearCustomDates" type="button">Clear dates</button>
-          </div>
-          <p id="customDateStatus" class="date-status" aria-live="polite">Pick either date or both dates to create a custom range.</p>
-        </div>
-      </section>
-
-      <section class="panel-section">
-        <h2>Layers</h2>
-        <div id="layerToggles" class="layer-toggle-list"></div>
-        <p class="muted small">Freehold parcels are intentionally shown only when zoomed in, matching the source service's scale restriction.</p>
-      </section>
-
-      <section class="panel-section">
-        <h2>Selected record</h2>
-        <div id="selectedRecord" class="empty-state">Select a planning point, site, ACP case or parcel on the map.</div>
+      <section class="panel-section selected-light">
+        <h2>Selected scheme</h2>
+        <div id="selectedRecord" class="empty-state">Select a residential planning record on the map.</div>
         <button id="copyBriefButton" class="secondary-button full-width" type="button" disabled>Copy record brief</button>
       </section>
+
+      <div id="layerToggles" class="layer-toggle-list hidden-layer-controls" aria-hidden="true"></div>
     </aside>
 
     <section class="map-column">
-      <div id="map" role="application" aria-label="Interactive map of Irish planning data"></div>
-      <div class="map-help">Move or zoom the map to refresh the dashboard for the visible area.</div>
+      <div id="map" role="application" aria-label="Interactive map of Irish residential planning data"></div>
+      <div class="map-help">Residential planning · move or zoom the map to refresh.</div>
     </section>
 
-    <aside class="sidebar right-panel" aria-label="Dashboard">
+    <aside class="sidebar right-panel light-dashboard" aria-label="Residential dashboard">
       <section class="panel-section dashboard-heading">
-        <div>
-          <p class="eyebrow">VISIBLE MAP AREA</p>
-          <h2>Dashboard</h2>
-        </div>
+        <div><p class="eyebrow panel-eyebrow">VISIBLE MAP AREA</p><h2>Residential overview</h2></div>
         <span id="dashboardUpdated" class="muted small">Not yet synced</span>
       </section>
-      <p id="sourceFreshness" class="source-freshness">Source update dates will appear after the dashboard is synchronised.</p>
-      <div class="smart-filter-summary">
-        <p id="activeFilterSummary">Period: Last 12 months</p>
-        <button id="clearSmartFilters" type="button" disabled>Clear smart filters</button>
+      <p id="sourceFreshness" class="source-freshness">Source update date will appear after synchronisation.</p>
+      <div id="activeFilterSummary" class="residential-filter-note">Residential records · Last 12 months</div>
+      <button id="clearSmartFilters" type="button" hidden disabled>Clear filters</button>
+
+      <section class="metric-grid residential-metrics" aria-label="Residential headline metrics">
+        <article class="metric-card"><span>Applications</span><strong id="planningCount">—</strong><small>Residential records in view</small></article>
+        <article class="metric-card"><span>Residential units</span><strong id="unitCount">—</strong><small id="unitCoverage">Waiting for live data</small></article>
+        <article class="metric-card"><span>Floor area (m²)</span><strong id="floorAreaCount">—</strong><small id="floorCoverage">Waiting for live data</small></article>
+        <article class="metric-card"><span>Site area (ha)</span><strong id="siteAreaCount">—</strong><small id="siteCoverage">Waiting for live data</small></article>
+      </section>
+
+      <div class="compat-hidden" aria-hidden="true">
+        <strong id="acpCount">—</strong><strong id="parcelCount">—</strong>
+        <select id="decisionFilter" multiple></select><span id="decisionSelection"></span>
+        <select id="authorityFilter" multiple></select><span id="authoritySelection"></span>
+        <select id="categoryFilter" multiple></select><span id="categorySelection"></span>
+        <canvas id="planningDecisionChart"></canvas><div id="planningDecisionFallback"></div>
+        <canvas id="authorityChart"></canvas><div id="authorityFallback"></div>
+        <canvas id="acpCategoryChart"></canvas><div id="acpCategoryFallback"></div>
+        <div id="aiInsight"></div>
       </div>
 
-      <section class="metric-grid" aria-label="Headline metrics">
-        <article class="metric-card"><span>Planning applications</span><strong id="planningCount">—</strong><small>Records matching the active filters</small></article>
-        <article class="metric-card"><span>ACP cases</span><strong id="acpCount">—</strong><small>Cases matching the active filters</small></article>
-        <article class="metric-card"><span>Total residential units</span><strong id="unitCount">—</strong><small id="unitCoverage">Waiting for live data</small></article>
-        <article class="metric-card"><span>Total floor area (m²)</span><strong id="floorAreaCount">—</strong><small id="floorCoverage">Waiting for live data</small></article>
-        <article class="metric-card"><span>Total site area (ha)</span><strong id="siteAreaCount">—</strong><small id="siteCoverage">Waiting for live data</small></article>
-        <article class="metric-card"><span>Freehold parcels</span><strong id="parcelCount">Zoom in</strong><small>Available at local map scales</small></article>
-      </section>
-
-      <p class="data-quality-note">Residential units, floor area and site area are summed from the official planning feeds for the visible map area, selected period and smart filters. Null values are excluded. Floor area is shown in square metres and site area is shown in hectares; both area totals are rounded upward to whole numbers.</p>
-
-      <section class="panel-section chart-section">
-        <div class="chart-filter-row"><h2>Planning decisions</h2><span id="decisionSelection" class="selection-count">All</span></div>
-        <select id="decisionFilter" class="multi-filter-select" multiple size="5" aria-label="Select one or more planning decisions"><option disabled>Loading decisions…</option></select>
-        <p class="filter-help">Tick one or more decisions, use Select all, or click a chart segment to toggle that decision.</p>
-        <div class="chart-wrap"><canvas id="planningDecisionChart"></canvas></div><div id="planningDecisionFallback" class="data-fallback"></div>
-      </section>
-
-      <section class="panel-section chart-section">
-        <div class="chart-filter-row"><h2>Counties / planning authorities</h2><span id="authoritySelection" class="selection-count">All</span></div>
-        <select id="authorityFilter" class="multi-filter-select" multiple size="7" aria-label="Select one or more counties or planning authorities"><option disabled>Loading authorities…</option></select>
-        <p class="filter-help">Tick several counties or authorities together, or use Select all to include the full current list.</p>
-        <div class="chart-wrap tall"><canvas id="authorityChart"></canvas></div><div id="authorityFallback" class="data-fallback"></div>
-      </section>
-
-      <section class="panel-section chart-section">
-        <div class="chart-filter-row"><h2>ACP categories</h2><span id="categorySelection" class="selection-count">All</span></div>
-        <select id="categoryFilter" class="multi-filter-select" multiple size="5" aria-label="Select one or more ACP categories"><option disabled>Loading ACP categories…</option></select>
-        <p class="filter-help">Tick several ACP categories together, or use Select all to include the full current list.</p>
-        <div class="chart-wrap"><canvas id="acpCategoryChart"></canvas></div><div id="acpCategoryFallback" class="data-fallback"></div>
-      </section>
-
-      <section class="panel-section ai-panel"><div class="section-title-row"><h2>AI planning note</h2><span class="source-tag">GitHub Models</span></div><div id="aiInsight" class="ai-insight"><p class="muted">The map works without AI. Run the included GitHub Action to create a refreshed planning intelligence note.</p></div></section>
-
-      <section class="panel-section source-panel"><h2>Support Radharc Pleanála</h2><p>Support the continued development of this independent Irish planning intelligence platform.</p><a href="https://www.patreon.com/16538169/join" target="_blank" rel="noopener noreferrer">Join Radharc Pleanála on Patreon ↗</a></section>
-
-      <section class="panel-section source-panel"><h2>Housing evidence</h2><p>The CSO Housing Hub is a collection of regularly updated tables and themes rather than a single spatial layer.</p><a href="https://www.cso.ie/en/releasesandpublications/hubs/p-hh/housinghub/" target="_blank" rel="noopener">Open CSO Housing Hub ↗</a></section>
-
-      <section class="panel-section source-panel"><h2>Live sources</h2><ul class="source-list"><li><a href="https://planning.geohive.ie/datasets/housinggovie::irishplanningapplications/explore?layer=0" target="_blank" rel="noopener">Irish Planning Applications</a></li><li><a href="https://data.corkcity.ie/dataset/planning-permission" target="_blank" rel="noopener">Cork City Planning Permission — direct feed</a></li><li><a href="https://www.geohive.ie/datasets/f16825677990483d9a12796c7e104622_3/explore" target="_blank" rel="noopener">ACP Cases 2016 Onwards</a></li><li><a href="https://data-osi.opendata.arcgis.com/datasets/osi::high-value-dataset-cadastral-parcels-freehold/about" target="_blank" rel="noopener">Cadastral Parcels – Freehold</a></li></ul></section>
+      <p class="data-quality-note">Headline figures are calculated from the live planning feed for the visible map area. Records without reported residential-unit data are excluded from the unit total.</p>
     </aside>
   </main>
 
