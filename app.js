@@ -86,7 +86,7 @@ function makeLayers(){
   });
   Object.entries(layers).forEach(([k,l])=>{
     l.on("click",e=>select(k,e.layer.feature,e.latlng));
-    l.on("requesterror",()=>status("Some source requests failed","error"));
+    l.on("requesterror",e=>console.warn("Map layer request failed",k,e));
     if(S[k].on)l.addTo(map);
   });
   status("Live services connected","ok");
@@ -196,85 +196,39 @@ async function refreshAll(){
 }
 
 async function update(){
-  status("Checking live data feeds");
-  let g=geom();
-  const summaryStatistics=[
-    {statisticType:"sum",onStatisticField:"NumResidentialUnits",outStatisticFieldName:"totalUnits"},
-    {statisticType:"count",onStatisticField:"NumResidentialUnits",outStatisticFieldName:"unitRecords"},
-    {statisticType:"sum",onStatisticField:"FloorArea",outStatisticFieldName:"totalFloorArea"},
-    {statisticType:"count",onStatisticField:"FloorArea",outStatisticFieldName:"floorRecords"},
-    {statisticType:"sum",onStatisticField:"AreaofSite",outStatisticFieldName:"totalSiteArea"},
-    {statisticType:"count",onStatisticField:"AreaofSite",outStatisticFieldName:"siteRecords"}
-  ];
-  try{
-    let [pc,ac,summary,pd,pa,cat,planningMeta,acpMeta]=await Promise.all([
-      q(S.planningPoints.url,{where:cutoff(),returnCountOnly:true,...g}),
-      q(S.acpCases.url,{where:acpCutoff(),returnCountOnly:true,...g}),
-      q(S.planningPoints.url,{
-        where:cutoff(),
-        outStatistics:JSON.stringify(summaryStatistics),
-        returnGeometry:false,
-        ...g
-      }),
-      q(S.planningPoints.url,{
-        where:cutoff(),
-        outStatistics:JSON.stringify([{statisticType:"count",onStatisticField:"OBJECTID",outStatisticFieldName:"n"}]),
-        groupByFieldsForStatistics:"Decision",
-        orderByFields:"n DESC",
-        returnGeometry:false,
-        ...g
-      }),
-      q(S.planningPoints.url,{
-        where:cutoff(),
-        outStatistics:JSON.stringify([{statisticType:"count",onStatisticField:"OBJECTID",outStatisticFieldName:"n"}]),
-        groupByFieldsForStatistics:"PlanningAuthority",
-        orderByFields:"n DESC",
-        resultRecordCount:8,
-        returnGeometry:false,
-        ...g
-      }),
-      q(S.acpCases.url,{
-        where:acpCutoff(),
-        outStatistics:JSON.stringify([{statisticType:"count",onStatisticField:"OBJECTID",outStatisticFieldName:"n"}]),
-        groupByFieldsForStatistics:"CATEGORY",
-        orderByFields:"n DESC",
-        resultRecordCount:8,
-        returnGeometry:false,
-        ...g
-      }),
-      layerInfo(S.planningPoints.url),
-      layerInfo(S.acpCases.url)
-    ]);
-
-    const totals=summary.features?.[0]?.attributes||{};
-    $("#planningCount").textContent=fmt(pc.count);
-    $("#acpCount").textContent=fmt(ac.count);
-    $("#unitCount").textContent=fmt(totals.totalUnits);
-    $("#floorAreaCount").textContent=fmt(Math.round(Number(totals.totalFloorArea)||0));
-    $("#siteAreaCount").textContent=fmt(Math.round(Number(totals.totalSiteArea)||0));
-    $("#unitCoverage").textContent=`${fmt(totals.unitRecords)} records reporting units`;
-    $("#floorCoverage").textContent=`Rounded · ${fmt(totals.floorRecords)} records`;
-    $("#siteCoverage").textContent=`Rounded · ${fmt(totals.siteRecords)} records`;
-    $("#parcelCount").textContent=map.getZoom()>=13?"Visible":"Zoom in";
-
-    draw("planningDecisionChart",pd.features||[],"Decision","n","doughnut");
-    draw("authorityChart",pa.features||[],"PlanningAuthority","n","bar");
-    draw("acpCategoryChart",cat.features||[],"CATEGORY","n","doughnut");
-
-    const checked=new Date();
-    $("#dashboardUpdated").textContent=`Checked ${checked.toLocaleTimeString("en-IE",{hour:"2-digit",minute:"2-digit",second:"2-digit"})}`;
-    const planningEdit=planningMeta.editingInfo?.dataLastEditDate;
-    const acpEdit=acpMeta.editingInfo?.dataLastEditDate;
-    $("#sourceFreshness").textContent=[
-      planningEdit?`Planning feed edited ${dateTime(planningEdit)}`:"Planning feed edit date unavailable",
-      acpEdit?`ACP feed edited ${dateTime(acpEdit)}`:"ACP feed edit date unavailable"
-    ].join(" · ");
-    status("Live data checked","ok");
-  }catch(e){
-    console.error(e);
-    status("Dashboard query failed","error");
-    $("#sourceFreshness").textContent="One or more live feeds could not be checked.";
-  }
+ status("Synchronising live sources");
+ const g=geom();
+ const stats=[
+ {statisticType:"sum",onStatisticField:"NumResidentialUnits",outStatisticFieldName:"totalUnits"},
+ {statisticType:"count",onStatisticField:"NumResidentialUnits",outStatisticFieldName:"unitRecords"},
+ {statisticType:"sum",onStatisticField:"FloorArea",outStatisticFieldName:"totalFloorArea"},
+ {statisticType:"count",onStatisticField:"FloorArea",outStatisticFieldName:"floorRecords"},
+ {statisticType:"sum",onStatisticField:"AreaofSite",outStatisticFieldName:"totalSiteArea"},
+ {statisticType:"count",onStatisticField:"AreaofSite",outStatisticFieldName:"siteRecords"}];
+ const [pc,summary,ac]=await Promise.allSettled([
+ q(S.planningPoints.url,{where:cutoff(),returnCountOnly:true,...g}),
+ q(S.planningPoints.url,{where:cutoff(),outStatistics:JSON.stringify(stats),returnGeometry:false,...g}),
+ q(S.acpCases.url,{where:acpCutoff(),returnCountOnly:true,...g})]);
+ const ok=r=>r.status==="fulfilled";
+ $("#planningCount").textContent=ok(pc)?fmt(pc.value.count):"—";
+ $("#acpCount").textContent=ok(ac)?fmt(ac.value.count):"—";
+ $("#acpAvailability").textContent=ok(ac)?fmt(ac.value.count)+" matching ACP cases in map area":"ACP source unavailable; planning results still shown";
+ if(ok(summary)){
+  const t=summary.value.features?.[0]?.attributes||{};
+  $("#unitCount").textContent=fmt(t.totalUnits);
+  $("#floorAreaCount").textContent=fmt(Math.round(Number(t.totalFloorArea)||0));
+  $("#siteAreaCount").textContent=fmt(Math.round(Number(t.totalSiteArea)||0));
+  $("#unitCoverage").textContent=fmt(t.unitRecords)+" records reporting units";
+  $("#floorCoverage").textContent="Rounded · "+fmt(t.floorRecords)+" records";
+  $("#siteCoverage").textContent="Rounded · "+fmt(t.siteRecords)+" records";
+ }else{
+  ["unitCount","floorAreaCount","siteAreaCount"].forEach(id=>$("#"+id).textContent="—");
+ }
+ const planningOK=ok(pc)&&ok(summary),acpOK=ok(ac);
+ $("#sourceFreshness").textContent=[planningOK?"Planning connected":"Planning query failed",acpOK?"ACP connected":"ACP query failed"].join(" · ");
+ $("#dashboardUpdated").textContent="Checked "+new Date().toLocaleTimeString("en-IE",{hour:"2-digit",minute:"2-digit"});
+ status(planningOK&&acpOK?"Live sources synchronised":planningOK?"Planning synced · ACP unavailable":acpOK?"ACP synced · planning unavailable":"Live sources unavailable",planningOK?"ok":"error");
+ [pc,summary,ac].forEach((r,i)=>{if(!ok(r))console.warn("Query failed",i,r.reason)});
 }
 
 function draw(id,features,label,value,type){
