@@ -178,7 +178,7 @@ function geom(){
 async function q(url,p={}){
   let u=new URL(url+"/query");
   Object.entries({f:"json",cacheHint:false,...p,_ts:Date.now()}).forEach(([k,v])=>u.searchParams.set(k,v));
-  let r=await fetch(u,{cache:"no-store"});
+  let r=await fetch(u,{cache:"no-store",signal:AbortSignal.timeout(20000)});
   if(!r.ok)throw Error(r.status);
   let j=await r.json();
   if(j.error)throw Error(j.error.message);
@@ -212,6 +212,7 @@ async function refreshAll(){
 
 async function update(){
  status("Synchronising live sources");
+ $("#dashboardUpdated").textContent="Checking live feeds…";
  const g=geom();
  const stats=[
  {statisticType:"sum",onStatisticField:"NumResidentialUnits",outStatisticFieldName:"totalUnits"},
@@ -374,4 +375,14 @@ async function loadAI(){
   }catch{}
 }
 
-addEventListener("DOMContentLoaded",init);
+addEventListener("DOMContentLoaded",()=>{
+  try{
+    if(!window.L || !window.L.esri)throw new Error("Mapping library did not load. Check connection or reload.");
+    init();
+  }catch(error){
+    console.error("Residential explorer startup error",error);
+    $("#dashboardUpdated").textContent="Unable to start";
+    $("#sourceFreshness").textContent="Startup error: "+(error?.message||"Unknown error");
+    status("Startup failed","error");
+  }
+});
