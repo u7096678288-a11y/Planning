@@ -16,25 +16,40 @@ const housingWhere=()=>{
   const type=$("#residentialType")?.value||"all";
   const rules={
     oneoff:"NumResidentialUnits = 1",
-    lrd:"(DevelopmentDescription LIKE '%large residential development%' OR DevelopmentDescription LIKE '%LRD%')",
+    lrd:"(DevelopmentDescription LIKE '%large residential development%' OR DevelopmentDescription LIKE '%large-scale residential development%' OR DevelopmentDescription LIKE '%LRD%')",
     shd:"(DevelopmentDescription LIKE '%strategic housing development%' OR DevelopmentDescription LIKE '%SHD%')",
     sdz:"(DevelopmentDescription LIKE '%strategic development zone%' OR DevelopmentDescription LIKE '%SDZ%')"
   };
   return rules[type]||residentialBase();
 };
+const nextDay=v=>new Date(new Date(v+"T00:00:00").getTime()+86400000).toISOString().slice(0,10);
 const cutoff=()=>{
   const parts=[residentialBase()];
-  if($("#dateRange").value!=="all"){
-    let d=new Date(); d.setDate(d.getDate()-Number($("#dateRange").value));
-    parts.push(`ReceivedDate >= DATE '${d.toISOString().slice(0,10)}'`);
-  }
+  const start=$("#customStartDate")?.value,end=$("#customEndDate")?.value;
+  if(start)parts.push(`ReceivedDate >= DATE '${start}'`);
+  if(end)parts.push(`ReceivedDate < DATE '${nextDay(end)}'`);
   const hw=housingWhere(); if(hw!==residentialBase())parts.push(hw);
   const auth=$("#authorityExplorer")?.value;
   if(auth)parts.push(`PlanningAuthority = '${auth.replaceAll("'","''")}'`);
   return parts.map(x=>`(${x})`).join(" AND ");
 };
 const acpCutoff=()=>{
-  const parts=[]; const start=$("#customStartDate")?.value, end=$("#customEndDate")?.value;
+  const parts=[];
+  const start=$("#customStartDate")?.value,end=$("#customEndDate")?.value;
+  if(start)parts.push(`LODGEDON >= DATE '${start}'`);
+  if(end)parts.push(`LODGEDON < DATE '${nextDay(end)}'`);
+  const type=$("#residentialType")?.value||"all";
+  const rules={
+    lrd:"(CATEGORY LIKE '%LRD%' OR DEVDESC LIKE '%large residential development%' OR DEVDESC LIKE '%large-scale residential development%' OR DEVDESC LIKE '%LRD%')",
+    shd:"(CATEGORY LIKE '%SHD%' OR CATEGORY LIKE '%Strategic Housing%' OR DEVDESC LIKE '%strategic housing development%' OR DEVDESC LIKE '%SHD%')",
+    sdz:"(CATEGORY LIKE '%SDZ%' OR DEVDESC LIKE '%strategic development zone%' OR DEVDESC LIKE '%SDZ%')",
+    oneoff:"(DEVDESC LIKE '%one dwelling%' OR DEVDESC LIKE '%single dwelling%' OR DEVDESC LIKE '%one house%')"
+  };
+  if(rules[type])parts.push(rules[type]);
+  const auth=$("#authorityExplorer")?.value;
+  if(auth)parts.push(`PLANINGATY = '${auth.replaceAll("'","''")}'`);
+  return parts.length?parts.map(x=>`(${x})`).join(" AND "):"1=1";
+};
   if(start)parts.push(`LODGEDON >= DATE '${start}'`);
   if(end)parts.push(`LODGEDON < DATE '${new Date(new Date(end+"T00:00:00").getTime()+86400000).toISOString().slice(0,10)}'`);
   const type=$("#residentialType")?.value||"all";
@@ -42,8 +57,7 @@ const acpCutoff=()=>{
   if(terms[type])parts.push(terms[type]);
   return parts.length?parts.map(x=>`(${x})`).join(" AND "):"1=1";
 };
-const periodLabel=()=>{
-  const s=$("#customStartDate")?.value,e=$("#customEndDate")?.value;
+const periodLabel=()=>{const s=$("#customStartDate")?.value,e=$("#customEndDate")?.value;return s||e?`${s||"Start"} to ${e||"today"}`:"All dates";};
   return s||e?`${s||"Start"} to ${e||"today"}`:"All dates";
 };
 
@@ -116,9 +130,11 @@ function bind(){
     update();
   };
   ["#residentialType","#authorityExplorer"].forEach(id=>$(id)?.addEventListener("change",()=>{
-    layers.planningPoints.setWhere(cutoff()); layers.planningSites.setWhere(cutoff());
+    layers.planningPoints.setWhere(cutoff()); layers.planningSites.setWhere(cutoff()); layers.acpCases.setWhere(acpCutoff());
     $("#searchResults").innerHTML=""; updateExplorerSummary(); update();
   }));
+  $("#applyCustomDates")?.addEventListener("click",()=>{ layers.planningPoints.setWhere(cutoff());layers.planningSites.setWhere(cutoff());layers.acpCases.setWhere(acpCutoff());$("#customDateStatus").textContent=periodLabel();updateExplorerSummary();update(); });
+  $("#clearCustomDates")?.addEventListener("click",()=>{ $("#customStartDate").value="";$("#customEndDate").value="";$("#customDateStatus").textContent="All available dates";layers.planningPoints.setWhere(cutoff());layers.planningSites.setWhere(cutoff());layers.acpCases.setWhere(acpCutoff());updateExplorerSummary();update(); });
   $("#applyCustomDates")?.addEventListener("click",()=>{ layers.planningPoints.setWhere(cutoff());layers.planningSites.setWhere(cutoff());layers.acpCases.setWhere(acpCutoff());$("#customDateStatus").textContent=periodLabel();updateExplorerSummary();update(); });
   $("#clearCustomDates")?.addEventListener("click",()=>{ $("#customStartDate").value="";$("#customEndDate").value="";$("#customDateStatus").textContent="All available dates";layers.planningPoints.setWhere(cutoff());layers.planningSites.setWhere(cutoff());layers.acpCases.setWhere(acpCutoff());updateExplorerSummary();update(); });
   $("#refreshButton").onclick=refreshAll;
