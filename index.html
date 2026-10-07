@@ -122,7 +122,7 @@
         <span id="dashboardUpdated" class="muted small">Not yet synced</span>
       </section>
       <p id="sourceFreshness" class="source-freshness">Source update date will appear after synchronisation.</p>
-      <div id="activeFilterSummary" class="residential-filter-note">All residential · All authorities · Last 12 months</div>
+      <div id="activeFilterSummary" class="residential-filter-note">All residential · All authorities · All dates</div>
       <button id="clearSmartFilters" type="button" hidden disabled>Clear filters</button>
 
       <section class="metric-grid residential-metrics" aria-label="Residential headline metrics">
@@ -143,6 +143,7 @@
         <div id="aiInsight"></div>
       </div>
 
+      <p id="acpAvailability" class="data-quality-note" aria-live="polite">Checking ACP cases…</p>
       <p class="data-quality-note">Headline figures are calculated from the live planning feed for the visible map area. Records without reported residential-unit data are excluded from the unit total.</p>
     </aside>
   </main>
@@ -152,10 +153,6 @@
   <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/esri-leaflet@3.0.15/dist/esri-leaflet.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
-  <script src="app.js?v=20261007-4"></script>
-  <script src="smart-filters.js?v=20260803-2"></script>
-  <script src="select-all.js?v=20260803-1"></script>
-  <script src="sync-controller.js?v=20260803-4"></script>
-  <script src="export-share.js?v=20260804-2"></script>
+  <script src="app.js?v=20261008-6"></script>
 </body>
 </html>
