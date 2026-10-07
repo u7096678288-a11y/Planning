@@ -11,11 +11,31 @@ const fmtArea=n=>new Intl.NumberFormat("en-IE",{maximumFractionDigits:2}).format
 const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 let map,layers={},charts={},selected=null,timer;
 
+const residentialBase=()=>"(NumResidentialUnits IS NOT NULL AND NumResidentialUnits > 0)";
+const housingWhere=()=>{
+  const type=$("#residentialType")?.value||"all";
+  const rules={
+    oneoff:"NumResidentialUnits = 1",
+    small:"NumResidentialUnits >= 2 AND NumResidentialUnits <= 49",
+    medium:"NumResidentialUnits >= 50 AND NumResidentialUnits <= 199",
+    large:"NumResidentialUnits >= 200",
+    lrd:"(DevelopmentDescription LIKE '%large residential development%' OR DevelopmentDescription LIKE '%LRD%')",
+    shd:"(DevelopmentDescription LIKE '%strategic housing development%' OR DevelopmentDescription LIKE '%SHD%')",
+    sdz:"(DevelopmentDescription LIKE '%strategic development zone%' OR DevelopmentDescription LIKE '%SDZ%')",
+    priority:"(NumResidentialUnits >= 200 OR DevelopmentDescription LIKE '%large residential development%' OR DevelopmentDescription LIKE '%LRD%' OR DevelopmentDescription LIKE '%strategic housing development%' OR DevelopmentDescription LIKE '%SHD%' OR DevelopmentDescription LIKE '%strategic development zone%' OR DevelopmentDescription LIKE '%SDZ%')"
+  };
+  return rules[type]||residentialBase();
+};
 const cutoff=()=>{
-  if($("#dateRange").value==="all")return "1=1";
-  let d=new Date();
-  d.setDate(d.getDate()-Number($("#dateRange").value));
-  return `ReceivedDate >= DATE '${d.toISOString().slice(0,10)}'`;
+  const parts=[residentialBase()];
+  if($("#dateRange").value!=="all"){
+    let d=new Date(); d.setDate(d.getDate()-Number($("#dateRange").value));
+    parts.push(`ReceivedDate >= DATE '${d.toISOString().slice(0,10)}'`);
+  }
+  const hw=housingWhere(); if(hw!==residentialBase())parts.push(hw);
+  const auth=$("#authorityExplorer")?.value;
+  if(auth)parts.push(`PlanningAuthority = '${auth.replaceAll("'","''")}'`);
+  return parts.map(x=>`(${x})`).join(" AND ");
 };
 const acpCutoff=()=>cutoff().replace("ReceivedDate","LODGEDON");
 const periodLabel=()=>$("#dateRange").options[$("#dateRange").selectedIndex].text;
@@ -29,6 +49,7 @@ function init(){
   makeLayers();
   toggles();
   bind();
+  loadAuthorities();
   update();
   loadAI();
 }
@@ -87,9 +108,27 @@ function bind(){
     $("#searchResults").innerHTML="";
     update();
   };
+  ["#residentialType","#authorityExplorer"].forEach(id=>$(id)?.addEventListener("change",()=>{
+    layers.planningPoints.setWhere(cutoff()); layers.planningSites.setWhere(cutoff());
+    $("#searchResults").innerHTML=""; updateExplorerSummary(); update();
+  }));
   $("#refreshButton").onclick=refreshAll;
   $("#searchForm").onsubmit=search;
   $("#copyBriefButton").onclick=copyBrief;
+}
+
+async function loadAuthorities(){
+  try{
+    const data=await q(S.planningPoints.url,{where:residentialBase(),outFields:"PlanningAuthority",returnGeometry:false,returnDistinctValues:true,orderByFields:"PlanningAuthority"});
+    const select=$("#authorityExplorer");
+    [...new Set((data.features||[]).map(f=>f.attributes.PlanningAuthority).filter(Boolean))].sort().forEach(v=>{const o=document.createElement("option");o.value=v;o.textContent=v;select.append(o);});
+  }catch(e){console.warn("Authority list unavailable",e)}
+  updateExplorerSummary();
+}
+function updateExplorerSummary(){
+  const type=$("#residentialType"); const auth=$("#authorityExplorer");
+  if(!type||!auth)return;
+  $("#activeFilterSummary").textContent=`${type.options[type.selectedIndex].text} · ${auth.value||"All authorities"} · ${periodLabel()}`;
 }
 
 function status(t,m=""){
