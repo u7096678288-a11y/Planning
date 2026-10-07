@@ -34,31 +34,19 @@ const cutoff=()=>{
   return parts.map(x=>`(${x})`).join(" AND ");
 };
 const acpCutoff=()=>{
-  const parts=[];
-  const start=$("#customStartDate")?.value,end=$("#customEndDate")?.value;
-  if(start)parts.push(`LODGEDON >= DATE '${start}'`);
-  if(end)parts.push(`LODGEDON < DATE '${nextDay(end)}'`);
-  const type=$("#residentialType")?.value||"all";
-  const rules={
-    lrd:"(CATEGORY LIKE '%LRD%' OR DEVDESC LIKE '%large residential development%' OR DEVDESC LIKE '%large-scale residential development%' OR DEVDESC LIKE '%LRD%')",
-    shd:"(CATEGORY LIKE '%SHD%' OR CATEGORY LIKE '%Strategic Housing%' OR DEVDESC LIKE '%strategic housing development%' OR DEVDESC LIKE '%SHD%')",
-    sdz:"(CATEGORY LIKE '%SDZ%' OR DEVDESC LIKE '%strategic development zone%' OR DEVDESC LIKE '%SDZ%')",
-    oneoff:"(DEVDESC LIKE '%one dwelling%' OR DEVDESC LIKE '%single dwelling%' OR DEVDESC LIKE '%one house%')"
-  };
-  if(rules[type])parts.push(rules[type]);
-  const auth=$("#authorityExplorer")?.value;
-  if(auth)parts.push(`PLANINGATY = '${auth.replaceAll("'","''")}'`);
-  return parts.length?parts.map(x=>`(${x})`).join(" AND "):"1=1";
+ const parts=[];
+ const start=$("#customStartDate")?.value,end=$("#customEndDate")?.value;
+ if(start)parts.push(`LODGEDON >= DATE '${start}'`);
+ if(end)parts.push(`LODGEDON < DATE '${nextDay(end)}'`);
+ const type=$("#residentialType")?.value||"all";
+ const residential="(CATEGORY LIKE '%Housing%' OR CATEGORY LIKE '%LRD%' OR CATEGORY LIKE '%SHD%' OR DEVDESC LIKE '%residential%' OR DEVDESC LIKE '%dwelling%' OR DEVDESC LIKE '%housing%' OR DEVDESC LIKE '%apartments%' OR DEVDESC LIKE '%houses%')";
+ const rules={all:residential,oneoff:"(DEVDESC LIKE '%single dwelling%' OR DEVDESC LIKE '%one dwelling%' OR DEVDESC LIKE '%one house%')",lrd:"(CATEGORY LIKE '%LRD%' OR DEVDESC LIKE '%large residential development%' OR DEVDESC LIKE '%large-scale residential development%' OR DEVDESC LIKE '%LRD%')",shd:"(CATEGORY LIKE '%SHD%' OR CATEGORY LIKE '%Strategic Housing%' OR DEVDESC LIKE '%strategic housing development%' OR DEVDESC LIKE '%SHD%')",sdz:"(CATEGORY LIKE '%SDZ%' OR DEVDESC LIKE '%strategic development zone%' OR DEVDESC LIKE '%SDZ%')"};
+ parts.push(rules[type]||residential);
+ return parts.map(x=>`(${x})`).join(" AND ");
 };
-  if(start)parts.push(`LODGEDON >= DATE '${start}'`);
-  if(end)parts.push(`LODGEDON < DATE '${new Date(new Date(end+"T00:00:00").getTime()+86400000).toISOString().slice(0,10)}'`);
-  const type=$("#residentialType")?.value||"all";
-  const terms={oneoff:"(DEVDESC LIKE '%dwelling%' OR DEVDESC LIKE '%house%')",lrd:"(DEVDESC LIKE '%large residential development%' OR DEVDESC LIKE '%LRD%')",shd:"(DEVDESC LIKE '%strategic housing development%' OR DEVDESC LIKE '%SHD%')",sdz:"(DEVDESC LIKE '%strategic development zone%' OR DEVDESC LIKE '%SDZ%')"};
-  if(terms[type])parts.push(terms[type]);
-  return parts.length?parts.map(x=>`(${x})`).join(" AND "):"1=1";
-};
-const periodLabel=()=>{const s=$("#customStartDate")?.value,e=$("#customEndDate")?.value;return s||e?`${s||"Start"} to ${e||"today"}`:"All dates";};
-  return s||e?`${s||"Start"} to ${e||"today"}`:"All dates";
+const periodLabel=()=>{
+ const s=$("#customStartDate")?.value,e=$("#customEndDate")?.value;
+ return s||e?`${s||"Start"} to ${e||"today"}`:"All dates";
 };
 
 function init(){
@@ -98,7 +86,7 @@ function makeLayers(){
   });
   Object.entries(layers).forEach(([k,l])=>{
     l.on("click",e=>select(k,e.layer.feature,e.latlng));
-    l.on("requesterror",()=>status("Some source requests failed","error"));
+    l.on("requesterror",e=>console.warn("Map layer request failed",k,e));
     if(S[k].on)l.addTo(map);
   });
   status("Live services connected","ok");
@@ -135,11 +123,24 @@ function bind(){
   }));
   $("#applyCustomDates")?.addEventListener("click",()=>{ layers.planningPoints.setWhere(cutoff());layers.planningSites.setWhere(cutoff());layers.acpCases.setWhere(acpCutoff());$("#customDateStatus").textContent=periodLabel();updateExplorerSummary();update(); });
   $("#clearCustomDates")?.addEventListener("click",()=>{ $("#customStartDate").value="";$("#customEndDate").value="";$("#customDateStatus").textContent="All available dates";layers.planningPoints.setWhere(cutoff());layers.planningSites.setWhere(cutoff());layers.acpCases.setWhere(acpCutoff());updateExplorerSummary();update(); });
-  $("#applyCustomDates")?.addEventListener("click",()=>{ layers.planningPoints.setWhere(cutoff());layers.planningSites.setWhere(cutoff());layers.acpCases.setWhere(acpCutoff());$("#customDateStatus").textContent=periodLabel();updateExplorerSummary();update(); });
-  $("#clearCustomDates")?.addEventListener("click",()=>{ $("#customStartDate").value="";$("#customEndDate").value="";$("#customDateStatus").textContent="All available dates";layers.planningPoints.setWhere(cutoff());layers.planningSites.setWhere(cutoff());layers.acpCases.setWhere(acpCutoff());updateExplorerSummary();update(); });
   $("#refreshButton").onclick=refreshAll;
   $("#searchForm").onsubmit=search;
   $("#copyBriefButton").onclick=copyBrief;
+  $("#shareViewButton").onclick=async()=>{try{await navigator.clipboard.writeText(location.href);status("View link copied","ok")}catch{status("Copy link unavailable","error")}};
+  $("#resetDashboardButton").onclick=()=>{
+    $("#residentialType").value="all";$("#authorityExplorer").value="";
+    $("#customStartDate").value="";$("#customEndDate").value="";
+    $("#customDateStatus").textContent="All available dates";
+    $("#searchInput").value="";$("#searchResults").innerHTML="";
+    layers.planningPoints.setWhere(cutoff());layers.planningSites.setWhere(cutoff());layers.acpCases.setWhere(acpCutoff());
+    updateExplorerSummary();update();
+  };
+  $("#exportViewButton").onclick=()=>{
+    const ids=[["Residential applications","planningCount"],["Residential units","unitCount"],["Floor area (m²)","floorAreaCount"],["Site area","siteAreaCount"],["ACP matching cases","acpCount"]];
+    const csv=[["Metric","Value"],...ids.map(([name,id])=>[name,$("#"+id).textContent])].map(row=>row.map(v=>JSON.stringify(v)).join(",")).join("\\r\\n");
+    const url=URL.createObjectURL(new Blob([csv],{type:"text/csv;charset=utf-8"}));
+    const link=document.createElement("a");link.href=url;link.download="residential-overview.csv";link.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
+  };
 }
 
 async function loadAuthorities(){
@@ -210,85 +211,39 @@ async function refreshAll(){
 }
 
 async function update(){
-  status("Checking live data feeds");
-  let g=geom();
-  const summaryStatistics=[
-    {statisticType:"sum",onStatisticField:"NumResidentialUnits",outStatisticFieldName:"totalUnits"},
-    {statisticType:"count",onStatisticField:"NumResidentialUnits",outStatisticFieldName:"unitRecords"},
-    {statisticType:"sum",onStatisticField:"FloorArea",outStatisticFieldName:"totalFloorArea"},
-    {statisticType:"count",onStatisticField:"FloorArea",outStatisticFieldName:"floorRecords"},
-    {statisticType:"sum",onStatisticField:"AreaofSite",outStatisticFieldName:"totalSiteArea"},
-    {statisticType:"count",onStatisticField:"AreaofSite",outStatisticFieldName:"siteRecords"}
-  ];
-  try{
-    let [pc,ac,summary,pd,pa,cat,planningMeta,acpMeta]=await Promise.all([
-      q(S.planningPoints.url,{where:cutoff(),returnCountOnly:true,...g}),
-      q(S.acpCases.url,{where:acpCutoff(),returnCountOnly:true,...g}),
-      q(S.planningPoints.url,{
-        where:cutoff(),
-        outStatistics:JSON.stringify(summaryStatistics),
-        returnGeometry:false,
-        ...g
-      }),
-      q(S.planningPoints.url,{
-        where:cutoff(),
-        outStatistics:JSON.stringify([{statisticType:"count",onStatisticField:"OBJECTID",outStatisticFieldName:"n"}]),
-        groupByFieldsForStatistics:"Decision",
-        orderByFields:"n DESC",
-        returnGeometry:false,
-        ...g
-      }),
-      q(S.planningPoints.url,{
-        where:cutoff(),
-        outStatistics:JSON.stringify([{statisticType:"count",onStatisticField:"OBJECTID",outStatisticFieldName:"n"}]),
-        groupByFieldsForStatistics:"PlanningAuthority",
-        orderByFields:"n DESC",
-        resultRecordCount:8,
-        returnGeometry:false,
-        ...g
-      }),
-      q(S.acpCases.url,{
-        where:acpCutoff(),
-        outStatistics:JSON.stringify([{statisticType:"count",onStatisticField:"OBJECTID",outStatisticFieldName:"n"}]),
-        groupByFieldsForStatistics:"CATEGORY",
-        orderByFields:"n DESC",
-        resultRecordCount:8,
-        returnGeometry:false,
-        ...g
-      }),
-      layerInfo(S.planningPoints.url),
-      layerInfo(S.acpCases.url)
-    ]);
-
-    const totals=summary.features?.[0]?.attributes||{};
-    $("#planningCount").textContent=fmt(pc.count);
-    $("#acpCount").textContent=fmt(ac.count);
-    $("#unitCount").textContent=fmt(totals.totalUnits);
-    $("#floorAreaCount").textContent=fmt(Math.round(Number(totals.totalFloorArea)||0));
-    $("#siteAreaCount").textContent=fmt(Math.round(Number(totals.totalSiteArea)||0));
-    $("#unitCoverage").textContent=`${fmt(totals.unitRecords)} records reporting units`;
-    $("#floorCoverage").textContent=`Rounded · ${fmt(totals.floorRecords)} records`;
-    $("#siteCoverage").textContent=`Rounded · ${fmt(totals.siteRecords)} records`;
-    $("#parcelCount").textContent=map.getZoom()>=13?"Visible":"Zoom in";
-
-    draw("planningDecisionChart",pd.features||[],"Decision","n","doughnut");
-    draw("authorityChart",pa.features||[],"PlanningAuthority","n","bar");
-    draw("acpCategoryChart",cat.features||[],"CATEGORY","n","doughnut");
-
-    const checked=new Date();
-    $("#dashboardUpdated").textContent=`Checked ${checked.toLocaleTimeString("en-IE",{hour:"2-digit",minute:"2-digit",second:"2-digit"})}`;
-    const planningEdit=planningMeta.editingInfo?.dataLastEditDate;
-    const acpEdit=acpMeta.editingInfo?.dataLastEditDate;
-    $("#sourceFreshness").textContent=[
-      planningEdit?`Planning feed edited ${dateTime(planningEdit)}`:"Planning feed edit date unavailable",
-      acpEdit?`ACP feed edited ${dateTime(acpEdit)}`:"ACP feed edit date unavailable"
-    ].join(" · ");
-    status("Live data checked","ok");
-  }catch(e){
-    console.error(e);
-    status("Dashboard query failed","error");
-    $("#sourceFreshness").textContent="One or more live feeds could not be checked.";
-  }
+ status("Synchronising live sources");
+ const g=geom();
+ const stats=[
+ {statisticType:"sum",onStatisticField:"NumResidentialUnits",outStatisticFieldName:"totalUnits"},
+ {statisticType:"count",onStatisticField:"NumResidentialUnits",outStatisticFieldName:"unitRecords"},
+ {statisticType:"sum",onStatisticField:"FloorArea",outStatisticFieldName:"totalFloorArea"},
+ {statisticType:"count",onStatisticField:"FloorArea",outStatisticFieldName:"floorRecords"},
+ {statisticType:"sum",onStatisticField:"AreaofSite",outStatisticFieldName:"totalSiteArea"},
+ {statisticType:"count",onStatisticField:"AreaofSite",outStatisticFieldName:"siteRecords"}];
+ const [pc,summary,ac]=await Promise.allSettled([
+ q(S.planningPoints.url,{where:cutoff(),returnCountOnly:true,...g}),
+ q(S.planningPoints.url,{where:cutoff(),outStatistics:JSON.stringify(stats),returnGeometry:false,...g}),
+ q(S.acpCases.url,{where:acpCutoff(),returnCountOnly:true,...g})]);
+ const ok=r=>r.status==="fulfilled";
+ $("#planningCount").textContent=ok(pc)?fmt(pc.value.count):"—";
+ $("#acpCount").textContent=ok(ac)?fmt(ac.value.count):"—";
+ $("#acpAvailability").textContent=ok(ac)?fmt(ac.value.count)+" matching ACP cases in map area":"ACP source unavailable; planning results still shown";
+ if(ok(summary)){
+  const t=summary.value.features?.[0]?.attributes||{};
+  $("#unitCount").textContent=fmt(t.totalUnits);
+  $("#floorAreaCount").textContent=fmt(Math.round(Number(t.totalFloorArea)||0));
+  $("#siteAreaCount").textContent=fmt(Math.round(Number(t.totalSiteArea)||0));
+  $("#unitCoverage").textContent=fmt(t.unitRecords)+" records reporting units";
+  $("#floorCoverage").textContent="Rounded · "+fmt(t.floorRecords)+" records";
+  $("#siteCoverage").textContent="Rounded · "+fmt(t.siteRecords)+" records";
+ }else{
+  ["unitCount","floorAreaCount","siteAreaCount"].forEach(id=>$("#"+id).textContent="—");
+ }
+ const planningOK=ok(pc)&&ok(summary),acpOK=ok(ac);
+ $("#sourceFreshness").textContent=[planningOK?"Planning connected":"Planning query failed",acpOK?"ACP connected":"ACP query failed"].join(" · ");
+ $("#dashboardUpdated").textContent="Checked "+new Date().toLocaleTimeString("en-IE",{hour:"2-digit",minute:"2-digit"});
+ status(planningOK&&acpOK?"Live sources synchronised":planningOK?"Planning synced · ACP unavailable":acpOK?"ACP synced · planning unavailable":"Live sources unavailable",planningOK?"ok":"error");
+ [pc,summary,ac].forEach((r,i)=>{if(!ok(r))console.warn("Query failed",i,r.reason)});
 }
 
 function draw(id,features,label,value,type){
@@ -377,18 +332,20 @@ async function search(e){
   let wa=raw?`(${acpCutoff()}) AND ${acpText}`:acpCutoff();
   $("#searchStatus").textContent=`Searching ${periodLabel()}…`;
   try{
-    let [a,b]=await Promise.all([
+    const [planningResult,acpResult]=await Promise.allSettled([
       q(S.planningPoints.url,{where:wp,outFields:"*",returnGeometry:true,outSR:4326,orderByFields:"ReceivedDate DESC",resultRecordCount:50,f:"geojson"}),
       q(S.acpCases.url,{where:wa,outFields:"*",returnGeometry:true,outSR:4326,orderByFields:"LODGEDON DESC",resultRecordCount:50,f:"geojson"})
     ]);
+    if(planningResult.status==="rejected"&&acpResult.status==="rejected")throw Error("Both source searches failed");
+    if(acpResult.status==="rejected")console.warn("ACP search failed",acpResult.reason);
     let all=[
-      ...(a.features||[]).map(f=>["planningPoints",f]),
-      ...(b.features||[]).map(f=>["acpCases",f])
+      ...(planningResult.status==="fulfilled"?(planningResult.value.features||[]):[]).map(f=>["planningPoints",f]),
+      ...(acpResult.status==="fulfilled"?(acpResult.value.features||[]):[]).map(f=>["acpCases",f])
     ].sort((x,y)=>recordDate(y)-recordDate(x));
     $("#searchResults").innerHTML=all.length?all.map(resultMarkup).join(""):'<div class="empty-state">No matching records were returned for this period.</div>';
     $("#searchResults").querySelectorAll("button").forEach(bu=>bu.onclick=()=>focus(all[bu.dataset.i]));
     let qualifier=raw?` matching “${raw}”`:"";
-    $("#searchStatus").textContent=`${all.length} result${all.length===1?"":"s"}${qualifier} in ${periodLabel()}${all.length===100?" (first 100)":""}.`;
+    $("#searchStatus").textContent=`${all.length} result${all.length===1?"":"s"}${qualifier} in ${periodLabel()}${all.length===100?" (first 100)":""}${acpResult.status==="rejected"?" · ACP search unavailable":""}.`;
   }catch(e){
     console.error(e);
     $("#searchStatus").textContent="Search could not be completed";
