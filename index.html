@@ -119,9 +119,9 @@
     <aside class="sidebar right-panel light-dashboard" aria-label="Residential dashboard">
       <section class="panel-section dashboard-heading">
         <div><p class="eyebrow panel-eyebrow">VISIBLE MAP AREA</p><h2>Residential overview</h2></div>
-        <span id="dashboardUpdated" class="muted small">Not yet synced</span>
+        <span id="dashboardUpdated" class="muted small">Starting live checks…</span>
       </section>
-      <p id="sourceFreshness" class="source-freshness">Source update date will appear after synchronisation.</p>
+      <p id="sourceFreshness" class="source-freshness" aria-live="polite">Connecting to live planning and ACP services…</p>
       <div id="activeFilterSummary" class="residential-filter-note">All residential · All authorities · All dates</div>
       <button id="clearSmartFilters" type="button" hidden disabled>Clear filters</button>
 
@@ -150,9 +150,9 @@
 
   <noscript>This tool requires JavaScript to query the live public ArcGIS and CKAN services.</noscript>
 
-  <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/esri-leaflet@3.0.15/dist/esri-leaflet.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js" onerror="this.onerror=null;this.src='https://unpkg.com/leaflet@1.9.4/dist/leaflet.js'"></script>
+  <script src="https://cdn.jsdelivr.net/npm/esri-leaflet@3.0.15/dist/esri-leaflet.js" onerror="this.onerror=null;this.src='https://unpkg.com/esri-leaflet@3.0.15/dist/esri-leaflet.js'"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
-  <script src="app.js?v=20261008-6"></script>
+  <script src="app.js?v=20261008-r2"></script>
 </body>
 </html>
