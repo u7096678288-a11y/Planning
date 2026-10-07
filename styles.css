@@ -71,3 +71,27 @@ body{margin:0;font:14px Arial,sans-serif;color:var(--ink);background:var(--soft)
   .subtitle{display:none}
   .metric-grid{grid-template-columns:1fr 1fr}
 }
+
+
+/* Lightweight residential workspace */
+.residential-shell{grid-template-columns:260px 310px minmax(480px,1fr)}
+.light-panel{background:#fbfcfc}
+.search-primary{padding:20px 16px 16px}
+.panel-eyebrow{color:#3f7e82;margin-bottom:6px}
+.search-primary h2,.light-dashboard h2{font-size:16px;font-weight:700}
+.light-filter{border-bottom:1px solid var(--line);background:#fff}
+.light-filter summary{padding:14px 16px;cursor:pointer;font-size:12px;font-weight:700;color:#314b5b;list-style:none}
+.light-filter summary::after{content:"+";float:right;color:var(--muted);font-size:16px;font-weight:400}
+.light-filter[open] summary::after{content:"–"}
+.compact-section{padding-top:4px;border:0}
+.selected-light{margin-top:4px}
+.hidden-layer-controls,.compat-hidden{display:none!important}
+.light-dashboard{background:#fbfcfc;box-shadow:none}
+.residential-filter-note{margin:0;padding:10px 16px;border-bottom:1px solid var(--line);font-size:11px;color:var(--muted);background:#fff}
+.residential-metrics{grid-template-columns:1fr 1fr;padding:14px;gap:10px}
+.residential-metrics .metric-card{box-shadow:none;background:#fff;padding:13px}
+.residential-metrics .metric-card strong{font-size:22px}
+.light-dashboard .data-quality-note{padding:14px 16px;border-top:1px solid var(--line);border-bottom:0;background:#fff}
+@media(max-width:1200px){.residential-shell{grid-template-columns:240px 290px minmax(380px,1fr)}}
+@media(max-width:950px){.residential-shell{grid-template-columns:240px minmax(0,1fr);grid-template-areas:"controls dashboard" "controls map"}}
+@media(max-width:700px){.residential-shell{grid-template-columns:1fr;grid-template-areas:"controls" "dashboard" "map"}}
