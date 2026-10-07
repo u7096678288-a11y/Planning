@@ -332,18 +332,20 @@ async function search(e){
   let wa=raw?`(${acpCutoff()}) AND ${acpText}`:acpCutoff();
   $("#searchStatus").textContent=`Searching ${periodLabel()}…`;
   try{
-    let [a,b]=await Promise.all([
+    const [planningResult,acpResult]=await Promise.allSettled([
       q(S.planningPoints.url,{where:wp,outFields:"*",returnGeometry:true,outSR:4326,orderByFields:"ReceivedDate DESC",resultRecordCount:50,f:"geojson"}),
       q(S.acpCases.url,{where:wa,outFields:"*",returnGeometry:true,outSR:4326,orderByFields:"LODGEDON DESC",resultRecordCount:50,f:"geojson"})
     ]);
+    if(planningResult.status==="rejected"&&acpResult.status==="rejected")throw Error("Both source searches failed");
+    if(acpResult.status==="rejected")console.warn("ACP search failed",acpResult.reason);
     let all=[
-      ...(a.features||[]).map(f=>["planningPoints",f]),
-      ...(b.features||[]).map(f=>["acpCases",f])
+      ...(planningResult.status==="fulfilled"?(planningResult.value.features||[]):[]).map(f=>["planningPoints",f]),
+      ...(acpResult.status==="fulfilled"?(acpResult.value.features||[]):[]).map(f=>["acpCases",f])
     ].sort((x,y)=>recordDate(y)-recordDate(x));
     $("#searchResults").innerHTML=all.length?all.map(resultMarkup).join(""):'<div class="empty-state">No matching records were returned for this period.</div>';
     $("#searchResults").querySelectorAll("button").forEach(bu=>bu.onclick=()=>focus(all[bu.dataset.i]));
     let qualifier=raw?` matching “${raw}”`:"";
-    $("#searchStatus").textContent=`${all.length} result${all.length===1?"":"s"}${qualifier} in ${periodLabel()}${all.length===100?" (first 100)":""}.`;
+    $("#searchStatus").textContent=`${all.length} result${all.length===1?"":"s"}${qualifier} in ${periodLabel()}${all.length===100?" (first 100)":""}${acpResult.status==="rejected"?" · ACP search unavailable":""}.`;
   }catch(e){
     console.error(e);
     $("#searchStatus").textContent="Search could not be completed";
