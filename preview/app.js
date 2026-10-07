@@ -16,13 +16,9 @@ const housingWhere=()=>{
   const type=$("#residentialType")?.value||"all";
   const rules={
     oneoff:"NumResidentialUnits = 1",
-    small:"NumResidentialUnits >= 2 AND NumResidentialUnits <= 49",
-    medium:"NumResidentialUnits >= 50 AND NumResidentialUnits <= 199",
-    large:"NumResidentialUnits >= 200",
     lrd:"(DevelopmentDescription LIKE '%large residential development%' OR DevelopmentDescription LIKE '%LRD%')",
     shd:"(DevelopmentDescription LIKE '%strategic housing development%' OR DevelopmentDescription LIKE '%SHD%')",
-    sdz:"(DevelopmentDescription LIKE '%strategic development zone%' OR DevelopmentDescription LIKE '%SDZ%')",
-    priority:"(NumResidentialUnits >= 200 OR DevelopmentDescription LIKE '%large residential development%' OR DevelopmentDescription LIKE '%LRD%' OR DevelopmentDescription LIKE '%strategic housing development%' OR DevelopmentDescription LIKE '%SHD%' OR DevelopmentDescription LIKE '%strategic development zone%' OR DevelopmentDescription LIKE '%SDZ%')"
+    sdz:"(DevelopmentDescription LIKE '%strategic development zone%' OR DevelopmentDescription LIKE '%SDZ%')"
   };
   return rules[type]||residentialBase();
 };
@@ -37,8 +33,19 @@ const cutoff=()=>{
   if(auth)parts.push(`PlanningAuthority = '${auth.replaceAll("'","''")}'`);
   return parts.map(x=>`(${x})`).join(" AND ");
 };
-const acpCutoff=()=>cutoff().replace("ReceivedDate","LODGEDON");
-const periodLabel=()=>$("#dateRange").options[$("#dateRange").selectedIndex].text;
+const acpCutoff=()=>{
+  const parts=[]; const start=$("#customStartDate")?.value, end=$("#customEndDate")?.value;
+  if(start)parts.push(`LODGEDON >= DATE '${start}'`);
+  if(end)parts.push(`LODGEDON < DATE '${new Date(new Date(end+"T00:00:00").getTime()+86400000).toISOString().slice(0,10)}'`);
+  const type=$("#residentialType")?.value||"all";
+  const terms={oneoff:"(DEVDESC LIKE '%dwelling%' OR DEVDESC LIKE '%house%')",lrd:"(DEVDESC LIKE '%large residential development%' OR DEVDESC LIKE '%LRD%')",shd:"(DEVDESC LIKE '%strategic housing development%' OR DEVDESC LIKE '%SHD%')",sdz:"(DEVDESC LIKE '%strategic development zone%' OR DEVDESC LIKE '%SDZ%')"};
+  if(terms[type])parts.push(terms[type]);
+  return parts.length?parts.map(x=>`(${x})`).join(" AND "):"1=1";
+};
+const periodLabel=()=>{
+  const s=$("#customStartDate")?.value,e=$("#customEndDate")?.value;
+  return s||e?`${s||"Start"} to ${e||"today"}`:"All dates";
+};
 
 function init(){
   map=L.map("map").setView([53.35,-8],7);
@@ -112,6 +119,8 @@ function bind(){
     layers.planningPoints.setWhere(cutoff()); layers.planningSites.setWhere(cutoff());
     $("#searchResults").innerHTML=""; updateExplorerSummary(); update();
   }));
+  $("#applyCustomDates")?.addEventListener("click",()=>{ layers.planningPoints.setWhere(cutoff());layers.planningSites.setWhere(cutoff());layers.acpCases.setWhere(acpCutoff());$("#customDateStatus").textContent=periodLabel();updateExplorerSummary();update(); });
+  $("#clearCustomDates")?.addEventListener("click",()=>{ $("#customStartDate").value="";$("#customEndDate").value="";$("#customDateStatus").textContent="All available dates";layers.planningPoints.setWhere(cutoff());layers.planningSites.setWhere(cutoff());layers.acpCases.setWhere(acpCutoff());updateExplorerSummary();update(); });
   $("#refreshButton").onclick=refreshAll;
   $("#searchForm").onsubmit=search;
   $("#copyBriefButton").onclick=copyBrief;
@@ -239,11 +248,11 @@ async function update(){
     $("#planningCount").textContent=fmt(pc.count);
     $("#acpCount").textContent=fmt(ac.count);
     $("#unitCount").textContent=fmt(totals.totalUnits);
-    $("#floorAreaCount").textContent=fmtArea(totals.totalFloorArea);
-    $("#siteAreaCount").textContent=fmtArea(totals.totalSiteArea);
+    $("#floorAreaCount").textContent=fmt(Math.round(Number(totals.totalFloorArea)||0));
+    $("#siteAreaCount").textContent=fmt(Math.round(Number(totals.totalSiteArea)||0));
     $("#unitCoverage").textContent=`${fmt(totals.unitRecords)} records reporting units`;
-    $("#floorCoverage").textContent=`${fmt(totals.floorRecords)} records reporting floor area`;
-    $("#siteCoverage").textContent=`${fmt(totals.siteRecords)} records reporting site area`;
+    $("#floorCoverage").textContent=`Rounded · ${fmt(totals.floorRecords)} records`;
+    $("#siteCoverage").textContent=`Rounded · ${fmt(totals.siteRecords)} records`;
     $("#parcelCount").textContent=map.getZoom()>=13?"Visible":"Zoom in";
 
     draw("planningDecisionChart",pd.features||[],"Decision","n","doughnut");
