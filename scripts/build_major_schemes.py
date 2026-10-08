@@ -178,6 +178,7 @@ def scan_cork(found):
                         "address": clean(row.get("DevelopmentAddress"), 180),
                         "description": clean(row.get("DevelopmentDescription"), 700),
                         "decision": clean(row.get("Decision"), 90),
+                        "appealRef": clean(row.get("AppealRefNum"), 80),
                         "received": date_value(row.get("ReceivedDate")),
                         "applicant": native or previous.get("applicant", ""),
                         "applicantSourceType": "Cork City Council open data" if native else previous.get("applicantSourceType", ""),
