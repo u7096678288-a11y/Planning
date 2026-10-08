@@ -421,7 +421,7 @@ function recordWebLinks(p,kind){
  for(const match of desc.matchAll(regex))add(match[0],"Website mentioned in description");
  const href=/(?:href\s*=\s*["'])(https?:\/\/[^"']+)(?:["'])/gi;
  for(const match of desc.matchAll(href))add(match[1],"Website mentioned in description");
- if(kind==="acp"&&!found.size&&/^\d{6}$/.test(String(p.ABPCASEID||"").trim()))
+ if(kind==="acp"&&!found.has(validWebAddress(p.LINKABPWEB))&&/^\d{6}$/.test(String(p.ABPCASEID||"").trim()))
   add("https://www.pleanala.ie/en-ie/case/"+String(p.ABPCASEID).trim(),"Open official ACP case");
  return [...found.values()];
 }
@@ -517,7 +517,7 @@ function recordDate(item){
 }
 
 function resultMarkup(item,i){
-  let [k,f]=item,p=f.properties||{},planning=k==="planningPoints";
+  let [k,f]=item,p=f.properties||{},planning=S[k]?.type==="planning";
   let ref=planning?(p.ApplicationNumber||"Planning application"):(p.ABPCASEID||"ACP case");
   let address=planning?p.DevelopmentAddress:p.DEVADDRESS;
   let when=planning?p.ReceivedDate:p.LODGEDON;
