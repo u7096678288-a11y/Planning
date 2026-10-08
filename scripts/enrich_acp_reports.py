@@ -16,7 +16,7 @@ from urllib.request import Request, urlopen
 
 from pypdf import PdfReader
 
-ROOT=Path("preview-r9/data")
+ROOT=Path("preview-r10/data")
 CATALOGUE=ROOT/"major-schemes.json"
 EVIDENCE=ROOT/"applicant-enrichment.json"
 TODAY=dt.date.today().isoformat()
