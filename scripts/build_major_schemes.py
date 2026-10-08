@@ -24,7 +24,7 @@ spec.loader.exec_module(base)
 MIN_UNITS = 101
 PAGE_SIZE = 500
 MAX_PAGES = 150
-MAX_LOOKUPS = 75
+MAX_LOOKUPS = 220
 MAX_SECONDS = 470
 started = time.monotonic()
 base.MAX_SITE_VISITS = MAX_LOOKUPS + 5
@@ -113,8 +113,9 @@ def main():
             item["applicant"] = proof["applicant"]
             item["applicantSourceType"] = "Official council application"
     missing = [p for p in found.values() if not p["applicant"] and base.official_url(p.get("source", ""))]
-    # Oldest unchecked first, with unvisited records ahead of repeat failures.
-    missing.sort(key=lambda p: (checked.get(p["key"], ""), p.get("received", "")), reverse=False)
+    # Prioritise recent applications that have not yet been checked; rotate failures.
+    missing.sort(key=lambda p: p.get("received", ""), reverse=True)
+    missing.sort(key=lambda p: bool(checked.get(p["key"])))
     visited = 0
     added = 0
     for item in missing:
