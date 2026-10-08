@@ -18,7 +18,7 @@ const start=new Date(end.getTime()-28*DAY);
 const fmt=n=>new Intl.NumberFormat("en-IE").format(n||0);
 const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const clean=v=>String(v||"").toLowerCase().replace(/[^a-z0-9]/g,"");
-const key=(authority,ref)=>clean(authority)+"|"+clean(ref);
+const key=(authority,ref)=>"planning|"+clean(authority)+"|"+clean(ref);
 const dateValue=v=>{
  if(v==null||v==="")return 0;
  if(typeof v==="number")return v<1e11?v*1000:v;
