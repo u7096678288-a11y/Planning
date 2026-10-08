@@ -2,6 +2,7 @@
 const $=s=>document.querySelector(s);
 const SOURCE="https://services.arcgis.com/NzlPQPKn5QF9v2US/arcgis/rest/services/IrishPlanningApplications/FeatureServer/0/query";
 const STORAGE="radharc.major-schemes.edits.v1";
+const ACP_SOURCE="https://services-eu1.arcgis.com/o56BSnENmD5mYs3j/ArcGIS/rest/services/Cases_2016_Onwards/FeatureServer/3";
 const CATS=[
  ["submitted","Submitted","#287bb4","ReceivedDate"],
  ["granted","Granted","#319668","GrantDate"],
@@ -130,13 +131,14 @@ function normalizeCatalogue(p){
 function classify(p){
  const out=[];
  const refused=/\b(refus|reject|deny)\w*/i.test(p.decision||"");
+ const isAppeal=p.kind!=="acp"||Boolean(p.isAppeal||p.possibleDuplicateOf||p.planningReference);
  const appealGranted=/\b(grant\w*|approv\w*|permission)\b/i.test(p.acpOutcome||"")&&!/\b(refus|reject|quash)\b/i.test(p.acpOutcome||"");
  if(p.kind!=="acp"&&inWindow(p.received))out.push(["submitted",p.received]);
  if(p.kind!=="acp"&&inWindow(p.councilGrantDate)&&!refused)out.push(["granted",p.councilGrantDate]);
  if(inWindow(p.withdrawnDate))out.push(["withdrawn",p.withdrawnDate]);
  if(inWindow(p.councilDecisionDate)&&refused)out.push(["refused",p.councilDecisionDate]);
- if(inWindow(p.acpLodgedDate||((p.kind==="acp")?p.received:null)))out.push(["appealed",p.acpLodgedDate||p.received]);
- if(inWindow(p.acpDecisionDate)&&appealGranted)out.push(["appealGranted",p.acpDecisionDate]);
+ if(isAppeal&&inWindow(p.acpLodgedDate||((p.kind==="acp")?p.received:null)))out.push(["appealed",p.acpLodgedDate||p.received]);
+ if(isAppeal&&inWindow(p.acpDecisionDate)&&appealGranted)out.push(["appealGranted",p.acpDecisionDate]);
  // A project is never marked started without a verified BCMS project match.
  if(inWindow(p.bcmsCommencementDate)&&p.bcmsEvidenceUrl)out.push(["started",p.bcmsCommencementDate]);
  return out.map(([status,when])=>({status,when,p}));
@@ -253,44 +255,111 @@ function exportCsv(name,items){
  const blob=new Blob(["\ufeff",data],{type:"text/csv;charset=utf-8"});const url=URL.createObjectURL(blob);
  const a=document.createElement("a");a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),2000);
 }
-async function arcgisRecent(){
- const fields=["ReceivedDate","GrantDate","WithdrawnDate","DecisionDate","AppealSubmittedDate","AppealDecisionDate"];
- const cutoff=isoDay(start.getTime())+" 00:00:00";
- const where="NumResidentialUnits > 100 AND ("+fields.map(f=>f+" >= TIMESTAMP '"+cutoff+"'").join(" OR ")+")";
- const out=[];
- for(let offset=0;offset<10000;offset+=1000){
-  const q=new URLSearchParams({f:"json",where,outFields:"*",returnGeometry:"false",resultOffset:String(offset),resultRecordCount:"1000",orderByFields:"ReceivedDate DESC"});
-  const controller=new AbortController();const timeout=setTimeout(()=>controller.abort(),22000);
-  let data;
-  try{const r=await fetch(SOURCE+"?"+q,{signal:controller.signal});if(!r.ok)throw Error("HTTP "+r.status);data=await r.json();}
-  finally{clearTimeout(timeout)}
-  if(data.error)throw Error(data.error.message||"ArcGIS query failed");
-  const features=data.features||[];
-  out.push(...features.map(x=>x.attributes||{}));
-  if(features.length<1000&&!data.exceededTransferLimit)break;
+async function fetchJson(url,timeoutMs=19000){
+ let error;
+ for(let attempt=0;attempt<2;attempt++){
+  const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),timeoutMs);
+  try{
+   const r=await fetch(url,{signal:controller.signal,cache:"no-store"});
+   if(!r.ok)throw Error("HTTP "+r.status);
+   const data=await r.json();
+   if(data.error)throw Error(data.error.message||"Service query error");
+   return data;
+  }catch(e){error=e;}finally{clearTimeout(timer)}
  }
- return out;
+ throw error;
 }
+async function serviceRecent(url,candidates,unitsWhere="1=1"){
+ const root=url.replace(/\/query$/,"");
+ const meta=await fetchJson(root+"?f=json");
+ const known=new Set((meta.fields||[]).map(f=>f.name));
+ const dates=candidates.filter(f=>known.has(f));
+ if(!dates.length)throw Error("No published date fields");
+ const out=new Map(),fail=[];
+ const dateLiteral=isoDay(start.getTime())+" 00:00:00";
+ for(const field of dates){
+  const where="("+unitsWhere+") AND "+field+" >= TIMESTAMP '"+dateLiteral+"'";
+  try{
+   for(let offset=0;offset<3000;offset+=1000){
+    const query=new URLSearchParams({f:"json",where,outFields:"*",returnGeometry:"false",resultOffset:String(offset),resultRecordCount:"1000",orderByFields:field+" DESC"});
+    const data=await fetchJson(root+"/query?"+query);
+    const rows=data.features||[];
+    for(const row of rows){const p=row.attributes||{},id=p.OBJECTID||p.ObjectId||p.FID||p.ApplicationNumber||p.ABPCASEID;out.set(String(id),p);}
+    if(rows.length<1000&&!data.exceededTransferLimit)break;
+   }
+  }catch(e){fail.push(field+": "+e.message)}
+ }
+ if(!out.size){
+  // A source can reject timestamp syntax; a bounded newest-first query
+  // still permits client-side classification without inventing dates.
+  const order=known.has("ReceivedDate")?"ReceivedDate":known.has("LODGEDON")?"LODGEDON":dates[0];
+  const q=new URLSearchParams({f:"json",where:unitsWhere,outFields:"*",returnGeometry:"false",resultRecordCount:"1500",orderByFields:order+" DESC"});
+  const data=await fetchJson(root+"/query?"+q);
+  for(const row of data.features||[]){const p=row.attributes||{};out.set(String(p.OBJECTID||p.ABPCASEID||p.ApplicationNumber),p);}
+  partialErrors.push("Date-filter query was unavailable; showing a bounded recent "+(root===ACP_SOURCE?"ACP":"council")+" sample.");
+ }
+ if(fail.length&&out.size)partialErrors.push("Some event-date queries unavailable ("+fail.join("; ").slice(0,150)+").");
+ return [...out.values()];
+}
+async function arcgisRecent(){
+ return serviceRecent(SOURCE,["ReceivedDate","GrantDate","WithdrawnDate","DecisionDate","AppealSubmittedDate","AppealDecisionDate"],"NumResidentialUnits > 0");
+}
+function acpUnits(text){
+ const matches=String(text||"").replace(/(?<=\d),(?=\d{3}\b)/g,"").matchAll(/\b(\d{2,5})\s*(?:no\.?\s*)?(?:new\s+)?(?:residential\s+)?(?:units|dwellings|homes|houses|apartments)\b/gi);
+ let max=0;for(const m of matches)max=Math.max(max,Number(m[1]));return max;
+}
+async function acpRecent(){
+ return serviceRecent(ACP_SOURCE,["LODGEDON","DECISIONDATE","DECIDEDON","DATEDECIDED","FINALDECISIONDATE"],"1=1");
+}
+function makeAcpRecord(raw,byKey){
+ const caseId=String(raw.ABPCASEID||"").match(/\d{6}/)?.[0];
+ if(!caseId)return null;
+ const indexed=byKey.get("acp|"+caseId);
+ const description=String(raw.DEVDESC||"");
+ const units=Number(indexed?.units)||acpUnits(description);
+ if(units<=100)return null;
+ const decisionDate=raw.DECISIONDATE||raw.DECIDEDON||raw.DATEDECIDED||raw.FINALDECISIONDATE||"";
+ const applicant=raw.APPLICANTNAME||raw.APPLICANT_NAME||raw.APPLICANT||indexed?.applicant||"";
+ const councilRef=indexed?.planningReference||raw.PLANREF||raw.PLANNINGREF||"";
+ const source=safeUrl(raw.LINKABPWEB)||"https://www.pleanala.ie/en-ie/case/"+caseId;
+ const item={...(indexed||{}),key:"acp|"+caseId,kind:"acp",caseId,reference:caseId,
+  authority:indexed?.authority||raw.PLANINGATY||"An Coimisiún Pleanála",
+  planningReference:councilRef,
+  units,description:description||indexed?.description||"",
+  siteName:indexed?.siteName||raw.DEVADDRESS||"ACP residential scheme",
+  address:indexed?.address||raw.DEVADDRESS||"",applicant,
+  received:raw.LODGEDON||indexed?.received||"",
+  acpLodgedDate:raw.LODGEDON||indexed?.acpLodgedDate||"",
+  acpDecisionDate:decisionDate||indexed?.acpDecisionDate||"",
+  acpOutcome:raw.DECISION||indexed?.acpOutcome||"",
+  decision:raw.DECISION||indexed?.decision||"",
+  source,isAppeal:Boolean(indexed?.possibleDuplicateOf||councilRef)};
+ return applyEdit(item);
+}
+
 async function load(){
  if(loading)return;loading=true;
  $("#refresh").disabled=true;$("#feedStatus").textContent="Refreshing 28-day event feed and applicant catalogue…";
  partialErrors=[];
- let live=[];
- try{live=await arcgisRecent()}catch(e){partialErrors.push("Live national planning feed unavailable: "+e.message)}
+ let live=[],acpLive=[];
+ const results=await Promise.allSettled([arcgisRecent(),acpRecent()]);
+ if(results[0].status==="fulfilled")live=results[0].value;else partialErrors.push("Live national planning feed unavailable: "+results[0].reason?.message);
+ if(results[1].status==="fulfilled")acpLive=results[1].value;else partialErrors.push("Live ACP case feed unavailable: "+results[1].reason?.message);
  try{
-  const r=await fetch("../preview-r10/data/major-schemes.json?ts="+Date.now(),{cache:"no-store"});
+  const r=await fetch("data/major-schemes.json?ts="+Date.now(),{cache:"no-store"});
   if(!r.ok)throw Error("HTTP "+r.status);
   const data=await r.json();
   catalogue=(data.projects||[]).map(normalizeCatalogue);
  }catch(e){partialErrors.push("Indexed scheme catalogue unavailable: "+e.message);catalogue=[]}
  try{
-  const r=await fetch("../preview-r10/data/verified-major-cases.json?ts="+Date.now(),{cache:"no-store"});
+  const r=await fetch("data/verified-major-cases.json?ts="+Date.now(),{cache:"no-store"});
   if(r.ok){
    const d=await r.json();
    for(const p of catalogue){const proof=d.cases?.[p.key];if(proof?.applicant&&!p.applicant)p.applicant=proof.applicant;if(proof?.planningReference&&!p.planningReference)p.planningReference=proof.planningReference}
   }
  }catch{}
  const catalogMap=new Map(catalogue.filter(p=>p.kind!=="acp").map(p=>[p.key,p]));
+ const catalogueAllByKey=new Map(catalogue.map(p=>[p.key,p]));
  const acpMap=new Map(catalogue.filter(p=>p.kind==="acp").map(p=>[clean(p.caseId||p.reference),p]));
  const joined=new Map();
  for(const p of catalogue){if(p.kind==="acp")continue;joined.set(p.key,enrichFromCatalogue(p,catalogMap,acpMap))}
@@ -305,6 +374,7 @@ async function load(){
   if(matchedCases.has(clean(p.caseId||p.reference).match(/\d{6}/)?.[0]))continue;
   if(!joined.has(p.key))joined.set(p.key,enrichFromCatalogue(p,catalogMap,acpMap));
  }
+ for(const raw of acpLive){const p=makeAcpRecord(raw,catalogueAllByKey);if(!p)continue;const old=joined.get(p.key);joined.set(p.key,old?enrichFromCatalogue({...old,...p,applicant:p.applicant||old.applicant},catalogMap,acpMap):enrichFromCatalogue(p,catalogMap,acpMap));}
  for(const [id,edit] of Object.entries(localEdits)){
   if(id.startsWith("manual|")&&edit&&Number(edit.units)>100&&!joined.has(id))joined.set(id,applyEdit({...edit,key:id,kind:"manual"}));
  }
@@ -318,7 +388,7 @@ async function load(){
  const oldYear=$("#year").value;
  $("#year").innerHTML='<option value="">All years</option>'+years.map(y=>'<option value="'+y+'">'+y+'</option>').join("");
  $("#year").value=oldYear;
- $("#windowText").textContent=dateText(start.getTime())+" – "+dateText(end.getTime()-DAY)+" · "+fmt(live.length)+" live planning records, "+fmt(catalogue.length)+" indexed catalogue records";
+ $("#windowText").textContent=dateText(start.getTime())+" – "+dateText(end.getTime()-DAY)+" · "+fmt(live.length)+" council records, "+fmt(acpLive.length)+" ACP cases checked, "+fmt(catalogue.length)+" indexed records";
  $("#feedStatus").textContent=partialErrors.length?partialErrors.join(" · ")+" · Showing available indexed data.":"Live national planning query completed. Categories use recorded event dates, not inferred status changes. Applicant names and websites are enriched only where evidence exists.";
  $("#feedStatus").className="notice"+(partialErrors.length?" error":"");
  loading=false;$("#refresh").disabled=false;render();
