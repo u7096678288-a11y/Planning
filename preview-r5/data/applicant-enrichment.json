@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "updatedAt": "2026-10-08",
+  "description": "Verified scheme-level applicant/developer enrichment. Applicant and developer are distinct. Each record is keyed to a planning authority/reference or ACP case ID.",
+  "records": {
+    "acp|324442": {
+      "developer": "Land Development Agency",
+      "developerSource": "https://galwayportlrd.ie/",
+      "developerEvidence": "The project website states that the Land Development Agency intends to apply for this Galway Port LRD; this is promoter evidence, not a verified legal applicant.",
+      "planningReference": "2560296",
+      "planningAuthority": "Galway City Council",
+      "reviewedAt": "2026-10-08"
+    },
+    "planning|galwaycitycouncil|2560296": {
+      "developer": "Land Development Agency",
+      "developerSource": "https://galwayportlrd.ie/",
+      "developerEvidence": "Project website identifies the Land Development Agency as the intended applicant/promoter.",
+      "reviewedAt": "2026-10-08"
+    }
+  },
+  "stats": {
+    "note": "Only verified links are included. Unresolved applicants remain blank; the scheduled enrichment process will seek source-backed names."
+  }
+}
