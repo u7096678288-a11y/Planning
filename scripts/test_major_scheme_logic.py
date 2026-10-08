@@ -21,5 +21,6 @@ assert logic.duplicate_key("Meath County Council","26/61080")==logic.duplicate_k
 assert logic.site_name("Generic road", 'The development is known as "Marshallyards" and comprises 200 homes')=="Marshallyards"
 assert logic.site_name("Lands at Galway Port", "", "Galway Port LRD")=="Galway Port LRD"
 assert logic.brand_from_applicant("Glenveagh Homes Limited")=="Glenveagh"
+assert logic.brand_from_applicant("Marshall Yards Development Company Limited")=="Marshall Yards"
 assert logic.brand_from_applicant("Unrelated Special Purpose Vehicle Ltd")==""
 print("Major-scheme site classification, unit extraction and identity tests passed")
