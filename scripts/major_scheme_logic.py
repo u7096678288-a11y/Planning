@@ -77,3 +77,24 @@ def duplicate_key(authority, reference):
 def group_name(name):
     name=" ".join(str(name or "").replace("."," ").replace(","," ").split()).strip()
     return re.sub(r"\s+(?:limited|ltd|dac|designated activity company)\s*$","",name,flags=re.I).strip()
+
+# Only surface a brand when the verified legal applicant actually contains
+# that brand. Never infer ownership of differently named SPVs.
+KNOWN_BRANDS = (
+    ("Glenveagh", r"\bglenveagh\b"),
+    ("Cairn", r"\bcairn\b"),
+    ("Land Development Agency", r"\bland development agency\b|\blda\b"),
+    ("Ballymore", r"\bballymore\b"),
+    ("Marlet", r"\bmarlet\b"),
+    ("Quintain", r"\bquintain\b"),
+    ("Castlethorn", r"\bcastlethorn\b"),
+    ("Lioncor", r"\blioncor\b"),
+    ("Hines", r"\bhines\b"),
+    ("Durkan", r"\bdurkan\b"),
+    ("O'Flynn", r"\bo['’]?flynn\b"),
+)
+def brand_from_applicant(name):
+    for brand, pattern in KNOWN_BRANDS:
+        if re.search(pattern, str(name or ""), re.I):
+            return brand
+    return ""
