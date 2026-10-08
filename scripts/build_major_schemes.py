@@ -17,11 +17,11 @@ import time
 from pathlib import Path
 from urllib.parse import urlencode, urlsplit
 
-ROOT = Path("preview-r9/data")
+ROOT = Path("preview-r10/data")
 OUT = ROOT / "major-schemes.json"
 EVIDENCE = ROOT / "applicant-enrichment.json"
 VERIFIED = ROOT / "verified-major-cases.json"
-SOURCE = Path("preview-r9/scripts/enrich_applicants.py")
+SOURCE = Path("preview-r10/scripts/enrich_applicants.py")
 spec = importlib.util.spec_from_file_location("scheme_enrichment", SOURCE)
 base = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(base)
@@ -34,7 +34,7 @@ MAX_SECONDS = 360
 started = time.monotonic()
 base.MAX_SITE_VISITS = MAX_LOOKUPS + 5
 base.MAX_RUN_SECONDS = MAX_SECONDS - 25
-spec2 = importlib.util.spec_from_file_location("major_scheme_logic", Path("preview-r9/scripts/major_scheme_logic.py"))
+spec2 = importlib.util.spec_from_file_location("major_scheme_logic", Path("preview-r10/scripts/major_scheme_logic.py"))
 logic = importlib.util.module_from_spec(spec2)
 spec2.loader.exec_module(logic)
 
@@ -47,7 +47,15 @@ def key(authority, ref):
 def date_value(value):
     if isinstance(value, (int, float)) and value > 100000000000:
         return dt.datetime.fromtimestamp(value / 1000, tz=dt.timezone.utc).date().isoformat()
-    return clean(value, 20)
+    if isinstance(value, (int, float)) and value > 1000000000:
+        return dt.datetime.fromtimestamp(value, tz=dt.timezone.utc).date().isoformat()
+    value = clean(value, 30)
+    if re.match(r"^\\d{4}-\\d{2}-\\d{2}", value):
+        return value[:10]
+    if re.match(r"^\\d{2}/\\d{2}/\\d{4}$", value):
+        try: return dt.datetime.strptime(value, "%d/%m/%Y").date().isoformat()
+        except ValueError: return ""
+    return ""
 
 def applicant_from_feed(row):
     return base.valid_name(" ".join(filter(None, [
@@ -66,7 +74,7 @@ def scan(previous):
             break
         try:
             rows = base.query(base.PLANNING, "NumResidentialUnits > 100",
-                "PlanningAuthority,ApplicationNumber,NumResidentialUnits,ApplicantForename,ApplicantSurname,LinkAppDetails,DevelopmentAddress,DevelopmentDescription,Decision,ReceivedDate",
+                "*",
                 PAGE_SIZE, "ReceivedDate DESC,ApplicationNumber ASC", start_offset)
         except Exception as error:
             failures.append(str(error)[:180])
@@ -94,6 +102,8 @@ def scan(previous):
                 "address": clean(row.get("DevelopmentAddress"), 180),
                 "description": clean(row.get("DevelopmentDescription"), 700),
                 "decision": clean(row.get("Decision"), 90),
+                "councilDecisionDate": date_value(row.get("DecisionDate") or row.get("Decision_Date")),
+                "councilGrantDate": date_value(row.get("DecisionDate") or row.get("Decision_Date")) if re.search(r"grant|conditional|approve", clean(row.get("Decision")), re.I) else "",
                 "appealRef": clean(row.get("AppealRefNumber") or row.get("AppealRefNum"), 80),
                 "received": date_value(row.get("ReceivedDate")),
                 "applicant": native or previous_record.get("applicant", ""),
@@ -250,6 +260,11 @@ def scan_acp(found, evidence, previous):
                 "address": clean(row.get("DEVADDRESS"), 180),
                 "description": clean(desc, 350),
                 "decision": clean(row.get("DECISION"), 90),
+                "acpLodgedDate": date_value(row.get("LODGEDON")),
+                "acpDecisionDate": date_value(row.get("DECIDED_ON")),
+                "acpOutcome": ("Granted" if re.search(r"\\b(?:grant|approve)\\b", clean(row.get("DECISION")), re.I) else
+                               "Refused" if re.search(r"\\brefus", clean(row.get("DECISION")), re.I) else
+                               "Withdrawn" if re.search(r"withdraw", clean(row.get("DECISION")), re.I) else ""),
                 "received": date_value(row.get("LODGEDON")),
                 "applicant": applicant,
                 "applicantSourceType": "Official ACP case or matched council record" if applicant else "",
