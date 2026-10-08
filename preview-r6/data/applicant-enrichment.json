@@ -73,11 +73,6 @@
     "planning|laoiscountycouncil|2660387": "2026-10-08",
     "planning|leitrimcountycouncil|2660191": "2026-10-08",
     "planning|leitrimcountycouncil|2660222": "2026-10-08",
-    "planning|limerickcountycouncil|2660396": "2026-10-08",
-    "planning|limerickcountycouncil|2660675": "2026-10-08",
-    "planning|limerickcountycouncil|2660855": "2026-10-08",
-    "planning|limerickcountycouncil|2660886": "2026-10-08",
-    "planning|limerickcountycouncil|2661011": "2026-10-08",
     "planning|louthcountycouncil|2660181": "2026-10-08",
     "planning|louthcountycouncil|2660189": "2026-10-08",
     "planning|louthcountycouncil|2660204": "2026-10-08",
@@ -142,7 +137,7 @@
     "acp": 0,
     "planning": 0
   },
-  "description": "Verified scheme-level applicant/developer enrichment. Applicant and developer are distinct. Each record is keyed to a planning authority/reference or ACP case ID.",
+  "description": "Source-backed applicant/developer enrichment; never infer a legal applicant from a generic page label.",
   "records": {
     "acp|324442": {
       "developer": "Land Development Agency",
@@ -157,36 +152,6 @@
       "developerEvidence": "Project website identifies the Land Development Agency as the intended applicant/promoter.",
       "developerSource": "https://galwayportlrd.ie/",
       "reviewedAt": "2026-10-08"
-    },
-    "planning|limerickcountycouncil|2660396": {
-      "applicant": "Development",
-      "applicantEvidence": "Applicant explicitly labelled on the linked planning-authority page",
-      "applicantSource": "https://eplanning.ie/LimerickCCC/AppFileRefDetails/2660396/0",
-      "verifiedAt": "2026-10-08"
-    },
-    "planning|limerickcountycouncil|2660675": {
-      "applicant": "Development",
-      "applicantEvidence": "Applicant explicitly labelled on the linked planning-authority page",
-      "applicantSource": "https://eplanning.ie/LimerickCCC/AppFileRefDetails/2660675/0",
-      "verifiedAt": "2026-10-08"
-    },
-    "planning|limerickcountycouncil|2660855": {
-      "applicant": "Development",
-      "applicantEvidence": "Applicant explicitly labelled on the linked planning-authority page",
-      "applicantSource": "https://eplanning.ie/LimerickCCC/AppFileRefDetails/2660855/0",
-      "verifiedAt": "2026-10-08"
-    },
-    "planning|limerickcountycouncil|2660886": {
-      "applicant": "Development",
-      "applicantEvidence": "Applicant explicitly labelled on the linked planning-authority page",
-      "applicantSource": "https://eplanning.ie/LimerickCCC/AppFileRefDetails/2660886/0",
-      "verifiedAt": "2026-10-08"
-    },
-    "planning|limerickcountycouncil|2661011": {
-      "applicant": "Development",
-      "applicantEvidence": "Applicant explicitly labelled on the linked planning-authority page",
-      "applicantSource": "https://eplanning.ie/LimerickCCC/AppFileRefDetails/2661011/0",
-      "verifiedAt": "2026-10-08"
     }
   },
   "schemaVersion": 1,
@@ -194,8 +159,9 @@
     "acpCasesInspected": 30,
     "candidates": 107,
     "date": "2026-10-08",
-    "newApplicants": 5,
-    "sourcePagesInspected": 26
+    "newApplicants": 0,
+    "sourcePagesInspected": 26,
+    "falsePositivesRemoved": 5
   },
   "updatedAt": "2026-10-08T00:23:29.610869+00:00"
 }
