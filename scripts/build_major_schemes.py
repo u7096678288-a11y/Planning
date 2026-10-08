@@ -401,6 +401,7 @@ def main():
     missing.sort(key=lambda p: bool(checked.get(p["key"])))
     visited = 0
     added = 0
+    extra_council_lookups = 0
     for item in missing:
         if visited >= MAX_LOOKUPS or time.monotonic() - started > MAX_SECONDS:
             break
@@ -434,6 +435,21 @@ def main():
                             name = council["applicant"]
                             applicant_source = council.get("source") or applicant_source
                             evidence_text = "ACP case matched to the exact council application reference"
+                    elif not name and extra_council_lookups < 55 and time.monotonic() - started < MAX_SECONDS - 60:
+                        extra_council_lookups += 1
+                        safe_ref = council_ref.replace("'", "''")
+                        rows = base.query(base.PLANNING, "ApplicationNumber = '" + safe_ref + "'",
+                            "PlanningAuthority,ApplicantForename,ApplicantSurname,LinkAppDetails", 20)
+                        matches = [row for row in rows if logic.compact(row.get("PlanningAuthority")) == logic.compact(item.get("authority"))]
+                        if len(matches) == 1:
+                            match_row = matches[0]
+                            source_url = match_row.get("LinkAppDetails") or ""
+                            name = applicant_from_feed(match_row)
+                            if not name and base.official_url(source_url):
+                                name = base.official_name(source_url)
+                            if name:
+                                applicant_source = source_url if base.official_url(source_url) else applicant_source
+                                evidence_text = "ACP case reference matched to an exact council application"
             except Exception as error:
                 print("ACP case inspection skipped:", item.get("caseId"), str(error)[:110])
         else:
@@ -463,6 +479,7 @@ def main():
         "named": sum(bool(p["applicant"]) for p in projects),
         "unnamed": sum(not p["applicant"] for p in projects),
         "officialPagesCheckedThisRun": visited,
+        "extraCouncilReferencesChecked": extra_council_lookups,
         "newNamesFromOfficialPages": added,
         "scanComplete": complete,
         "scanRows": scanned,
