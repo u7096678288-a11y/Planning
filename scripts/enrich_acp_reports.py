@@ -6,6 +6,8 @@ agents and developers are never substituted for the planning applicant.
 """
 import datetime as dt
 import io
+import html
+from html.parser import HTMLParser
 import json
 import re
 import time
@@ -18,8 +20,8 @@ ROOT=Path("preview-r9/data")
 CATALOGUE=ROOT/"major-schemes.json"
 EVIDENCE=ROOT/"applicant-enrichment.json"
 TODAY=dt.date.today().isoformat()
-MAX_CASES=65
-MAX_SECONDS=165
+MAX_CASES=45
+MAX_SECONDS=115
 
 def report_url(case_id):
     if not re.fullmatch(r"\d{6}",str(case_id or "")):
@@ -42,6 +44,50 @@ def extract_applicant(text):
                 if re.fullmatch(r"[A-Za-z0-9][\w\s&'’.,()/+-]+",candidate) and len(candidate.split())>=2:
                     return candidate.strip(" .")
     return ""
+
+class _ACPText(HTMLParser):
+    def __init__(self):
+        super().__init__()
+        self.parts=[]
+        self.suppressed=0
+    def handle_starttag(self,tag,attrs):
+        if tag in ("script","style","noscript"):
+            self.suppressed+=1
+        if tag in ("li","p","div","h2","h3","br","td","tr"):
+            self.parts.append("\n")
+    def handle_endtag(self,tag):
+        if tag in ("script","style","noscript"):
+            self.suppressed=max(0,self.suppressed-1)
+        if tag in ("li","p","div","h2","h3","td","tr"):
+            self.parts.append("\n")
+    def handle_data(self,data):
+        if not self.suppressed:
+            self.parts.append(html.unescape(data))
+
+def extract_case_applicant(markup):
+    """ACP's explicit 'Parties: <name> (Applicant)' only; not appellants."""
+    parser=_ACPText()
+    parser.feed(str(markup or ""))
+    text="\n".join(" ".join(line.split()) for line in "".join(parser.parts).splitlines())
+    section=re.search(r"\bParties\b(.*?)(?:\bHistory\b|\bDocuments\b|$)",text,re.I|re.S)
+    if not section:
+        return ""
+    candidates=re.findall(r"([^\n()]{4,130})\s*\(\s*Applicant\s*\)",section.group(1),re.I)
+    for candidate in candidates:
+        name=" ".join(candidate.split()).strip(" •:-")
+        if 4<=len(name)<=115 and len(name.split())>=2 and not re.search(
+                r"\b(?:Appellant|Observer|Agent|Representative|Party)\b",name,re.I):
+            return name
+    return ""
+
+def fetch_case_applicant(case_id):
+    url="https://www.pleanala.ie/en-ie/case/"+str(case_id)
+    req=Request(url,headers={"User-Agent":"RadharcPleanalaApplicantEnrichment/1.0","Accept":"text/html"})
+    with urlopen(req,timeout=6) as response:
+        if not response.url.startswith(("https://www.pleanala.ie/","https://pleanala.ie/")):
+            return ""
+        markup=response.read(900_000).decode("utf-8","replace")
+    return extract_case_applicant(markup)
 
 def fetch_report(case_id):
     url=report_url(case_id)
@@ -76,19 +122,30 @@ def main():
             continue
         checked[key]=TODAY
         attempts+=1
+        name=""
+        source=""
+        evidence_text=""
         try:
-            name=fetch_report(case)
-            if not name:
-                continue
-            source=report_url(case)
+            name=fetch_case_applicant(case)
+            if name:
+                source="https://www.pleanala.ie/en-ie/case/"+str(case)
+                evidence_text="Explicit Applicant party on official ACP case page"
+        except Exception as exc:
+            print("ACP case page unavailable:",case,str(exc)[:90])
+        if not name:
+            try:
+                name=fetch_report(case)
+                if name:
+                    source=report_url(case)
+                    evidence_text="Explicit Applicant field in the official ACP Inspector's Report"
+            except Exception as exc:
+                print("ACP inspector report unavailable:",case,str(exc)[:95])
+        if name and source:
             records.setdefault(key,{}).update({
                 "applicant":name,"applicantSource":source,
-                "applicantEvidence":"Explicit Applicant field in the official ACP Inspector's Report",
-                "verifiedAt":TODAY,
+                "applicantEvidence":evidence_text,"verifiedAt":TODAY,
             })
             found+=1
-        except Exception as exc:
-            print("ACP report unavailable:",case,str(exc)[:95])
     evidence["acpReportStats"]={"attemptedThisRun":attempts,"namesFoundThisRun":found,
                                  "reportsCheckedTotal":len(checked),"updatedAt":dt.datetime.now(dt.timezone.utc).isoformat()}
     EVIDENCE.write_text(json.dumps(evidence,ensure_ascii=False,indent=2,sort_keys=True)+"\n",encoding="utf-8")
