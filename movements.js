@@ -124,7 +124,7 @@ function inMovementWindow(e){return e.category==="upcoming"?e.day>iso(today)&&e.
 function filterRecords(records){
  const q=text($("#search").value).toLowerCase(),year=$("#year").value,council=$("#council").value,units=Number($("#units").value)||0;
  return records.filter(p=>{
-  if(units&&p.units<units)return false;
+  if(units&&p.units<units&&!/strategic infrastructure|\bcpo\b|compulsory purchase|rail(?:way)?\s+order|\bpart 8\b|local authority development/i.test([p.type,p.category,p.description].join(" ")))return false;
   if(year&&!(p.received||"").startsWith(year))return false;
   if(council&&p.authority!==council)return false;
   if(q&&![p.siteName,p.address,p.applicant,p.developer,p.reference,p.caseId,p.planningReference,p.authority,p.description,p.type,p.tags].some(v=>text(v).toLowerCase().includes(q)))return false;
@@ -165,7 +165,7 @@ function render(){
  for(const p of base){if(!p.applicant)continue;const k=clean(p.applicant.replace(/\s+(ltd|limited|dac)$/i,""));const v=groups.get(k)||{name:p.applicant,count:0};v.count++;groups.set(k,v)}
  const leaders=[...groups.values()].sort((a,b)=>b.count-a.count).slice(0,8).map(v=>[v.name,v.count]);
  $("#companyBars").innerHTML=leaders.length?barMarkup(leaders,leaders[0][1]):'<p class="note">Applicant names not yet available for this selection.</p>';
- const rows=filterCategory?base:base.slice().sort((a,b)=>(activity(b).day||"").localeCompare(activity(a).day||""));
+ const rows=filterCategory?base.slice().sort((a,b)=>(activity(b).day||"").localeCompare(activity(a).day||"")):base.slice().sort((a,b)=>(activity(b).day||"").localeCompare(activity(a).day||""));
  $("#tableTitle").textContent=filterCategory?(categories.find(x=>x[0]===filterCategory)?.[1]||"Movements")+" · past 28 days":"Searchable planning history";
  $("#tableInfo").textContent=filterCategory?"Only records with a dated event in the past 28 days.":"Lodgement year filters apply to the historical table and 28-day movement counts.";
  $("#resultCount").textContent=fmt(rows.length)+" matching records · "+fmt(recent.length)+" with a dated event in the past 28 days · "+fmt(Object.keys(overrides).length)+" locally edited";
