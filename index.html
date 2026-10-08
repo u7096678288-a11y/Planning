@@ -45,6 +45,7 @@
     .decision-legend span{display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
     .decision-legend i{display:inline-block;width:11px;height:11px;border-radius:50%;border:1px solid #fff;box-shadow:0 0 0 1px #b5c0c8}
     .cork-coverage{margin:0;padding:7px 13px;background:#f5f8f8;border-bottom:1px solid #e1e7eb;color:#526776;font-size:11px}
+    .export-control{position:relative;display:inline-block}.export-menu{position:absolute;right:0;top:calc(100% + 7px);z-index:2200;width:min(300px,85vw);padding:9px;background:#fff;color:#172b3d;border:1px solid #cdd9df;border-radius:9px;box-shadow:0 10px 32px #132d3b30}.export-menu[hidden]{display:none}.export-menu-title{margin:4px 7px 7px;font-size:12px;font-weight:750}.export-menu button{display:block;width:100%;padding:10px 8px;text-align:left;background:#fff;color:#183246;border:0;border-radius:5px;font-size:12px;cursor:pointer}.export-menu button:hover,.export-menu button:focus-visible{background:#eaf3f4}.export-menu button:disabled{opacity:.5;cursor:wait}.export-status{margin:8px 7px 3px;font-size:11px;line-height:1.45;color:#617686;overflow-wrap:anywhere}@media(max-width:700px){.export-control{position:static}.export-menu{position:fixed;top:80px;right:12px;left:12px;width:auto;max-height:75vh;overflow:auto}}
   </style>
 </head>
 <body>
@@ -58,7 +59,19 @@
       <a class="secondary-button patreon-button" href="https://www.patreon.com/16538169/join" target="_blank" rel="noopener noreferrer" aria-label="Support Radharc Pleanála on Patreon">Support on Patreon</a>
       <span id="connectionStatus" class="status-pill">Connecting…</span>
       <button id="refreshButton" class="secondary-button" type="button">Refresh data</button>
-      <button id="exportViewButton" class="secondary-button" type="button">Export CSV</button>
+      <div class="export-control">
+        <button id="exportViewButton" class="secondary-button" type="button" aria-expanded="false" aria-controls="exportMenu">Export view ▾</button>
+        <div id="exportMenu" class="export-menu" hidden>
+          <p class="export-menu-title">Export current map view</p>
+          <button type="button" data-export="png">PNG · map image</button>
+          <button type="button" data-export="jpeg">JPEG · map image</button>
+          <button type="button" data-export="xlsx">Excel · spatial records</button>
+          <button type="button" data-export="csv">CSV · spatial records</button>
+          <button type="button" data-export="shp">Shapefile · ZIP (WGS84)</button>
+          <button type="button" data-export="geojson">JSON · GeoJSON (WGS84)</button>
+          <p id="exportStatus" class="export-status" role="status">Uses current map extent, filters and visible layers.</p>
+        </div>
+      </div>
       <button id="shareViewButton" class="secondary-button" type="button">Share view</button>
       <button id="resetDashboardButton" class="secondary-button" type="button">Reset dashboard</button>
     </div>
@@ -165,6 +178,7 @@
   <script src="https://cdn.jsdelivr.net/npm/esri-leaflet@3.0.15/dist/esri-leaflet.js" onerror="this.onerror=null;this.src='https://unpkg.com/esri-leaflet@3.0.15/dist/esri-leaflet.js'"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/proj4@2.11.0/dist/proj4.js" onerror="this.onerror=null;this.src='https://unpkg.com/proj4@2.11.0/dist/proj4.js'"></script>
-  <script src="app.js?v=20261008-flags1"></script>
+  <script src="app.js?v=20261008-export1"></script>
+  <script src="export-view.js?v=20261008-export1"></script>
 </body>
 </html>
