@@ -20,8 +20,8 @@ function enrichmentFor(p={},kind="planning"){
  const verified=applicantEnrichment.records?.[key]||null;
  const project=majorSchemesByKey.get(key);
  if(!project?.applicant)return verified;
- return {...(verified||{}),applicant:verified?.applicant||project.applicant,
-  applicantSource:verified?.applicantSource||project.source||"",
+ return {...(verified||{}),applicant:project._edited?project.applicant:(verified?.applicant||project.applicant),
+  applicantSource:project._edited?(project.evidenceUrl||""):(verified?.applicantSource||project.source||""),
   applicantEvidence:project._edited?"Manually entered in applicant workspace":verified?.applicantEvidence||project.applicantSourceType||""};
 }
 function applicantGroup(name){
@@ -639,8 +639,8 @@ function select(k,f,ll){
   (acp?(p.ABPCASEID||"ACP case"):(p.SP_ID||"Freehold parcel"));
  const extra=enrichmentFor(p,kind);
  const nativeApplicant=applicantName(p);
- const applicant=nativeApplicant||extra?.applicant||"";
- const applicantSource=nativeApplicant?"National planning feed":extra?.applicantEvidence==="Manually entered in applicant workspace"?"Manual browser entry":extra?.applicantSource?"Verified linked source":"Not verified";
+ const applicant=extra?.applicantEvidence==="Manually entered in applicant workspace"?(extra.applicant||""):(nativeApplicant||extra?.applicant||"");
+ const applicantSource=extra?.applicantEvidence==="Manually entered in applicant workspace"?"Manual browser entry":nativeApplicant?"National planning feed":extra?.applicantSource?"Verified linked source":"Not verified";
  const developer=extra?.developer||"";
  const description=planning?p.DevelopmentDescription:acp?p.DEVDESC:"";
  const links=recordWebLinks(p,kind);
