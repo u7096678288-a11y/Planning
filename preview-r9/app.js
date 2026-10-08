@@ -70,7 +70,9 @@ function majorProjectMarkup(p){
  const siteEvidence=siteSource?'<span>Site name: <a class="major-record-link" href="'+esc(siteSource)+'" target="_blank" rel="noopener noreferrer">Project website ↗</a></span>':'';
  const place=p.address&&p.address!==p.siteName?'<span class="major-project-address">'+esc(p.address)+'</span>':'';
  const promoter=p.developer?'<span>Developer / promoter (source-backed): '+esc(p.developer)+'</span>':p.brand?'<span>Brand in applicant name: '+esc(p.brand)+' (ownership not independently verified)</span>':'';
- const applicant=p.applicant?'<span>Applicant: '+esc(p.applicant)+'</span>':'<span>Applicant: awaiting verification</span>';
+ const applicantEvidenceUrl=validWebAddress(p.applicantSource);
+ const evidenceLink=applicantEvidenceUrl?'<a class="major-record-link" href="'+esc(applicantEvidenceUrl)+'" target="_blank" rel="noopener noreferrer" title="'+esc(p.applicantEvidence||"Official applicant source")+'">Official source ↗</a>':'';
+ const applicant=p.applicant?'<span>Applicant: '+esc(p.applicant)+(evidenceLink?' · '+evidenceLink:'')+'</span>':'<span>Applicant: awaiting verification</span>';
  return '<article class="major-project">'+
   '<strong>'+esc(p.siteName||p.address||"Residential scheme")+'</strong>'+
   '<span class="major-project-type">'+esc(p.type||"Residential development")+(p.route&&!((p.route==="LRD"&&p.type==="Large-scale Residential Development")||(p.route==="SHD"&&p.type==="Strategic Housing Development"))?" · "+esc(p.route):"")+' · '+kind+'</span>'+

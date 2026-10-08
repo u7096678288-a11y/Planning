@@ -20,6 +20,7 @@ from urllib.parse import urlencode, urlsplit
 ROOT = Path("preview-r9/data")
 OUT = ROOT / "major-schemes.json"
 EVIDENCE = ROOT / "applicant-enrichment.json"
+VERIFIED = ROOT / "verified-major-cases.json"
 SOURCE = Path("preview-r9/scripts/enrich_applicants.py")
 spec = importlib.util.spec_from_file_location("scheme_enrichment", SOURCE)
 base = importlib.util.module_from_spec(spec)
@@ -305,6 +306,12 @@ def classify_and_match(found, evidence):
             item["developer"] = proof["developer"]
             item["developerSource"] = proof["developerSource"]
         item["brand"] = logic.brand_from_applicant(item.get("applicant"))
+        if proof.get("applicantSource") and base.official_url(proof["applicantSource"]):
+            item["applicantSource"] = proof["applicantSource"]
+            item["applicantEvidence"] = proof.get("applicantEvidence", "Applicant named in official record")
+        if item.get("applicant", "").strip().lower() in ("part 8", "n/a", "unknown", "not available"):
+            item["applicant"] = ""
+            item["brand"] = ""
         desc = item.get("description", "")
         item["type"] = logic.scheme_type(desc, item.get("reference", ""), item.get("category", ""))
         item["route"] = logic.planning_route(desc, item.get("category", ""))
@@ -385,6 +392,17 @@ def main():
     evidence = json.loads(EVIDENCE.read_text(encoding="utf-8"))
     records = evidence.setdefault("records", {})
     checked = evidence.setdefault("majorSchemeChecked", {})
+    if VERIFIED.exists():
+        manual = json.loads(VERIFIED.read_text(encoding="utf-8"))
+        for identifier, proof in manual.get("cases", {}).items():
+            if not (proof.get("applicant") and proof.get("applicantSource")):
+                continue
+            old = records.setdefault(identifier, {})
+            if not old.get("applicant"):
+                old.update({**proof, "verifiedAt": base.TODAY})
+            elif not old.get("planningReference") and proof.get("planningReference"):
+                old.update({"planningReference": proof["planningReference"],
+                            "planningAuthority": proof.get("planningAuthority", "")})
     found, complete, scanned, errors = scan(previous)
     cork_count = scan_cork(found)
     acp_count, acp_complete, acp_offset, acp_errors = scan_acp(found, records, previous)

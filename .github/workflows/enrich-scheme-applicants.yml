@@ -9,6 +9,9 @@ on:
       - 'preview-r9/scripts/test_enrich_applicants.py'
       - 'preview-r9/scripts/major_scheme_logic.py'
       - 'preview-r9/scripts/test_major_scheme_logic.py'
+      - 'preview-r9/scripts/enrich_acp_reports.py'
+      - 'preview-r9/scripts/test_enrich_acp_reports.py'
+      - 'preview-r9/data/verified-major-cases.json'
   schedule:
     - cron: '21 4 * * *'
 permissions:
@@ -28,6 +31,12 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      - name: Install ACP PDF text extraction dependency
+        run: python -m pip install --disable-pip-version-check 'pypdf>=5,<7'
+      - name: Test ACP applicant document parsing
+        run: python preview-r9/scripts/test_enrich_acp_reports.py
+      - name: Inspect ACP reports for verified applicants
+        run: python preview-r9/scripts/enrich_acp_reports.py
       - name: Test applicant extraction and provenance safeguards
         run: python preview-r9/scripts/test_enrich_applicants.py
       - name: Test scheme names, unit parsing and deduplication
