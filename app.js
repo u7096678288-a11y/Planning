@@ -36,7 +36,7 @@ function majorGroupId(name){return cleanKey(applicantGroup(name));}
 function groupProjects(){
  const grouped=new Map();
  for(const p of majorSchemes.projects||[]){
-  const name=majorMode==="promoters"?p.developer:majorMode==="sites"?p.siteName:p.applicant;
+  const name=majorMode==="promoters"?(p.developer||p.brand):majorMode==="sites"?p.siteName:p.applicant;
   if(!name)continue;
   const id=majorGroupId(name);
   if(!id)continue;
@@ -65,7 +65,7 @@ function majorProjectMarkup(p){
  const duplicate=p.possibleDuplicateOf?'<span class="major-duplicate">Linked ACP / council record'+(otherUrl?' · <a href="'+esc(otherUrl)+'" target="_blank" rel="noopener noreferrer">Matching application ↗</a>':'')+'</span>':'';
  const kind=p.kind==="acp"?"ACP case":"Council application";
  const place=p.address&&p.address!==p.siteName?'<span class="major-project-address">'+esc(p.address)+'</span>':'';
- const promoter=p.developer?'<span>Developer / promoter: '+esc(p.developer)+'</span>':'';
+ const promoter=p.developer?'<span>Developer / promoter (source-backed): '+esc(p.developer)+'</span>':p.brand?'<span>Brand in applicant name: '+esc(p.brand)+' (ownership not independently verified)</span>':'';
  const applicant=p.applicant?'<span>Applicant: '+esc(p.applicant)+'</span>':'<span>Applicant: awaiting verification</span>';
  return '<article class="major-project">'+
   '<strong>'+esc(p.siteName||p.address||"Residential scheme")+'</strong>'+
@@ -95,7 +95,7 @@ function renderApplicantIntelligence(){
   return {...g,projects:matches};
  }).filter(g=>g.projects.length);
  const visible=filtered.slice(0,majorShown);
- const label=majorMode==="sites"?"sites":majorMode==="promoters"?"promoters":"applicants";
+ const label=majorMode==="sites"?"sites":majorMode==="promoters"?"developer / brand groups":"applicants";
  const count=$("#majorGroupCount");
  if(count)count.textContent=fmt(filtered.length)+" "+label+" · "+fmt(filtered.reduce((n,g)=>n+g.projects.length,0))+" matching records";
  el.innerHTML=visible.map(g=>{
