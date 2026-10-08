@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Conservative, source-backed enrichment of larger Irish housing applications.
 
-Reads/writes only preview-r6/data/applicant-enrichment.json. Never guesses an
+Reads/writes only preview-r9/data/applicant-enrichment.json. Never guesses an
 applicant from an address, developer brand, or unstructured development text.
 """
 import datetime as dt
@@ -16,7 +16,7 @@ from pathlib import Path
 from urllib.parse import urlencode, urlsplit
 from urllib.request import Request, urlopen
 
-DATA = Path("preview-r6/data/applicant-enrichment.json")
+DATA = Path("preview-r9/data/applicant-enrichment.json")
 PLANNING = "https://services.arcgis.com/NzlPQPKn5QF9v2US/ArcGIS/rest/services/IrishPlanningApplications/FeatureServer/0/query"
 ACP = "https://services-eu1.arcgis.com/o56BSnENmD5mYs3j/ArcGIS/rest/services/Cases_2016_Onwards/FeatureServer/3/query"
 TODAY = dt.date.today().isoformat()
