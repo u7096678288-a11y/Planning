@@ -20,10 +20,10 @@ from urllib.request import Request, urlopen
 
 from pypdf import PdfReader
 
-ROOT=Path("preview-r9/data")
+ROOT=Path("preview-r10/data")
 CATALOGUE=ROOT/"major-schemes.json"
 EVIDENCE=ROOT/"applicant-enrichment.json"
-SOURCE=Path("preview-r9/scripts/enrich_applicants.py")
+SOURCE=Path("preview-r10/scripts/enrich_applicants.py")
 spec=importlib.util.spec_from_file_location("applicant_source",SOURCE)
 base=importlib.util.module_from_spec(spec)
 spec.loader.exec_module(base)
