@@ -7,7 +7,7 @@ const clean=s=>text(s).toLowerCase().replace(/[^a-z0-9]/g,"");
 const today=new Date(), start28=new Date(today.getTime()-28*86400000);
 const iso=d=>new Date(d).toISOString().slice(0,10);
 const since=iso(start28);
-const storageKey="radharc-major-scheme-edits-v1";
+const storageKey="radharc.major-schemes.edits.v1";
 const PLANNING="https://services.arcgis.com/NzlPQPKn5QF9v2US/arcgis/rest/services/IrishPlanningApplications/FeatureServer/0";
 const ACP="https://services-eu1.arcgis.com/o56BSnENmD5mYs3j/ArcGIS/rest/services/Cases_2016_Onwards/FeatureServer/3";
 const categories=[
@@ -15,6 +15,7 @@ const categories=[
  ["fi","Further information","FI requests / responses"],
  ["granted","Granted","Council grants"],
  ["refused","Refused","Council refusals"],
+ ["decided","Decided","Other council decisions"],
  ["withdrawn","Withdrawn","Withdrawn cases"],
  ["appeal","Appeal lodged","ACP appeal applications"],
  ["appealGranted","Granted on appeal","Confirmed ACP grant decisions"],
@@ -108,6 +109,7 @@ function eventList(p){
   push("granted",p.decisionDate,()=>/grant|conditional|approv/.test(decision)&&!/refus/.test(decision));
   push("refused",p.decisionDate,()=>/refus|reject|deny/.test(decision));
   push("withdrawn",p.decisionDate||p.withdrawnDate,()=>/withdraw/.test(decision));
+  push("decided",p.decisionDate,()=>!!decision&&!/grant|conditional|approv|refus|reject|deny|withdraw/.test(decision));
  }
  push("strategic",p.received,()=>strategic);
  push("localAuthority",p.received,()=>local);
@@ -118,6 +120,7 @@ function eventList(p){
  return events;
 }
 function inWindow(d){return d>=since&&d<=iso(today)}
+function inMovementWindow(e){return e.category==="upcoming"?e.day>iso(today)&&e.day<=iso(new Date(today.getTime()+28*86400000)):inWindow(e.day)}
 function filterRecords(records){
  const q=text($("#search").value).toLowerCase(),year=$("#year").value,council=$("#council").value,units=Number($("#units").value)||0;
  return records.filter(p=>{
@@ -125,12 +128,12 @@ function filterRecords(records){
   if(year&&!(p.received||"").startsWith(year))return false;
   if(council&&p.authority!==council)return false;
   if(q&&![p.siteName,p.address,p.applicant,p.developer,p.reference,p.caseId,p.planningReference,p.authority,p.description,p.type,p.tags].some(v=>text(v).toLowerCase().includes(q)))return false;
-  if(filterCategory&&!eventList(p).some(e=>e.category===filterCategory&&inWindow(e.day)))return false;
+  if(filterCategory&&!eventList(p).some(e=>e.category===filterCategory&&inMovementWindow(e)))return false;
   return true;
  });
 }
 function activity(p){
- const events=eventList(p).filter(e=>inWindow(e.day));
+ const events=eventList(p).filter(e=>inMovementWindow(e));
  if(filterCategory)return events.find(e=>e.category===filterCategory)||{category:filterCategory,day:""};
  return events.sort((a,b)=>b.day.localeCompare(a.day))[0]||{category:p.kind==="acp"?"appeal":"submitted",day:p.received};
 }
@@ -149,14 +152,14 @@ function barMarkup(items,max){
  return items.map(([name,n])=>'<div class="barrow"><span title="'+esc(name)+'">'+esc(name)+'</span><div class="track"><div class="fill" style="width:'+Math.max(n?2:0,Math.round(100*n/(max||1)))+'%"></div></div><strong>'+fmt(n)+'</strong></div>').join("");
 }
 function render(){
- const all=combine(),base=filterRecords(all),recent=base.filter(p=>eventList(p).some(e=>inWindow(e.day)));
+ const all=combine(),base=filterRecords(all),recent=base.filter(p=>eventList(p).some(e=>inMovementWindow(e))),cardBase=filterCategory?all.filter(p=>{const prev=filterCategory;filterCategory="";const ok=filterRecords([p]).length>0;filterCategory=prev;return ok}):base;
  const cards=$("#movementCards");
  cards.innerHTML=categories.map(([id,label,hint])=>{
-  const n=base.filter(p=>eventList(p).some(e=>e.category===id&&inWindow(e.day))).length;
+  const n=cardBase.filter(p=>eventList(p).some(e=>e.category===id&&inMovementWindow(e))).length;
   return '<button type="button" class="stat" data-category="'+id+'" aria-pressed="'+(filterCategory===id)+'"><span class="count">'+fmt(n)+'</span><span class="label">'+esc(label)+'</span><span class="hint">'+esc(hint)+'</span></button>';
  }).join("");
  cards.querySelectorAll("button").forEach(b=>b.onclick=()=>{filterCategory=filterCategory===b.dataset.category?"":b.dataset.category;shown=80;render()});
- const counts=categories.map(([id,label])=>[label,base.filter(p=>eventList(p).some(e=>e.category===id&&inWindow(e.day))).length]).filter(x=>x[1]>0);
+ const counts=categories.map(([id,label])=>[label,cardBase.filter(p=>eventList(p).some(e=>e.category===id&&inMovementWindow(e))).length]).filter(x=>x[1]>0);
  $("#movementBars").innerHTML=counts.length?barMarkup(counts,Math.max(...counts.map(x=>x[1]))):'<p class="note">No qualifying events with a verified date in this selection.</p>';
  const groups=new Map();
  for(const p of base){if(!p.applicant)continue;const k=clean(p.applicant.replace(/\s+(ltd|limited|dac)$/i,""));const v=groups.get(k)||{name:p.applicant,count:0};v.count++;groups.set(k,v)}
