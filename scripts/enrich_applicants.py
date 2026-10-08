@@ -69,12 +69,14 @@ def official_url(url):
     try:
         u = urlsplit(str(url or "").strip())
         host = (u.hostname or "").lower()
-        if u.scheme != "https" or not host or u.username or u.password:
+        if u.scheme not in ("https", "http") or not host or u.username or u.password:
             return False
         if host in ("localhost",) or host.endswith(".local") or host.endswith(".internal"):
             return False
         # Council portals, the Commission and Irish official public planning hosts.
-        return (host == "pleanala.ie" or host.endswith(".pleanala.ie") or
+        councils = ("galwaycity.ie", "corkcity.ie", "dublincity.ie", "limerick.ie", "fingal.ie", "sdublincoco.ie", "dlrcoco.ie", "meath.ie", "wicklow.ie", "kildarecoco.ie", "kilkennycoco.ie", "clarecoco.ie", "mayo.ie", "laois.ie", "offaly.ie", "carlow.ie", "leitrim.ie", "monaghan.ie")
+        return (host in councils or any(host.endswith("." + c) for c in councils) or
+                host == "pleanala.ie" or host.endswith(".pleanala.ie") or
                 host == "planning.localgov.ie" or host.endswith(".coco.ie") or
                 host.endswith(".citycouncil.ie") or host.endswith(".gov.ie") or
                 host in ("www.eplanning.ie", "eplanning.ie", "planning.ie") or
@@ -229,7 +231,7 @@ def main():
                         name = official_name(source)
             if name and source and official_url(source):
                 records.setdefault(key, {}).update({"applicant": name, "applicantSource": source,
-                    "applicantEvidence": "Matched ACP case to local application reference and official applicant field",
+                    "applicantEvidence": "Matched ACP case to exact council application reference; applicant named in linked official record",
                     "planningReference": ref.group(1), "planningAuthority": authority, "verifiedAt": TODAY})
                 stats["newApplicants"] += 1
         except Exception as error:
