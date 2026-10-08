@@ -1,7 +1,7 @@
 import importlib.util
 import unittest
 
-spec = importlib.util.spec_from_file_location("enrich", "preview-r6/scripts/enrich_applicants.py")
+spec = importlib.util.spec_from_file_location("enrich", "preview-r8/scripts/enrich_applicants.py")
 mod = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(mod)
 
