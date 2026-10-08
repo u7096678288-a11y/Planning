@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "updatedAt": null,
+  "scanOffset": 0,
+  "stats": {
+    "indexed": 0,
+    "named": 0,
+    "unnamed": 0,
+    "scanComplete": false,
+    "scanInProgress": true,
+    "threshold": ">100 residential units per application"
+  },
+  "projects": []
+}
