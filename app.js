@@ -10,6 +10,7 @@ const fmt=n=>new Intl.NumberFormat("en-IE",{maximumFractionDigits:0}).format(Num
 const fmtArea=n=>new Intl.NumberFormat("en-IE",{maximumFractionDigits:2}).format(Number(n)||0);
 const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 let map,layers={},charts={},selected=null,timer;
+let corkReady=false,corkRecords=[],corkError="",corkLoadStarted=false;
 
 const residentialBase=()=>"(NumResidentialUnits IS NOT NULL AND NumResidentialUnits > 0)";
 const housingWhere=()=>{
@@ -49,6 +50,31 @@ const periodLabel=()=>{
  return s||e?`${s||"Start"} to ${e||"today"}`:"All dates";
 };
 
+const FLAG_COLORS={refused:"#d74646",pending:"#ec9b24",approved:"#2f9b65",new:"#277ac7",other:"#8b98a7"};
+const FLAG_LABELS={refused:"Refused",pending:"Pending decision",approved:"Approved",new:"New application",other:"Other / unclear"};
+function decisionFlag(p={},kind="planning"){
+ const decision=String(kind==="acp"?(p.DECISION||""):(p.AppealDecision||p.Decision||"")).trim().toLowerCase();
+ const application=String(p.ApplicationStatus||"").trim().toLowerCase();
+ const text=decision||application;
+ if(/\\b(refus|rejected|reject|not grant|deny|denied|permission refused|appeal refused)/.test(text))return "refused";
+ if(/\\b(grant|approv|permitted|permission granted|allow appeal|conditional permission)/.test(text))return "approved";
+ if(/\\b(withdraw|invalid|quash|dismiss|annul|split decision|not exempt|declined jurisdiction)/.test(text))return "other";
+ if(/\\b(pending|await|undecided|under consideration|further information|further consideration|due to be decided|live case|in progress)/.test(text))return "pending";
+ if(decision)return "other";
+ const received=Number(p.ReceivedDate||p.LODGEDON)||Date.parse(p.ReceivedDate||p.LODGEDON||"");
+ const age=Date.now()-received;
+ if(Number.isFinite(age)&&age>=0&&age<=30*86400000)return "new";
+ return "pending";
+}
+function flagStyle(feature,kind="planning"){
+ const flag=decisionFlag(feature?.properties||{},kind);
+ return {color:FLAG_COLORS[flag],fillColor:FLAG_COLORS[flag],weight:2,fillOpacity:.18};
+}
+function markerStyle(feature,kind="planning"){
+ const flag=decisionFlag(feature?.properties||{},kind);
+ return {radius:5,color:"#ffffff",weight:1.2,fillColor:FLAG_COLORS[flag],fillOpacity:.95};
+}
+
 function init(){
   map=L.map("map").setView([53.35,-8],7);
   L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{
@@ -59,6 +85,7 @@ function init(){
   toggles();
   bind();
   loadAuthorities();
+  loadCorkCity();
   update();
   loadAI();
 }
@@ -67,17 +94,17 @@ function makeLayers(){
   layers.planningPoints=L.esri.featureLayer({
     url:S.planningPoints.url,
     where:cutoff(),
-    pointToLayer:(_,ll)=>L.circleMarker(ll,{radius:4,color:"#fff",weight:1,fillColor:S.planningPoints.color,fillOpacity:.9})
+    pointToLayer:(feature,ll)=>L.circleMarker(ll,markerStyle(feature))
   });
   layers.planningSites=L.esri.featureLayer({
     url:S.planningSites.url,
     where:cutoff(),
-    style:{color:S.planningSites.color,weight:2,fillOpacity:.14}
+    style:feature=>flagStyle(feature)
   });
   layers.acpCases=L.esri.featureLayer({
     url:S.acpCases.url,
     where:acpCutoff(),
-    style:{color:S.acpCases.color,weight:2,dashArray:"5 3",fillOpacity:.12}
+    style:feature=>({...flagStyle(feature,"acp"),dashArray:"5 3"})
   });
   layers.freehold=L.esri.featureLayer({
     url:S.freehold.url,
@@ -272,6 +299,7 @@ function select(k,f,ll){
     ["Address",p.DevelopmentAddress],
     ["Description",p.DevelopmentDescription],
     ["Authority",p.PlanningAuthority],
+    ["Decision flag",FLAG_LABELS[decisionFlag(p,planning?"planning":"acp")]],
     ["Decision",p.Decision],
     ["Received",date(p.ReceivedDate)],
     ["Residential units",p.NumResidentialUnits],
@@ -281,6 +309,7 @@ function select(k,f,ll){
     ["Address",p.DEVADDRESS],
     ["Description",p.DEVDESC],
     ["Authority",p.PLANINGATY],
+    ["Decision flag",FLAG_LABELS[decisionFlag(p,"acp")]],
     ["Decision",p.DECISION],
     ["Lodged",date(p.LODGEDON)],
     ["Category",p.CATEGORY]
@@ -319,7 +348,8 @@ function resultMarkup(item,i){
   let ref=planning?(p.ApplicationNumber||"Planning application"):(p.ABPCASEID||"ACP case");
   let address=planning?p.DevelopmentAddress:p.DEVADDRESS;
   let when=planning?p.ReceivedDate:p.LODGEDON;
-  let type=planning?"Planning":"ACP";
+  let type=planning?(k==="corkCityDirect"?"Cork City":"Planning"):"ACP";
+  type+=" · "+FLAG_LABELS[decisionFlag(p,planning?"planning":"acp")];
   return `<button data-i="${i}"><b>${esc(ref)}</b><span>${esc(type)} · ${esc(date(when))}</span><span>${esc((address||"").slice(0,120))}</span></button>`;
 }
 
