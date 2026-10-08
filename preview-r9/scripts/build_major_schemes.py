@@ -93,6 +93,7 @@ def scan(previous):
                 "address": clean(row.get("DevelopmentAddress"), 180),
                 "description": clean(row.get("DevelopmentDescription"), 700),
                 "decision": clean(row.get("Decision"), 90),
+                "appealRef": clean(row.get("AppealRefNumber") or row.get("AppealRefNum"), 80),
                 "received": date_value(row.get("ReceivedDate")),
                 "applicant": native or previous_record.get("applicant", ""),
                 "applicantSourceType": "National planning feed" if native else previous_record.get("applicantSourceType", ""),
@@ -139,6 +140,7 @@ def scan_cork(found):
                     "address": clean(row.get("DevelopmentAddress"), 180),
                     "description": clean(row.get("DevelopmentDescription"), 200),
                     "decision": clean(row.get("Decision"), 90),
+                    "appealRef": clean(row.get("AppealRefNum"), 80),
                     "received": date_value(row.get("ReceivedDate")),
                     "applicant": native or previous.get("applicant", ""),
                     "applicantSourceType": "Cork City Council open data" if native else previous.get("applicantSourceType", ""),
@@ -153,11 +155,14 @@ def scan_cork(found):
     if count == 0:
         # Stream the council's published CSV when the CKAN SQL API is unavailable.
         try:
+            rows_scanned = 0
+            highest_reported = 0
             url = "https://data.corkcity.ie/datastore/dump/" + resource
             req = Request(url, headers={"User-Agent": base.UA, "Accept": "text/csv"})
             with urlopen(req, timeout=35) as response:
                 reader = csv.DictReader(io.TextIOWrapper(response, encoding="utf-8-sig", errors="replace"))
                 for row in reader:
+                    rows_scanned += 1
                     ref = clean(row.get("ApplicationNumber"), 70)
                     if not ref:
                         continue
@@ -165,6 +170,11 @@ def scan_cork(found):
                         units = int(float(row.get("NumResidentialUnits") or 0))
                     except (ValueError, TypeError):
                         continue
+                    highest_reported = max(highest_reported, units)
+                    units_from_description = 0
+                    if units <= 100:
+                        units_from_description = logic.extract_units(row.get("DevelopmentDescription", ""))
+                        units = units_from_description
                     if units <= 100:
                         continue
                     identifier = key("Cork City Council", ref)
@@ -173,16 +183,18 @@ def scan_cork(found):
                     found[identifier] = {
                         "key": identifier, "reference": ref, "authority": "Cork City Council",
                         "kind": "planning", "units": units,
+                        "unitsSource": "Cork City description" if units_from_description else "Cork City Council open data",
                         "address": clean(row.get("DevelopmentAddress"), 180),
                         "description": clean(row.get("DevelopmentDescription"), 700),
                         "decision": clean(row.get("Decision"), 90),
+                        "appealRef": clean(row.get("AppealRefNum"), 80),
                         "received": date_value(row.get("ReceivedDate")),
                         "applicant": native or previous.get("applicant", ""),
                         "applicantSourceType": "Cork City Council open data" if native else previous.get("applicantSourceType", ""),
                         "source": clean(row.get("LinkAppDetails"), 400),
                     }
                     count += 1
-            print("Cork CSV fallback indexed:", count)
+            print("Cork CSV fallback indexed:", count, "rows scanned:", rows_scanned, "max reported units:", highest_reported)
         except Exception as error:
             print("Cork CSV fallback unavailable:", str(error)[:180])
     return count
@@ -330,6 +342,27 @@ def classify_and_match(found, evidence):
             item["duplicateReason"] = "Possible same-site overlap: identical council, address and unit count"
         else:
             seen_sites[site_key] = item["key"]
+    # Council registers often carry the exact ACP appeal number. This is a
+    # stronger match than site descriptions, so use it before fuzzy flags.
+    appeal_index = {}
+    for council in found.values():
+        if council.get("kind") != "planning":
+            continue
+        match = re.search(r"\d{6}", str(council.get("appealRef") or ""))
+        if match:
+            appeal_index.setdefault(match.group(), council)
+    for case in found.values():
+        if case.get("kind") != "acp" or case.get("possibleDuplicateOf"):
+            continue
+        council = appeal_index.get(case.get("caseId"))
+        if not council:
+            continue
+        case["possibleDuplicateOf"] = council["key"]
+        case["duplicateReason"] = "Exact ACP appeal number recorded on council application"
+        case["planningReference"] = council.get("reference", "")
+        if not case.get("applicant") and council.get("applicant"):
+            case["applicant"] = council["applicant"]
+            case["applicantSourceType"] = "Matched council application"
     for item in found.values():
         if item.get("kind") != "acp" or item.get("possibleDuplicateOf"):
             continue
@@ -368,6 +401,7 @@ def main():
     missing.sort(key=lambda p: bool(checked.get(p["key"])))
     visited = 0
     added = 0
+    extra_council_lookups = 0
     for item in missing:
         if visited >= MAX_LOOKUPS or time.monotonic() - started > MAX_SECONDS:
             break
@@ -401,6 +435,21 @@ def main():
                             name = council["applicant"]
                             applicant_source = council.get("source") or applicant_source
                             evidence_text = "ACP case matched to the exact council application reference"
+                    elif not name and extra_council_lookups < 55 and time.monotonic() - started < MAX_SECONDS - 60:
+                        extra_council_lookups += 1
+                        safe_ref = council_ref.replace("'", "''")
+                        rows = base.query(base.PLANNING, "ApplicationNumber = '" + safe_ref + "'",
+                            "PlanningAuthority,ApplicantForename,ApplicantSurname,LinkAppDetails", 20)
+                        matches = [row for row in rows if logic.compact(row.get("PlanningAuthority")) == logic.compact(item.get("authority"))]
+                        if len(matches) == 1:
+                            match_row = matches[0]
+                            source_url = match_row.get("LinkAppDetails") or ""
+                            name = applicant_from_feed(match_row)
+                            if not name and base.official_url(source_url):
+                                name = base.official_name(source_url)
+                            if name:
+                                applicant_source = source_url if base.official_url(source_url) else applicant_source
+                                evidence_text = "ACP case reference matched to an exact council application"
             except Exception as error:
                 print("ACP case inspection skipped:", item.get("caseId"), str(error)[:110])
         else:
@@ -430,6 +479,7 @@ def main():
         "named": sum(bool(p["applicant"]) for p in projects),
         "unnamed": sum(not p["applicant"] for p in projects),
         "officialPagesCheckedThisRun": visited,
+        "extraCouncilReferencesChecked": extra_council_lookups,
         "newNamesFromOfficialPages": added,
         "scanComplete": complete,
         "scanRows": scanned,
