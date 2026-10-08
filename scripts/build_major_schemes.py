@@ -231,6 +231,22 @@ def classify_and_match(found, evidence):
             item["source"] = "https://planning.agileapplications.ie/dublincity"
             item["sourceLinkType"] = "Council search — enter reference"
         item["unitsSource"] = item.get("unitsSource") or "National planning feed"
+    # Flag, but do not merge, same-council applications with identical
+    # substantial site addresses and unit counts (often amendments or FEPs).
+    seen_sites = {}
+    for item in sorted(found.values(), key=lambda x: (x.get("received", ""), x["key"])):
+        if item.get("kind") != "planning" or item.get("possibleDuplicateOf"):
+            continue
+        addr = logic.compact(item.get("address", ""))
+        if len(addr) < 18:
+            continue
+        site_key = (logic.compact(item.get("authority")), addr, item.get("units"))
+        earlier = seen_sites.get(site_key)
+        if earlier and earlier != item["key"]:
+            item["possibleDuplicateOf"] = earlier
+            item["duplicateReason"] = "Possible same-site overlap: identical council, address and unit count"
+        else:
+            seen_sites[site_key] = item["key"]
     for item in found.values():
         if item.get("kind") != "acp" or item.get("possibleDuplicateOf"):
             continue
