@@ -57,10 +57,10 @@ function decisionFlag(p={},kind="planning"){
  const decision=String(kind==="acp"?(p.DECISION||""):(p.AppealDecision||p.Decision||"")).trim().toLowerCase();
  const application=String(p.ApplicationStatus||"").trim().toLowerCase();
  const text=decision||application;
- if(/\\b(refus|rejected|reject|not grant|deny|denied|permission refused|appeal refused)/.test(text))return "refused";
- if(/\\b(grant|approv|permitted|permission granted|allow appeal|conditional permission)/.test(text))return "approved";
- if(/\\b(withdraw|invalid|quash|dismiss|annul|split decision|not exempt|declined jurisdiction)/.test(text))return "other";
- if(/\\b(pending|await|undecided|under consideration|further information|further consideration|due to be decided|live case|in progress)/.test(text))return "pending";
+ if(/\b(refus|rejected|reject|not grant|deny|denied|permission refused|appeal refused)/.test(text))return "refused";
+ if(/\b(grant|approv|permitted|permission granted|allow appeal|conditional)/.test(text))return "approved";
+ if(/\b(withdraw|invalid|quash|dismiss|annul|split decision|not exempt|declined jurisdiction)/.test(text))return "other";
+ if(/\b(pending|await|undecided|under consideration|further information|further consideration|due to be decided|live case|in progress)/.test(text))return "pending";
  if(decision)return "other";
  const received=Number(p.ReceivedDate||p.LODGEDON)||Date.parse(p.ReceivedDate||p.LODGEDON||"");
  const age=Date.now()-received;
@@ -125,7 +125,7 @@ function corkFiltered(){
   if(type==="oneoff")return Number(p.NumResidentialUnits)===1;
   if(["lrd","shd","sdz"].includes(type)){
    const desc=String(p.DevelopmentDescription||"").toLowerCase();
-   return type==="lrd"?/large[- ]scale residential|large residential development|\\blrd\\b/.test(desc):type==="shd"?/strategic housing development|\\bshd\\b/.test(desc):/strategic development zone|\\bsdz\\b/.test(desc);
+   return type==="lrd"?/large[- ]scale residential|large residential development|\blrd\b/.test(desc):type==="shd"?/strategic housing development|\bshd\b/.test(desc):/strategic development zone|\bsdz\b/.test(desc);
   }
   return Number(p.NumResidentialUnits)>0;
  });
