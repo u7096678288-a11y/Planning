@@ -27,6 +27,7 @@ MAX_PAGES = 150
 MAX_LOOKUPS = 75
 MAX_SECONDS = 470
 started = time.monotonic()
+base.MAX_SITE_VISITS = MAX_LOOKUPS + 5
 
 def clean(value, length=200):
     return " ".join(str(value or "").split())[:length]
@@ -48,7 +49,7 @@ def applicant_from_feed(row):
 def scan(previous):
     # The ordered offset is saved if the service interrupts the scan.
     found = {p["key"]: p for p in previous.get("projects", []) if p.get("key")}
-    start_offset = 0
+    start_offset = int(previous.get('scanOffset', 0) or 0)
     complete = False
     failures = []
     for page in range(MAX_PAGES):
@@ -154,6 +155,7 @@ def main():
         "note": "Counts refer to planning application records, not deduplicated developments. Applicant names are exact legal names; developer groups are not inferred."
     }
     result = {"schemaVersion": 1, "updatedAt": dt.datetime.now(dt.timezone.utc).isoformat(),
+              "scanOffset": 0 if complete else scanned,
               "stats": stats, "projects": projects}
     OUT.write_text(json.dumps(result, ensure_ascii=False, separators=(",", ":")) + "\n", encoding="utf-8")
     evidence["updatedAt"] = result["updatedAt"]
