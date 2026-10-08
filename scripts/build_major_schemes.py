@@ -6,6 +6,8 @@ without applicant names. Names come from source applicant fields or from
 explicitly labelled applicant fields on official council pages, never guesses.
 """
 import datetime as dt
+import csv
+import io
 import html as html_lib
 from urllib.request import Request, urlopen
 import importlib.util
@@ -141,13 +143,48 @@ def scan_cork(found):
                     "applicant": native or previous.get("applicant", ""),
                     "applicantSourceType": "Cork City Council open data" if native else previous.get("applicantSourceType", ""),
                     "source": clean(row.get("LinkAppDetails"), 400),
-                "kind": "planning",
+                    "kind": "planning",
                 }
                 count += 1
             if len(rows) < 1000:
                 break
     except Exception as error:
         print("Cork City catalogue unavailable:", str(error)[:180])
+    if count == 0:
+        # Stream the council's published CSV when the CKAN SQL API is unavailable.
+        try:
+            url = "https://data.corkcity.ie/datastore/dump/" + resource
+            req = Request(url, headers={"User-Agent": base.UA, "Accept": "text/csv"})
+            with urlopen(req, timeout=35) as response:
+                reader = csv.DictReader(io.TextIOWrapper(response, encoding="utf-8-sig", errors="replace"))
+                for row in reader:
+                    ref = clean(row.get("ApplicationNumber"), 70)
+                    if not ref:
+                        continue
+                    try:
+                        units = int(float(row.get("NumResidentialUnits") or 0))
+                    except (ValueError, TypeError):
+                        continue
+                    if units <= 100:
+                        continue
+                    identifier = key("Cork City Council", ref)
+                    previous = found.get(identifier, {})
+                    native = applicant_from_feed(row)
+                    found[identifier] = {
+                        "key": identifier, "reference": ref, "authority": "Cork City Council",
+                        "kind": "planning", "units": units,
+                        "address": clean(row.get("DevelopmentAddress"), 180),
+                        "description": clean(row.get("DevelopmentDescription"), 700),
+                        "decision": clean(row.get("Decision"), 90),
+                        "received": date_value(row.get("ReceivedDate")),
+                        "applicant": native or previous.get("applicant", ""),
+                        "applicantSourceType": "Cork City Council open data" if native else previous.get("applicantSourceType", ""),
+                        "source": clean(row.get("LinkAppDetails"), 400),
+                    }
+                    count += 1
+            print("Cork CSV fallback indexed:", count)
+        except Exception as error:
+            print("Cork CSV fallback unavailable:", str(error)[:180])
     return count
 
 
