@@ -1,7 +1,7 @@
 import importlib.util
 from pathlib import Path
 
-p=Path("preview-r9/scripts/major_scheme_logic.py")
+p=Path("preview-r10/scripts/major_scheme_logic.py")
 spec=importlib.util.spec_from_file_location("logic",p)
 logic=importlib.util.module_from_spec(spec)
 spec.loader.exec_module(logic)
