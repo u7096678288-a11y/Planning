@@ -64,6 +64,8 @@ function majorProjectMarkup(p){
  const otherUrl=other&&validWebAddress(other.source);
  const duplicate=p.possibleDuplicateOf?'<span class="major-duplicate">'+esc(p.duplicateReason||"Potential related application")+(otherUrl?' · <a href="'+esc(otherUrl)+'" target="_blank" rel="noopener noreferrer">Related record ↗</a>':'')+'</span>':'';
  const kind=p.kind==="acp"?"ACP case":"Council application";
+ const councilRef=p.kind==="acp"&&p.planningReference?'<span>Originating council ref: '+esc(p.planningReference)+'</span>':"";
+
  const siteSource=validWebAddress(p.siteWebsiteSource);
  const siteEvidence=siteSource?'<span>Site name: <a class="major-record-link" href="'+esc(siteSource)+'" target="_blank" rel="noopener noreferrer">Project website ↗</a></span>':'';
  const place=p.address&&p.address!==p.siteName?'<span class="major-project-address">'+esc(p.address)+'</span>':'';
@@ -73,7 +75,7 @@ function majorProjectMarkup(p){
   '<strong>'+esc(p.siteName||p.address||"Residential scheme")+'</strong>'+
   '<span class="major-project-type">'+esc(p.type||"Residential development")+(p.route&&!((p.route==="LRD"&&p.type==="Large-scale Residential Development")||(p.route==="SHD"&&p.type==="Strategic Housing Development"))?" · "+esc(p.route):"")+' · '+kind+'</span>'+
   place+siteEvidence+'<span>'+esc(p.authority||"")+' · '+refHtml+' · '+fmt(p.units)+' homes</span>'+
-  applicant+promoter+
+  applicant+promoter+councilRef+
   (p.decision&&p.decision!=="N/A"?'<span>Decision: '+esc(p.decision)+'</span>':'')+
   (p.received?'<span>Received: '+esc(p.received)+'</span>':'')+
   duplicate+'</article>';
