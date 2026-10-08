@@ -1,3 +1,7 @@
+async function fetchCatalogueFile(name){
+ try{const r=await fetch("../preview-r10/data/"+name+"?ts="+Date.now(),{cache:"no-store"});if(r.ok)return r;}catch(error){console.warn("Latest catalogue temporarily unavailable",error);}
+ return fetch("data/"+name+"?ts="+Date.now(),{cache:"no-store"});
+}
 "use strict";
 const $=s=>document.querySelector(s);
 const SOURCE="https://services.arcgis.com/NzlPQPKn5QF9v2US/arcgis/rest/services/IrishPlanningApplications/FeatureServer/0/query";
@@ -346,13 +350,13 @@ async function load(){
  if(results[0].status==="fulfilled")live=results[0].value;else partialErrors.push("Live national planning feed unavailable: "+results[0].reason?.message);
  if(results[1].status==="fulfilled")acpLive=results[1].value;else partialErrors.push("Live ACP case feed unavailable: "+results[1].reason?.message);
  try{
-  const r=await fetch("data/major-schemes.json?ts="+Date.now(),{cache:"no-store"});
+  const r=await fetchCatalogueFile("major-schemes.json");
   if(!r.ok)throw Error("HTTP "+r.status);
   const data=await r.json();
   catalogue=(data.projects||[]).map(normalizeCatalogue);
  }catch(e){partialErrors.push("Indexed scheme catalogue unavailable: "+e.message);catalogue=[]}
  try{
-  const r=await fetch("data/verified-major-cases.json?ts="+Date.now(),{cache:"no-store"});
+  const r=await fetchCatalogueFile("verified-major-cases.json");
   if(r.ok){
    const d=await r.json();
    for(const p of catalogue){const proof=d.cases?.[p.key];if(proof?.applicant&&!p.applicant)p.applicant=proof.applicant;if(proof?.planningReference&&!p.planningReference)p.planningReference=proof.planningReference}
