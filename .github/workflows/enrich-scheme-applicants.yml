@@ -1,11 +1,12 @@
-name: Enrich residential scheme applicants
+name: Index major residential scheme applicants
 on:
   workflow_dispatch:
   push:
     paths:
       - '.github/workflows/enrich-scheme-applicants.yml'
-      - 'preview-r6/scripts/enrich_applicants.py'
-      - 'preview-r6/scripts/test_enrich_applicants.py'
+      - 'preview-r8/scripts/build_major_schemes.py'
+      - 'preview-r8/scripts/enrich_applicants.py'
+      - 'preview-r8/scripts/test_enrich_applicants.py'
   schedule:
     - cron: '21 4 * * *'
 permissions:
@@ -26,18 +27,18 @@ jobs:
         with:
           python-version: '3.12'
       - name: Test applicant extraction and provenance safeguards
-        run: python preview-r6/scripts/test_enrich_applicants.py
-      - name: Fetch verified applicant names from public planning records
-        run: python preview-r6/scripts/enrich_applicants.py
+        run: python preview-r8/scripts/test_enrich_applicants.py
+      - name: Scan all applications over 100 homes and enrich missing applicant names
+        run: python preview-r8/scripts/build_major_schemes.py
       - name: Commit preview-only enrichment dataset
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add preview-r6/data/applicant-enrichment.json
+          git add preview-r8/data/major-schemes.json preview-r8/data/applicant-enrichment.json
           if git diff --cached --quiet; then
             echo "No applicant enrichment changes"
           else
-            git commit -m "Update verified residential applicant enrichment [skip ci]"
+            git commit -m "Update major scheme applicant catalogue [skip ci]"
             git pull --rebase origin main
             git push origin HEAD:main
           fi
