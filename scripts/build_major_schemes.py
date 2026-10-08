@@ -297,7 +297,8 @@ def classify_and_match(found, evidence):
         item["type"] = logic.scheme_type(desc, item.get("reference", ""), item.get("category", ""))
         site_web = item.get("siteWebsiteName", "")
         verified_url = item.get("developerSource", "")
-        if verified_url and not site_web and len(website_titles) < 15:
+        project_host = (urlsplit(verified_url).hostname or "") if verified_url else ""
+        if verified_url and re.search(r"lrd|shd|scheme|project|planning|development", project_host, re.I) and not site_web and len(website_titles) < 15:
             if verified_url not in website_titles:
                 website_titles[verified_url] = verified_website_title(verified_url)
             site_web = website_titles[verified_url]
