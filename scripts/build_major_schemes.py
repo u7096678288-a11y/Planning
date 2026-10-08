@@ -222,6 +222,7 @@ def classify_and_match(found, evidence):
         if proof.get("developer") and proof.get("developerSource"):
             item["developer"] = proof["developer"]
             item["developerSource"] = proof["developerSource"]
+        item["brand"] = logic.brand_from_applicant(item.get("applicant"))
         desc = item.get("description", "")
         item["type"] = logic.scheme_type(desc, item.get("reference", ""), item.get("category", ""))
         item["siteName"] = logic.site_name(item.get("address", ""), desc)
