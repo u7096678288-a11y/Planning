@@ -262,7 +262,7 @@ def scan_acp(found, evidence, previous):
                 "decision": clean(row.get("DECISION"), 90),
                 "acpLodgedDate": date_value(row.get("LODGEDON")),
                 "acpDecisionDate": date_value(row.get("DECIDED_ON")),
-                "acpOutcome": ("Granted" if re.search(r"\b(?:grant|approve)\b", clean(row.get("DECISION")), re.I) else
+                "acpOutcome": ("Granted" if re.search(r"\b(?:grant|approv)", clean(row.get("DECISION")), re.I) else
                                "Refused" if re.search(r"\brefus", clean(row.get("DECISION")), re.I) else
                                "Withdrawn" if re.search(r"withdraw", clean(row.get("DECISION")), re.I) else ""),
                 "received": date_value(row.get("LODGEDON")),
