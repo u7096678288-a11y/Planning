@@ -62,7 +62,7 @@ function majorProjectMarkup(p){
  const refHtml=source?'<a class="major-record-link" href="'+esc(source)+'" target="_blank" rel="noopener noreferrer" title="'+esc(p.sourceLinkType||"Open official application")+'">'+(p.sourceLinkType?"Search ref ":"Ref ")+ref+' ↗</a>':'Ref '+ref+' · Link unavailable';
  const other=majorSchemesByKey.get(p.possibleDuplicateOf);
  const otherUrl=other&&validWebAddress(other.source);
- const duplicate=p.possibleDuplicateOf?'<span class="major-duplicate">Linked ACP / council record'+(otherUrl?' · <a href="'+esc(otherUrl)+'" target="_blank" rel="noopener noreferrer">Matching application ↗</a>':'')+'</span>':'';
+ const duplicate=p.possibleDuplicateOf?'<span class="major-duplicate">'+esc(p.duplicateReason||"Potential related application")+(otherUrl?' · <a href="'+esc(otherUrl)+'" target="_blank" rel="noopener noreferrer">Related record ↗</a>':'')+'</span>':'';
  const kind=p.kind==="acp"?"ACP case":"Council application";
  const place=p.address&&p.address!==p.siteName?'<span class="major-project-address">'+esc(p.address)+'</span>':'';
  const promoter=p.developer?'<span>Developer / promoter (source-backed): '+esc(p.developer)+'</span>':p.brand?'<span>Brand in applicant name: '+esc(p.brand)+' (ownership not independently verified)</span>':'';
@@ -85,7 +85,7 @@ function renderApplicantIntelligence(){
  const acp=projects.filter(p=>p.kind==="acp").length;
  const duplicates=projects.filter(p=>p.possibleDuplicateOf).length;
  const allGroups=groupProjects();
- if(statsEl)statsEl.textContent=fmt(projects.length)+" indexed >100-home records ("+fmt(acp)+" ACP) · "+fmt(named)+" applicants verified · "+fmt(projects.length-named)+" unresolved · "+fmt(duplicates)+" linked council/ACP records"+(stats.scanComplete&&stats.acpScanComplete?"":" · Source scan continuing");
+ if(statsEl)statsEl.textContent=fmt(projects.length)+" indexed >100-home records ("+fmt(acp)+" ACP) · "+fmt(named)+" applicants verified · "+fmt(projects.length-named)+" unresolved · "+fmt(duplicates)+" flagged related records"+(stats.scanComplete&&stats.acpScanComplete?"":" · Source scan continuing");
  const updated=$("#applicantIntelligenceUpdated");
  if(updated)updated.textContent=majorSchemes.updatedAt?"Catalogue updated "+new Date(majorSchemes.updatedAt).toLocaleDateString("en-IE"):"";
  const term=($("#applicantIntelligenceSearch")?.value||"").toLowerCase().trim();

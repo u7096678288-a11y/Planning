@@ -6,12 +6,16 @@ without applicant names. Names come from source applicant fields or from
 explicitly labelled applicant fields on official council pages, never guesses.
 """
 import datetime as dt
+import csv
+import io
+import html as html_lib
+from urllib.request import Request, urlopen
 import importlib.util
 import json
 import re
 import time
 from pathlib import Path
-from urllib.parse import urlencode
+from urllib.parse import urlencode, urlsplit
 
 ROOT = Path("preview-r9/data")
 OUT = ROOT / "major-schemes.json"
@@ -87,7 +91,7 @@ def scan(previous):
                 "authority": authority,
                 "units": units,
                 "address": clean(row.get("DevelopmentAddress"), 180),
-                "description": clean(row.get("DevelopmentDescription"), 200),
+                "description": clean(row.get("DevelopmentDescription"), 700),
                 "decision": clean(row.get("Decision"), 90),
                 "received": date_value(row.get("ReceivedDate")),
                 "applicant": native or previous_record.get("applicant", ""),
@@ -139,13 +143,48 @@ def scan_cork(found):
                     "applicant": native or previous.get("applicant", ""),
                     "applicantSourceType": "Cork City Council open data" if native else previous.get("applicantSourceType", ""),
                     "source": clean(row.get("LinkAppDetails"), 400),
-                "kind": "planning",
+                    "kind": "planning",
                 }
                 count += 1
             if len(rows) < 1000:
                 break
     except Exception as error:
         print("Cork City catalogue unavailable:", str(error)[:180])
+    if count == 0:
+        # Stream the council's published CSV when the CKAN SQL API is unavailable.
+        try:
+            url = "https://data.corkcity.ie/datastore/dump/" + resource
+            req = Request(url, headers={"User-Agent": base.UA, "Accept": "text/csv"})
+            with urlopen(req, timeout=35) as response:
+                reader = csv.DictReader(io.TextIOWrapper(response, encoding="utf-8-sig", errors="replace"))
+                for row in reader:
+                    ref = clean(row.get("ApplicationNumber"), 70)
+                    if not ref:
+                        continue
+                    try:
+                        units = int(float(row.get("NumResidentialUnits") or 0))
+                    except (ValueError, TypeError):
+                        continue
+                    if units <= 100:
+                        continue
+                    identifier = key("Cork City Council", ref)
+                    previous = found.get(identifier, {})
+                    native = applicant_from_feed(row)
+                    found[identifier] = {
+                        "key": identifier, "reference": ref, "authority": "Cork City Council",
+                        "kind": "planning", "units": units,
+                        "address": clean(row.get("DevelopmentAddress"), 180),
+                        "description": clean(row.get("DevelopmentDescription"), 700),
+                        "decision": clean(row.get("Decision"), 90),
+                        "received": date_value(row.get("ReceivedDate")),
+                        "applicant": native or previous.get("applicant", ""),
+                        "applicantSourceType": "Cork City Council open data" if native else previous.get("applicantSourceType", ""),
+                        "source": clean(row.get("LinkAppDetails"), 400),
+                    }
+                    count += 1
+            print("Cork CSV fallback indexed:", count)
+        except Exception as error:
+            print("Cork CSV fallback unavailable:", str(error)[:180])
     return count
 
 
@@ -213,7 +252,38 @@ def scan_acp(found, evidence, previous):
             break
     return count, complete, 0 if complete else offset, errors
 
+def verified_website_title(url):
+    """Read a verified project website title, never derive a name from its domain."""
+    try:
+        parsed = urlsplit(url)
+        host = (parsed.hostname or "").lower()
+        if parsed.scheme != "https" or not host.endswith(".ie") or parsed.port or parsed.username or parsed.password:
+            return ""
+        if host in ("localhost",) or host.startswith(("127.", "10.", "192.168.")):
+            return ""
+        req = Request(url, headers={"User-Agent": base.UA, "Accept": "text/html"})
+        with urlopen(req, timeout=9) as response:
+            redirected = urlsplit(response.url)
+            if (redirected.hostname or "").lower() != host:
+                return ""
+            markup = response.read(180000).decode("utf-8", "replace")
+        match = re.search(r"<title[^>]*>(.*?)</title>", markup, re.I | re.S)
+        if not match:
+            return ""
+        title = html_lib.unescape(re.sub(r"<[^>]+>", " ", match.group(1)))
+        title = " ".join(title.split()).strip()
+        title = re.sub(r"^(?:home|welcome to)\s*[-|:]\s*", "", title, flags=re.I)
+        title = re.split(r"\s+[|–—]\s+", title)[0].strip()
+        if not 5 <= len(title) <= 90:
+            return ""
+        if re.search(r"^(?:planning application|home|welcome|index|eplan|an coimisi|an bord)", title, re.I):
+            return ""
+        return title
+    except Exception:
+        return ""
+
 def classify_and_match(found, evidence):
+    website_titles = {}
     for item in found.values():
         proof = evidence.get(item["key"], {})
         if not item.get("applicant") and proof.get("applicant") and proof.get("applicantSource"):
@@ -225,12 +295,37 @@ def classify_and_match(found, evidence):
         item["brand"] = logic.brand_from_applicant(item.get("applicant"))
         desc = item.get("description", "")
         item["type"] = logic.scheme_type(desc, item.get("reference", ""), item.get("category", ""))
-        item["siteName"] = logic.site_name(item.get("address", ""), desc)
+        site_web = item.get("siteWebsiteName", "")
+        verified_url = item.get("developerSource", "")
+        if verified_url and not site_web and len(website_titles) < 15:
+            if verified_url not in website_titles:
+                website_titles[verified_url] = verified_website_title(verified_url)
+            site_web = website_titles[verified_url]
+        if site_web:
+            item["siteWebsiteName"] = site_web
+            item["siteWebsiteSource"] = verified_url or item.get("siteWebsiteSource", "")
+        item["siteName"] = logic.site_name(item.get("address", ""), desc, site_web)
         item["source"] = logic.project_url(item.get("source", ""), item.get("kind"), item.get("caseId"))
         if not item["source"] and item.get("authority") == "Dublin City Council":
             item["source"] = "https://planning.agileapplications.ie/dublincity"
             item["sourceLinkType"] = "Council search — enter reference"
         item["unitsSource"] = item.get("unitsSource") or "National planning feed"
+    # Flag, but do not merge, same-council applications with identical
+    # substantial site addresses and unit counts (often amendments or FEPs).
+    seen_sites = {}
+    for item in sorted(found.values(), key=lambda x: (x.get("received", ""), x["key"])):
+        if item.get("kind") != "planning" or item.get("possibleDuplicateOf"):
+            continue
+        addr = logic.compact(item.get("address", ""))
+        if len(addr) < 18:
+            continue
+        site_key = (logic.compact(item.get("authority")), addr, item.get("units"))
+        earlier = seen_sites.get(site_key)
+        if earlier and earlier != item["key"]:
+            item["possibleDuplicateOf"] = earlier
+            item["duplicateReason"] = "Possible same-site overlap: identical council, address and unit count"
+        else:
+            seen_sites[site_key] = item["key"]
     for item in found.values():
         if item.get("kind") != "acp" or item.get("possibleDuplicateOf"):
             continue
@@ -281,14 +376,40 @@ def main():
                 pass
         checked[item["key"]] = base.TODAY
         visited += 1
-        name = base.official_name(item["source"])
+        name = ""
+        applicant_source = item["source"]
+        evidence_text = "Explicit applicant name on linked official council application"
+        if item.get("kind") == "acp":
+            try:
+                markup = base.get(item["source"])
+                name = base.extract_applicant(markup)
+                text = base.TextToPlain(markup)
+                match = re.search(r"Planning Authority Case Reference:\s*([A-Za-z0-9/.-]+)", text, re.I)
+                if match and item.get("authority"):
+                    council_ref = match.group(1)
+                    item["planningReference"] = council_ref
+                    target = key(item["authority"], council_ref)
+                    if target in found and found[target].get("kind") == "planning":
+                        item["possibleDuplicateOf"] = target
+                        item["duplicateReason"] = "Exact planning authority and reference from official ACP case"
+                        council = found[target]
+                        if not name and council.get("applicant"):
+                            name = council["applicant"]
+                            applicant_source = council.get("source") or applicant_source
+                            evidence_text = "ACP case matched to the exact council application reference"
+            except Exception as error:
+                print("ACP case inspection skipped:", item.get("caseId"), str(error)[:110])
+        else:
+            name = base.official_name(item["source"])
         if not name:
             continue
         item["applicant"] = name
-        item["applicantSourceType"] = "Official council application"
+        item["applicantSourceType"] = "Official linked planning source"
         records.setdefault(item["key"], {}).update({
-            "applicant": name, "applicantSource": item["source"],
-            "applicantEvidence": "Explicit applicant name on linked official council application",
+            "applicant": name, "applicantSource": applicant_source,
+            "applicantEvidence": evidence_text,
+            "planningReference": item.get("planningReference", ""),
+            "planningAuthority": item.get("authority", ""),
             "verifiedAt": base.TODAY,
         })
         added += 1

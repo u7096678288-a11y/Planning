@@ -32,6 +32,8 @@ jobs:
         run: python preview-r9/scripts/test_enrich_applicants.py
       - name: Test scheme names, unit parsing and deduplication
         run: python preview-r9/scripts/test_major_scheme_logic.py
+      - name: Check Python catalogue builder syntax
+        run: python -m py_compile preview-r9/scripts/build_major_schemes.py preview-r9/scripts/major_scheme_logic.py
       - name: Scan all applications over 100 homes and enrich missing applicant names
         run: python preview-r9/scripts/build_major_schemes.py
       - name: Commit preview-only enrichment dataset

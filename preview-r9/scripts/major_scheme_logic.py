@@ -40,6 +40,10 @@ def site_name(address="", description="", project_website_name=""):
     title=" ".join(str(project_website_name or "").split())
     if title and 4<=len(title)<=95 and not re.search(r"^(?:planning|application|home|welcome|eplan|an coimisi|an bord)",title,re.I):
         return title
+    desc=" ".join(str(description or "").split())
+    named=re.search(r"\b(?:known as|to be called|scheme named|development named)\s+[\"'“‘]([^\"'”’]{4,85})[\"'”’]",desc,re.I)
+    if named:
+        return named.group(1).strip()
     addr=" ".join(str(address or "").split()).strip(" ,.;")
     desc=" ".join(str(description or "").split())
     if not addr:
