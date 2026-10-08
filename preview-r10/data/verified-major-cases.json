@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "description": "Manually checked public planning authority and ACP board documents; exact case reference evidence only.",
+  "cases": {
+    "acp|324563": {
+      "applicant": "Marshall Yards Development Company Ltd",
+      "applicantSource": "https://eplanning.ie/LimerickCCC/AppFileRefDetails/2561231/0",
+      "applicantEvidence": "Official Limerick ePlanning application explicitly names the applicant and ACP-324563-26 appeal reference.",
+      "planningAuthority": "Limerick County Council",
+      "planningReference": "2561231"
+    },
+    "acp|320747": {
+      "applicant": "Marshall Yards Development Company Limited",
+      "applicantSource": "https://www.pleanala.ie/anbordpleanala/media/abp/cases/orders/320/d320747.pdf",
+      "applicantEvidence": "Official ACP Board Order names the first-party appellant and the exact Galway County Council reference 24/60733.",
+      "planningAuthority": "Galway County Council",
+      "planningReference": "2460733"
+    },
+    "acp|321753": {
+      "applicant": "Marshall Yards Development Company Limited",
+      "applicantSource": "https://www.pleanala.ie/anbordpleanala/media/abp/cases/orders/321/d321753.pdf",
+      "applicantEvidence": "Official ACP Board Order names the applicant and the exact Meath County Council reference 2460487.",
+      "planningAuthority": "Meath County Council",
+      "planningReference": "2460487"
+    },
+    "acp|321437": {
+      "applicant": "Marshall Yards Development Company Limited",
+      "applicantSource": "https://www.pleanala.ie/anbordpleanala/media/abp/cases/reports/321/r321437.pdf",
+      "applicantEvidence": "Official ACP Inspector Report identifies the applicant and Fingal planning reference LRD0048/S3E.",
+      "planningAuthority": "Fingal County Council",
+      "planningReference": "LRD0048/S3E"
+    }
+  }
+}
