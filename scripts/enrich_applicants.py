@@ -28,7 +28,7 @@ MAX_RUN_SECONDS = 260
 started = time.monotonic()
 UA = "RadharcPleanalaApplicantEnrichment/1.0 (+public planning data, low-frequency)"
 INVALID = re.compile(r"^(?:n/?a|none|unknown|not\s+(?:provided|available)|redacted|applicant|private|individual|tbc|to be confirmed)$", re.I)
-FIELD = re.compile(r"^(?:applicant\\s+name|applicant['’]s\\s+name|name\\s+of\\s+(?:the\\s+)?applicant|applicant\\(s\\)|applicant\\s*:)\\s*:?\\s*(.*)$", re.I)
+FIELD = re.compile(r"^(?:applicant\s+name|applicant['’]s\s+name|name\s+of\s+(?:the\s+)?applicant|applicant\(s\)|applicant\s*:)\s*:?\s*(.*)$", re.I)
 
 class Text(HTMLParser):
     def __init__(self):
