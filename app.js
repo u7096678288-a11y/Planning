@@ -11,6 +11,25 @@ const fmtArea=n=>new Intl.NumberFormat("en-IE",{maximumFractionDigits:2}).format
 const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 let map,layers={},charts={},selected=null,timer;
 let corkReady=false,corkRecords=[],corkError="",corkLoadStarted=false;
+let applicantEnrichment={records:{}};
+let lastSelectedFeature=null;
+const cleanKey=value=>String(value||"").toLowerCase().replace(/[^a-z0-9]/g,"");
+function enrichmentFor(p={},kind="planning"){
+ const ref=kind==="acp"?String(p.ABPCASEID||"").match(/\\d{6}/)?.[0]:cleanKey(p.ApplicationNumber);
+ const key=kind==="acp"?"acp|"+(ref||""):"planning|"+cleanKey(p.PlanningAuthority)+"|"+(ref||"");
+ return applicantEnrichment.records?.[key]||null;
+}
+async function loadApplicantEnrichment(){
+ try{
+  const response=await fetch("data/applicant-enrichment.json?ts="+Date.now(),{cache:"no-store"});
+  if(!response.ok)throw Error("HTTP "+response.status);
+  const data=await response.json();
+  if(data?.schemaVersion!==1||!data.records||typeof data.records!=="object")throw Error("Invalid enrichment data");
+  applicantEnrichment=data;
+  if(lastSelectedFeature){const [k,f,ll]=lastSelectedFeature;select(k,f,ll);}
+ }catch(error){console.warn("Scheme applicant enrichment unavailable",error);}
+}
+
 
 const residentialBase=()=>"(NumResidentialUnits IS NOT NULL AND NumResidentialUnits > 0)";
 const housingWhere=()=>{
@@ -178,6 +197,7 @@ function init(){
   bind();
   loadAuthorities();
   loadCorkCity();
+  loadApplicantEnrichment();
   update();
   loadAI();
 }
@@ -451,14 +471,23 @@ function recordRowsMarkup(fields){
 }
 function select(k,f,ll){
  const p=f.properties||{},kind=S[k].type;
+ lastSelectedFeature=[k,f,ll];
  const planning=kind==="planning",acp=kind==="acp";
  const title=planning?(p.ApplicationNumber||"Planning application"):
   (acp?(p.ABPCASEID||"ACP case"):(p.SP_ID||"Freehold parcel"));
- const applicant=applicantName(p);
+ const extra=enrichmentFor(p,kind);
+ const nativeApplicant=applicantName(p);
+ const applicant=nativeApplicant||extra?.applicant||"";
+ const applicantSource=nativeApplicant?"National planning feed":extra?.applicantSource?"Verified linked source":"Not verified";
+ const developer=extra?.developer||"";
  const description=planning?p.DevelopmentDescription:acp?p.DEVDESC:"";
  const links=recordWebLinks(p,kind);
+ if(extra?.applicantSource){const u=validWebAddress(extra.applicantSource);if(u&&!links.some(l=>l.url===u))links.push({url:u,label:"Applicant source"});}
+ if(extra?.developerSource){const u=validWebAddress(extra.developerSource);if(u&&!links.some(l=>l.url===u))links.push({url:u,label:"Developer / scheme source"});}
  const fields=planning?[
-  ["Applicant",applicant||"Not provided in source"],
+  ["Applicant",applicant||"Not yet verified"],
+  ["Applicant source",applicant?applicantSource:""],
+  ["Developer / promoter",developer],
   ["Address",p.DevelopmentAddress],
   ["Description",description],
   ["Authority",p.PlanningAuthority],
@@ -469,7 +498,9 @@ function select(k,f,ll){
   ["Floor area (m²)",p.FloorArea],
   ["Site area (ha)",p.AreaofSite]
  ]:acp?[
-  ["Applicant",applicant||"Not provided in ACP dataset"],
+  ["Applicant",applicant||"Not yet verified"],
+  ["Applicant source",applicant?applicantSource:""],
+  ["Developer / promoter",developer],
   ["Address",p.DEVADDRESS],
   ["Description",description],
   ["Authority",p.PLANINGATY],
@@ -487,7 +518,8 @@ function select(k,f,ll){
  $("#selectedRecord").innerHTML=card;
  $("#copyBriefButton").disabled=false;
  const popupFields=[
-  ["Applicant",applicant||"Not provided in source"],
+  ["Applicant",applicant||"Not yet verified"],
+  ["Developer / promoter",developer],
   ["Decision",planning?p.Decision:acp?p.DECISION:""],
   ["Address",planning?p.DevelopmentAddress:acp?p.DEVADDRESS:""],
   ["Description",description?String(description).slice(0,480)+(String(description).length>480?"…":""):""]
