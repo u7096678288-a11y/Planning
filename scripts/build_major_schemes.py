@@ -98,6 +98,50 @@ def scan(previous):
             print("Scanned", start_offset, "records")
     return found, complete, start_offset, failures
 
+def scan_cork(found):
+    """Supplement national feed with Cork City open-data applications."""
+    resource = "8d5bbfa9-3b0c-40ac-8630-4243bed94b2d"
+    endpoint = "https://data.corkcity.ie/api/3/action/datastore_search_sql"
+    count = 0
+    try:
+        for offset in range(0, 30000, 1000):
+            sql = ('SELECT * FROM "' + resource + '" WHERE "NumResidentialUnits" > 100 '
+                   'ORDER BY "ReceivedDate" DESC NULLS LAST LIMIT 1000 OFFSET ' + str(offset))
+            data = json.loads(base.get(endpoint + "?" + urlencode({"sql": sql}), 3_000_000))
+            if not data.get("success"):
+                raise RuntimeError(str(data.get("error", "Cork SQL error"))[:160])
+            rows = data.get("result", {}).get("records", [])
+            for row in rows:
+                ref = clean(row.get("ApplicationNumber"), 70)
+                if not ref:
+                    continue
+                try:
+                    units = int(float(row.get("NumResidentialUnits") or 0))
+                except (ValueError, TypeError):
+                    continue
+                if units <= 100:
+                    continue
+                identifier = key("Cork City Council", ref)
+                previous = found.get(identifier, {})
+                native = applicant_from_feed(row)
+                found[identifier] = {
+                    "key": identifier, "reference": ref, "authority": "Cork City Council",
+                    "units": units,
+                    "address": clean(row.get("DevelopmentAddress"), 180),
+                    "description": clean(row.get("DevelopmentDescription"), 200),
+                    "decision": clean(row.get("Decision"), 90),
+                    "received": date_value(row.get("ReceivedDate")),
+                    "applicant": native or previous.get("applicant", ""),
+                    "applicantSourceType": "Cork City Council open data" if native else previous.get("applicantSourceType", ""),
+                    "source": clean(row.get("LinkAppDetails"), 400),
+                }
+                count += 1
+            if len(rows) < 1000:
+                break
+    except Exception as error:
+        print("Cork City catalogue unavailable:", str(error)[:180])
+    return count
+
 def main():
     ROOT.mkdir(parents=True, exist_ok=True)
     previous = json.loads(OUT.read_text(encoding="utf-8")) if OUT.exists() else {}
@@ -105,6 +149,7 @@ def main():
     records = evidence.setdefault("records", {})
     checked = evidence.setdefault("majorSchemeChecked", {})
     found, complete, scanned, errors = scan(previous)
+    cork_count = scan_cork(found)
     # Use verified enrichment already collected, but never substitute a promoter
     # or inferred brand for a legal applicant.
     for item in found.values():
@@ -145,6 +190,7 @@ def main():
     # Avoid reporting an exhaustive catalogue unless a full scan completed.
     stats = {
         "indexed": len(projects),
+        "corkCityApplications": cork_count,
         "named": sum(bool(p["applicant"]) for p in projects),
         "unnamed": sum(not p["applicant"] for p in projects),
         "officialPagesCheckedThisRun": visited,
