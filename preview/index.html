@@ -41,6 +41,10 @@
     .multi-filter-select option:checked{background:#dcecee linear-gradient(0deg,#dcecee,#dcecee);color:#102f49}
     .filter-help{margin:7px 0 8px;font-size:10px;color:#687b88;line-height:1.4}
     @media(max-width:700px){.smart-filter-summary{align-items:flex-start;flex-direction:column}.smart-filter-summary button{width:100%}.multi-filter-select{min-height:120px}}
+    .decision-legend{display:flex;flex-wrap:wrap;gap:8px 13px;padding:10px 13px;background:#fff;border-bottom:1px solid #e1e7eb;font-size:12px;color:#425466}
+    .decision-legend span{display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+    .decision-legend i{display:inline-block;width:11px;height:11px;border-radius:50%;border:1px solid #fff;box-shadow:0 0 0 1px #b5c0c8}
+    .cork-coverage{margin:0;padding:7px 13px;background:#f5f8f8;border-bottom:1px solid #e1e7eb;color:#526776;font-size:11px}
   </style>
 </head>
 <body>
@@ -112,6 +116,13 @@
     </aside>
 
     <section class="map-column">
+      <div id="decisionLegend" class="decision-legend" aria-label="Application decision colour key">
+ <span><i style="background:#d74646"></i>Refused</span>
+ <span><i style="background:#ec9b24"></i>Pending</span>
+ <span><i style="background:#2f9b65"></i>Approved</span>
+ <span><i style="background:#277ac7"></i>New</span>
+ <span><i style="background:#8b98a7"></i>Other / unclear</span>
+ </div><p id="corkCoverage" class="cork-coverage" aria-live="polite">Checking Cork City direct planning records…</p>
       <div id="map" role="application" aria-label="Interactive map of Irish residential planning data"></div>
       <div class="map-help">Residential planning · move or zoom the map to refresh.</div>
     </section>
@@ -153,6 +164,7 @@
   <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js" onerror="this.onerror=null;this.src='https://unpkg.com/leaflet@1.9.4/dist/leaflet.js'"></script>
   <script src="https://cdn.jsdelivr.net/npm/esri-leaflet@3.0.15/dist/esri-leaflet.js" onerror="this.onerror=null;this.src='https://unpkg.com/esri-leaflet@3.0.15/dist/esri-leaflet.js'"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
-  <script src="app.js?v=20261008-r2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/proj4@2.11.0/dist/proj4.js" onerror="this.onerror=null;this.src='https://unpkg.com/proj4@2.11.0/dist/proj4.js'"></script>
+  <script src="app.js?v=20261008-flags1"></script>
 </body>
 </html>
