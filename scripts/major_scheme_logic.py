@@ -22,6 +22,7 @@ def scheme_type(description="", reference="", category=""):
 def extract_units(description):
     """Only explicit unit/dwelling/home counts, never floor areas or parking."""
     text = re.sub(r"\s+", " ", str(description or ""))
+    text = re.sub(r"(?<=\d),(?=\d{3}\b)", "", text)
     patterns = [
         r"\b(?:total of|comprising|consisting of|provision of|construction of|development of|up to|approximately|approx\.?)\s+(?:a\s+)?(\d{3,5})(?:\s*no\.?)?\s+(?:residential\s+)?(?:units|dwellings|homes|houses|apartments)\b",
         r"\b(\d{3,5})\s*(?:no\.?\s*)?(?:new\s+)?(?:residential\s+)?(?:units|dwellings|homes|houses|apartments)\b",
