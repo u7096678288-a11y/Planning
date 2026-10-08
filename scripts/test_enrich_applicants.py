@@ -8,6 +8,8 @@ spec.loader.exec_module(mod)
 class ApplicantExtractionTests(unittest.TestCase):
     def test_navigation_is_not_an_applicant(self):
         self.assertEqual(mod.extract_applicant("<nav><div>Applicant</div><div>Development</div></nav>"), "")
+    def test_structural_applicant_field(self):
+        self.assertEqual(mod.extract_applicant("<dl><dt>Applicant</dt><dd>Marshall Yards Development Company Limited</dd></dl>"), "Marshall Yards Development Company Limited")
     def test_explicit_council_applicant(self):
         self.assertEqual(mod.extract_applicant("<table><tr><th>Applicant Name</th><td>Cairn Homes Properties Limited</td></tr></table>"), "Cairn Homes Properties Limited")
     def test_eplanning_applicant_tab_from_screenshot(self):
