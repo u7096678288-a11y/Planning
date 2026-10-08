@@ -6,12 +6,14 @@ without applicant names. Names come from source applicant fields or from
 explicitly labelled applicant fields on official council pages, never guesses.
 """
 import datetime as dt
+import html as html_lib
+from urllib.request import Request, urlopen
 import importlib.util
 import json
 import re
 import time
 from pathlib import Path
-from urllib.parse import urlencode
+from urllib.parse import urlencode, urlsplit
 
 ROOT = Path("preview-r9/data")
 OUT = ROOT / "major-schemes.json"
@@ -213,7 +215,38 @@ def scan_acp(found, evidence, previous):
             break
     return count, complete, 0 if complete else offset, errors
 
+def verified_website_title(url):
+    """Read a verified project website title, never derive a name from its domain."""
+    try:
+        parsed = urlsplit(url)
+        host = (parsed.hostname or "").lower()
+        if parsed.scheme != "https" or not host.endswith(".ie") or parsed.port or parsed.username or parsed.password:
+            return ""
+        if host in ("localhost",) or host.startswith(("127.", "10.", "192.168.")):
+            return ""
+        req = Request(url, headers={"User-Agent": base.UA, "Accept": "text/html"})
+        with urlopen(req, timeout=9) as response:
+            redirected = urlsplit(response.url)
+            if (redirected.hostname or "").lower() != host:
+                return ""
+            markup = response.read(180000).decode("utf-8", "replace")
+        match = re.search(r"<title[^>]*>(.*?)</title>", markup, re.I | re.S)
+        if not match:
+            return ""
+        title = html_lib.unescape(re.sub(r"<[^>]+>", " ", match.group(1)))
+        title = " ".join(title.split()).strip()
+        title = re.sub(r"^(?:home|welcome to)\s*[-|:]\s*", "", title, flags=re.I)
+        title = re.split(r"\s+[|–—]\s+", title)[0].strip()
+        if not 5 <= len(title) <= 90:
+            return ""
+        if re.search(r"^(?:planning application|home|welcome|index|eplan|an coimisi|an bord)", title, re.I):
+            return ""
+        return title
+    except Exception:
+        return ""
+
 def classify_and_match(found, evidence):
+    website_titles = {}
     for item in found.values():
         proof = evidence.get(item["key"], {})
         if not item.get("applicant") and proof.get("applicant") and proof.get("applicantSource"):
@@ -225,7 +258,16 @@ def classify_and_match(found, evidence):
         item["brand"] = logic.brand_from_applicant(item.get("applicant"))
         desc = item.get("description", "")
         item["type"] = logic.scheme_type(desc, item.get("reference", ""), item.get("category", ""))
-        item["siteName"] = logic.site_name(item.get("address", ""), desc)
+        site_web = item.get("siteWebsiteName", "")
+        verified_url = item.get("developerSource", "")
+        if verified_url and not site_web and len(website_titles) < 15:
+            if verified_url not in website_titles:
+                website_titles[verified_url] = verified_website_title(verified_url)
+            site_web = website_titles[verified_url]
+        if site_web:
+            item["siteWebsiteName"] = site_web
+            item["siteWebsiteSource"] = verified_url or item.get("siteWebsiteSource", "")
+        item["siteName"] = logic.site_name(item.get("address", ""), desc, site_web)
         item["source"] = logic.project_url(item.get("source", ""), item.get("kind"), item.get("caseId"))
         if not item["source"] and item.get("authority") == "Dublin City Council":
             item["source"] = "https://planning.agileapplications.ie/dublincity"
