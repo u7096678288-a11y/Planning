@@ -94,7 +94,7 @@ function enrichFromCatalogue(p,map,acpByCase){
  if(p.appealRef&&!p.acpCaseUrl&&caseId)p.acpCaseUrl="https://www.pleanala.ie/en-ie/case/"+caseId;
  // Council grant is not a final grant while an appeal is pending.
  const appealed=!!dateValue(p.acpLodgedDate)||!!p.appealRef;
- const appealGranted=/\b(grant|approve|permission)\b/i.test(String(p.acpOutcome||""))&&!/\b(refus|reject|quash)\b/i.test(String(p.acpOutcome||""));
+ const appealGranted=/\b(grant\w*|approv\w*|permission)\b/i.test(String(p.acpOutcome||""))&&!/\b(refus|reject|quash)\b/i.test(String(p.acpOutcome||""));
  if(!p.finalGrantDate){
   if(appealed){
    if(appealGranted&&dateValue(p.acpDecisionDate))p.finalGrantDate=p.acpDecisionDate;
@@ -130,12 +130,12 @@ function normalizeCatalogue(p){
 function classify(p){
  const out=[];
  const refused=/\b(refus|reject|deny)\w*/i.test(p.decision||"");
- const appealGranted=/\b(grant|approve|permission)\b/i.test(p.acpOutcome||"")&&!/\b(refus|reject|quash)\b/i.test(p.acpOutcome||"");
- if(inWindow(p.received))out.push(["submitted",p.received]);
- if(inWindow(p.councilGrantDate)&&!refused)out.push(["granted",p.councilGrantDate]);
+ const appealGranted=/\b(grant\w*|approv\w*|permission)\b/i.test(p.acpOutcome||"")&&!/\b(refus|reject|quash)\b/i.test(p.acpOutcome||"");
+ if(p.kind!=="acp"&&inWindow(p.received))out.push(["submitted",p.received]);
+ if(p.kind!=="acp"&&inWindow(p.councilGrantDate)&&!refused)out.push(["granted",p.councilGrantDate]);
  if(inWindow(p.withdrawnDate))out.push(["withdrawn",p.withdrawnDate]);
  if(inWindow(p.councilDecisionDate)&&refused)out.push(["refused",p.councilDecisionDate]);
- if(inWindow(p.acpLodgedDate))out.push(["appealed",p.acpLodgedDate]);
+ if(inWindow(p.acpLodgedDate||((p.kind==="acp")?p.received:null)))out.push(["appealed",p.acpLodgedDate||p.received]);
  if(inWindow(p.acpDecisionDate)&&appealGranted)out.push(["appealGranted",p.acpDecisionDate]);
  // A project is never marked started without a verified BCMS project match.
  if(inWindow(p.bcmsCommencementDate)&&p.bcmsEvidenceUrl)out.push(["started",p.bcmsCommencementDate]);
@@ -300,6 +300,7 @@ async function load(){
  }
  // ACP-only applications remain in history, but do not invent 28-day council events.
  for(const p of catalogue.filter(p=>p.kind==="acp")){
+  if(p.possibleDuplicateOf&&joined.has(p.possibleDuplicateOf))continue;
   if(!joined.has(p.key))joined.set(p.key,enrichFromCatalogue(p,catalogMap,acpMap));
  }
  for(const [id,edit] of Object.entries(localEdits)){
