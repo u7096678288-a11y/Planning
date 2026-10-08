@@ -50,9 +50,9 @@ def date_value(value):
     if isinstance(value, (int, float)) and value > 1000000000:
         return dt.datetime.fromtimestamp(value, tz=dt.timezone.utc).date().isoformat()
     value = clean(value, 30)
-    if re.match(r"^\\d{4}-\\d{2}-\\d{2}", value):
+    if re.match(r"^\d{4}-\d{2}-\d{2}", value):
         return value[:10]
-    if re.match(r"^\\d{2}/\\d{2}/\\d{4}$", value):
+    if re.match(r"^\d{2}/\d{2}/\d{4}$", value):
         try: return dt.datetime.strptime(value, "%d/%m/%Y").date().isoformat()
         except ValueError: return ""
     return ""
@@ -262,8 +262,8 @@ def scan_acp(found, evidence, previous):
                 "decision": clean(row.get("DECISION"), 90),
                 "acpLodgedDate": date_value(row.get("LODGEDON")),
                 "acpDecisionDate": date_value(row.get("DECIDED_ON")),
-                "acpOutcome": ("Granted" if re.search(r"\\b(?:grant|approve)\\b", clean(row.get("DECISION")), re.I) else
-                               "Refused" if re.search(r"\\brefus", clean(row.get("DECISION")), re.I) else
+                "acpOutcome": ("Granted" if re.search(r"\b(?:grant|approve)\b", clean(row.get("DECISION")), re.I) else
+                               "Refused" if re.search(r"\brefus", clean(row.get("DECISION")), re.I) else
                                "Withdrawn" if re.search(r"withdraw", clean(row.get("DECISION")), re.I) else ""),
                 "received": date_value(row.get("LODGEDON")),
                 "applicant": applicant,
