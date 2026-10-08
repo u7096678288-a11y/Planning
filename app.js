@@ -58,7 +58,7 @@ function renderApplicantIntelligence(){
  const total=(majorSchemes.projects||[]).length;
  const named=(majorSchemes.projects||[]).filter(p=>p.applicant).length;
  const count=majorGroups.filter(g=>!g.pending).length;
- if(statsEl)statsEl.textContent=fmt(total)+" applications over 100 homes indexed · "+fmt(named)+" with applicant names · "+fmt(count)+" applicant groups"+(stats.scanComplete?"":" · Scan in progress");
+ if(statsEl)statsEl.textContent=fmt(total)+" applications over 100 homes indexed · "+fmt(named)+" named · "+fmt(total-named)+" awaiting verification · "+fmt(count)+" applicant groups"+(stats.scanComplete?"":" · Scan in progress");
  const updated=$("#applicantIntelligenceUpdated");
  if(updated)updated.textContent=majorSchemes.updatedAt?"Catalogue updated "+new Date(majorSchemes.updatedAt).toLocaleDateString("en-IE"):"";
  const term=($("#applicantIntelligenceSearch")?.value||"").toLowerCase().trim();
