@@ -91,7 +91,7 @@ def fetch_case_applicant(case_id):
 
 def fetch_report(case_id):
     url=report_url(case_id)
-    req=Request(url,headers={"User-Agent":"Radharc Pleanála public planning research (contact via GitHub repository)","Accept":"application/pdf"})
+    req=Request(url,headers={"User-Agent":"RadharcPleanalaApplicantResearch/1.0 (public planning data)","Accept":"application/pdf"})
     with urlopen(req,timeout=5) as response:
         content=response.read(7_500_001)
     if len(content)>7_500_000 or not content.startswith(b"%PDF"):
