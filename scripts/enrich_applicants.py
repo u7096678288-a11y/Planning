@@ -21,6 +21,8 @@ PLANNING = "https://services.arcgis.com/NzlPQPKn5QF9v2US/ArcGIS/rest/services/Ir
 ACP = "https://services-eu1.arcgis.com/o56BSnENmD5mYs3j/ArcGIS/rest/services/Cases_2016_Onwards/FeatureServer/3/query"
 TODAY = dt.date.today().isoformat()
 MAX_SITE_VISITS = 45
+MAX_PLANNING_VISITS = 22
+MAX_ACP_CASES = 30
 site_visits = 0
 MAX_RUN_SECONDS = 260
 started = time.monotonic()
@@ -87,8 +89,8 @@ def get(url, max_bytes=1_000_000):
             raise ValueError("Redirect to an unapproved host")
         return response.read(max_bytes).decode("utf-8", "replace")
 
-def query(endpoint, where, fields, limit=250, order=""):
-    params = {"f": "json", "where": where, "outFields": fields, "returnGeometry": "false", "resultRecordCount": limit}
+def query(endpoint, where, fields, limit=250, order="", offset=0):
+    params = {"f": "json", "where": where, "outFields": fields, "returnGeometry": "false", "resultRecordCount": limit, "resultOffset": offset}
     if order:
         params["orderByFields"] = order
     data = json.loads(get(endpoint + "?" + urlencode(params), 2_000_000))
@@ -145,17 +147,19 @@ def main():
     records = data.setdefault("records", {})
     checked = data.setdefault("checked", {})
     stats = {"candidates": 0, "newApplicants": 0, "sourcePagesInspected": 0, "date": TODAY}
+    cursor = data.setdefault("cursor", {"planning": 0, "acp": 0})
     # Only schemes of 25+ homes; no individual houses or small extensions.
     where = "NumResidentialUnits >= 25 AND (ApplicantForename IS NULL OR ApplicantForename = '' OR ApplicantSurname IS NULL OR ApplicantSurname = '')"
     try:
         planning = query(PLANNING, where,
             "PlanningAuthority,ApplicationNumber,ApplicantForename,ApplicantSurname,LinkAppDetails,NumResidentialUnits",
-            450, "ReceivedDate DESC")
+            450, "ReceivedDate DESC", cursor.get("planning", 0))
+        cursor["planning"] = 0 if len(planning) < 450 or cursor.get("planning", 0) >= 4500 else cursor.get("planning", 0) + 450
     except Exception as error:
         print("Planning feed unavailable:", error)
         planning = []
     for row in planning:
-        if site_visits >= MAX_SITE_VISITS or time.monotonic() - started > MAX_RUN_SECONDS:
+        if site_visits >= MAX_PLANNING_VISITS or time.monotonic() - started > MAX_RUN_SECONDS:
             break
         authority, ref = row.get("PlanningAuthority"), row.get("ApplicationNumber")
         if not authority or not ref:
@@ -177,12 +181,14 @@ def main():
     # by exact authority + planning reference, never by site description alone.
     try:
         acp = query(ACP, "(CATEGORY LIKE '%LRD%' OR CATEGORY LIKE '%SHD%' OR CATEGORY LIKE '%Strategic Housing%')",
-                    "ABPCASEID,LINKABPWEB,PLANINGATY,CATEGORY", 160, "LODGEDON DESC")
+                    "ABPCASEID,LINKABPWEB,PLANINGATY,CATEGORY", 160, "LODGEDON DESC", cursor.get("acp", 0))
+        cursor["acp"] = 0 if len(acp) < 160 or cursor.get("acp", 0) >= 3200 else cursor.get("acp", 0) + 160
     except Exception as error:
         print("ACP feed unavailable:", error)
         acp = []
+    acp_checks = 0
     for row in acp:
-        if site_visits >= MAX_SITE_VISITS or time.monotonic() - started > MAX_RUN_SECONDS:
+        if acp_checks >= MAX_ACP_CASES or site_visits >= MAX_SITE_VISITS or time.monotonic() - started > MAX_RUN_SECONDS:
             break
         case = re.search(r"\d{6}", str(row.get("ABPCASEID") or ""))
         if not case:
@@ -192,6 +198,7 @@ def main():
         if records.get(key, {}).get("applicant") or check_recent(checked, key):
             continue
         checked[key] = TODAY
+        acp_checks += 1
         url = row.get("LINKABPWEB") or ("https://www.pleanala.ie/en-ie/case/" + caseid)
         if not official_url(url):
             continue
@@ -226,6 +233,7 @@ def main():
         except Exception as error:
             print("ACP match skipped:", caseid, str(error)[:100])
     stats["sourcePagesInspected"] = site_visits
+    stats["acpCasesInspected"] = acp_checks
     data["updatedAt"] = dt.datetime.now(dt.timezone.utc).isoformat()
     data["stats"] = stats
     # Preserve manually verified developer/promoter records.
