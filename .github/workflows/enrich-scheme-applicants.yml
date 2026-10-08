@@ -4,6 +4,8 @@ on:
   push:
     paths:
       - '.github/workflows/enrich-scheme-applicants.yml'
+      - 'preview-r6/scripts/enrich_applicants.py'
+      - 'preview-r6/scripts/test_enrich_applicants.py'
   schedule:
     - cron: '21 4 * * *'
 permissions:
@@ -23,6 +25,8 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      - name: Test applicant extraction and provenance safeguards
+        run: python preview-r6/scripts/test_enrich_applicants.py
       - name: Fetch verified applicant names from public planning records
         run: python preview-r6/scripts/enrich_applicants.py
       - name: Commit preview-only enrichment dataset
@@ -34,5 +38,6 @@ jobs:
             echo "No applicant enrichment changes"
           else
             git commit -m "Update verified residential applicant enrichment [skip ci]"
+            git pull --rebase origin main
             git push origin HEAD:main
           fi
