@@ -1,8 +1,8 @@
+"use strict";
 async function fetchCatalogueFile(name){
  try{const r=await fetch("../preview-r10/data/"+name+"?ts="+Date.now(),{cache:"no-store"});if(r.ok)return r;}catch(error){console.warn("Latest catalogue temporarily unavailable",error);}
  return fetch("data/"+name+"?ts="+Date.now(),{cache:"no-store"});
 }
-"use strict";
 const S={
   planningPoints:{label:"Planning application points",url:"https://services.arcgis.com/NzlPQPKn5QF9v2US/arcgis/rest/services/IrishPlanningApplications/FeatureServer/0",color:"#1677a5",on:true,type:"planning"},
   planningSites:{label:"Planning application sites",url:"https://services.arcgis.com/NzlPQPKn5QF9v2US/arcgis/rest/services/IrishPlanningApplications/FeatureServer/1",color:"#3f8f55",on:false,type:"planning"},
