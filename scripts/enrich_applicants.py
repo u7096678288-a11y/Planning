@@ -59,7 +59,7 @@ def valid_name(value):
     value = " ".join(str(value or "").split()).strip(" :\t\n\r-")
     if not 3 <= len(value) <= 160 or INVALID.fullmatch(value) or len(value.split()) < 2:
         return ""
-    if re.search(r"https?://|www\.|[{}<>]|\b(?:click|view|details|application|search|register|address|planning|development|status|permission|scheme|information|documents|location|map)\b", value, re.I):
+    if re.search(r"https?://|www\.|[{}<>]|\b(?:click|view|details|application|search|register|address|planning|status|permission|scheme|information|documents|location|map)\b", value, re.I):
         return ""
     if not re.search(r"[A-Za-z]", value):
         return ""
