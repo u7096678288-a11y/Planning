@@ -23,4 +23,6 @@ assert logic.site_name("Lands at Galway Port", "", "Galway Port LRD")=="Galway P
 assert logic.brand_from_applicant("Glenveagh Homes Limited")=="Glenveagh"
 assert logic.brand_from_applicant("Marshall Yards Development Company Limited")=="Marshall Yards"
 assert logic.brand_from_applicant("Unrelated Special Purpose Vehicle Ltd")==""
+assert logic.planning_route("Mixed-use Large-Scale Residential Development")=="LRD"
+assert logic.planning_route("Strategic Housing Development")=="SHD"
 print("Major-scheme site classification, unit extraction and identity tests passed")
