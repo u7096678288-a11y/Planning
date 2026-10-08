@@ -93,6 +93,7 @@ def scan(previous):
                 "address": clean(row.get("DevelopmentAddress"), 180),
                 "description": clean(row.get("DevelopmentDescription"), 700),
                 "decision": clean(row.get("Decision"), 90),
+                "appealRef": clean(row.get("AppealRefNumber") or row.get("AppealRefNum"), 80),
                 "received": date_value(row.get("ReceivedDate")),
                 "applicant": native or previous_record.get("applicant", ""),
                 "applicantSourceType": "National planning feed" if native else previous_record.get("applicantSourceType", ""),
@@ -139,6 +140,7 @@ def scan_cork(found):
                     "address": clean(row.get("DevelopmentAddress"), 180),
                     "description": clean(row.get("DevelopmentDescription"), 200),
                     "decision": clean(row.get("Decision"), 90),
+                    "appealRef": clean(row.get("AppealRefNum"), 80),
                     "received": date_value(row.get("ReceivedDate")),
                     "applicant": native or previous.get("applicant", ""),
                     "applicantSourceType": "Cork City Council open data" if native else previous.get("applicantSourceType", ""),
@@ -330,6 +332,27 @@ def classify_and_match(found, evidence):
             item["duplicateReason"] = "Possible same-site overlap: identical council, address and unit count"
         else:
             seen_sites[site_key] = item["key"]
+    # Council registers often carry the exact ACP appeal number. This is a
+    # stronger match than site descriptions, so use it before fuzzy flags.
+    appeal_index = {}
+    for council in found.values():
+        if council.get("kind") != "planning":
+            continue
+        match = re.search(r"\d{6}", str(council.get("appealRef") or ""))
+        if match:
+            appeal_index.setdefault(match.group(), council)
+    for case in found.values():
+        if case.get("kind") != "acp" or case.get("possibleDuplicateOf"):
+            continue
+        council = appeal_index.get(case.get("caseId"))
+        if not council:
+            continue
+        case["possibleDuplicateOf"] = council["key"]
+        case["duplicateReason"] = "Exact ACP appeal number recorded on council application"
+        case["planningReference"] = council.get("reference", "")
+        if not case.get("applicant") and council.get("applicant"):
+            case["applicant"] = council["applicant"]
+            case["applicantSourceType"] = "Matched council application"
     for item in found.values():
         if item.get("kind") != "acp" or item.get("possibleDuplicateOf"):
             continue
