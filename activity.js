@@ -121,7 +121,7 @@ function normalizeCatalogue(p){
  rec.councilGrantDate=p.councilGrantDate||p.grantDate||"";
  rec.acpLodgedDate=p.acpLodgedDate||"";
  rec.acpDecisionDate=p.acpDecisionDate||"";
- rec.acpOutcome=p.acpOutcome||"";
+ rec.acpOutcome=p.acpOutcome||(p.kind==="acp"?p.decision:"")||"";
  rec.fiRequestDate=p.fiRequestDate||"";
  rec.fiReceivedDate=p.fiReceivedDate||"";
  rec.decisionDueDate=p.decisionDueDate||"";
@@ -299,8 +299,10 @@ async function load(){
   joined.set(p.key,enrichFromCatalogue(old?{...old,...p,applicant:p.applicant||old.applicant,siteName:old.siteName||p.siteName}:p,catalogMap,acpMap));
  }
  // ACP-only applications remain in history, but do not invent 28-day council events.
+ const matchedCases=new Set([...joined.values()].filter(p=>p.kind!=="acp").map(p=>clean(p.appealRef).match(/\d{6}/)?.[0]).filter(Boolean));
  for(const p of catalogue.filter(p=>p.kind==="acp")){
   if(p.possibleDuplicateOf&&joined.has(p.possibleDuplicateOf))continue;
+  if(matchedCases.has(clean(p.caseId||p.reference).match(/\d{6}/)?.[0]))continue;
   if(!joined.has(p.key))joined.set(p.key,enrichFromCatalogue(p,catalogMap,acpMap));
  }
  for(const [id,edit] of Object.entries(localEdits)){
