@@ -103,3 +103,65 @@ async function excel(fc){
  XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet([["Export date",fc.exportedAt],["Coordinate system","EPSG:4326"],["Housing",fc.filters.housing],["Authority",fc.filters.authority],["Period",fc.filters.period],["Layers",fc.filters.layers.join(", ")],["Record count",fc.features.length]]),"View details");
  save(XLSX.write(wb,{bookType:"xlsx",type:"array"}),"xlsx","application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
 }
+function shapeFeature(f){
+ const p=f.properties||{};
+ return {type:"Feature",geometry:f.geometry,properties:{
+ REF:String(p.ApplicationNumber||p.ABPCASEID||p.SP_ID||"").slice(0,200),
+ AUTHORITY:String(p.PlanningAuthority||p.PLANINGATY||"").slice(0,200),
+ STATUS:String(p.DecisionFlag||"").slice(0,40),
+ DECISION:String(p.Decision||p.DECISION||"").slice(0,200),
+ UNITS:Number(p.NumResidentialUnits)||0,
+ FLOOR_M2:Number(p.FloorArea)||0,
+ SITE_HA:Number(p.AreaofSite)||0,
+ SOURCE:String(p.ExportLayer||"").slice(0,30),
+ RECEIVED:String(p.ReceivedDate||p.LODGEDON||"").slice(0,35)
+ }};
+}
+async function shapefile(fc){
+ await Promise.all([
+ library("https://cdn.jsdelivr.net/npm/shp-write@0.3.2/dist/shpwrite.js","https://unpkg.com/shp-write@0.3.2/dist/shpwrite.js",()=>!!window.shpwrite?.zip),
+ library("https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js","https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js",()=>!!window.JSZip)
+ ]);
+ const groups={points:[],lines:[],polygons:[]};
+ for(const f of fc.features){
+  const t=f.geometry?.type;
+  if(!t)throw Error("A record has no geometry; use GeoJSON to retain it.");
+  const key=/Point$/.test(t)?"points":/LineString$/.test(t)?"lines":/Polygon$/.test(t)?"polygons":null;
+  if(!key)throw Error("Unsupported Shapefile geometry: "+t);
+  groups[key].push(shapeFeature(f));
+ }
+ const archive=new JSZip();
+ for(const [key,features] of Object.entries(groups)){
+  if(!features.length)continue;
+  say("Creating "+key+" Shapefile: "+features.length+" records…");
+  const zipped=await Promise.resolve(shpwrite.zip({type:"FeatureCollection",features},{folder:key,types:{point:"points",polyline:"lines",polygon:"polygons"}}));
+  if(typeof zipped==="string")archive.file(key+".zip",zipped,{base64:true});
+  else if(zipped instanceof Blob||zipped instanceof ArrayBuffer||ArrayBuffer.isView(zipped))archive.file(key+".zip",zipped);
+  else throw Error("Shapefile ZIP output was not recognised.");
+ }
+ archive.file("README.txt","Radharc Pleanála spatial export\nCRS: EPSG:4326 (WGS84)\nSeparate shapefiles are supplied by geometry type.\nExport date: "+fc.exportedAt+"\n");
+ save(await archive.generateAsync({type:"blob",compression:"DEFLATE"}),"zip","application/zip");
+}
+async function run(type){
+ if(busy)return;busy=true;
+ const options=[...menu.querySelectorAll("[data-export]")];
+ options.forEach(b=>b.disabled=true);
+ try{
+  const v=view();
+  if(type==="png"||type==="jpeg")await screenshot(type);
+  else{
+   const fc=await spatial(v);
+   say("Preparing "+type.toUpperCase()+" with "+fc.features.length+" records…");
+   if(type==="geojson")save(JSON.stringify(fc,null,2),"geojson","application/geo+json");
+   else if(type==="csv")csv(fc);
+   else if(type==="xlsx")await excel(fc);
+   else if(type==="shp")await shapefile(fc);
+  }
+  say("Export ready. The file should be in your downloads.");
+ }catch(e){
+  console.error("Export failed",e);
+  say("Export failed: "+(e.message||String(e)));
+ }finally{busy=false;options.forEach(b=>b.disabled=false);}
+}
+menu.querySelectorAll("[data-export]").forEach(b=>b.addEventListener("click",()=>run(b.dataset.export)));
+})();
