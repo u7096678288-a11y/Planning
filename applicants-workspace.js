@@ -15,7 +15,7 @@ function loadEdits(){try{const obj=JSON.parse(localStorage.getItem(STORAGE)||"{}
 function saveEdits(){try{localStorage.setItem(STORAGE,JSON.stringify(edits));$("notice").textContent="Saved in this browser";return true}catch(e){$("notice").textContent="Save failed: browser storage unavailable. Export your edits.";return false}}
 function routeOf(p){const raw=[p.route,p.type,p.description,p.reference,p.tags].join(" ").toLowerCase();if(p.route)return p.route;if(/\b(?:extension of duration|fep\d+)\b/i.test(raw))return "Extension of duration";if(/\b(?:amendment|modification|alteration)\b/i.test(raw))return "Amendment";if(/\bmixed[\s-]?use\b/i.test(raw))return "Mixed-use";if(/\bshd\b|strategic housing development/i.test(raw))return "SHD";if(/\blrd\b|large.scale residential development/i.test(raw))return "LRD";return "Other"}
 function getAll(){
- const all=source.map(p=>({...p,...(edits[p.key]||{}),_edited:!!edits[p.key]}));
+ const all=source.map(p=>({...p,...(Object.prototype.hasOwnProperty.call(edits,p.key)?edits[p.key]:{}),_edited:Object.prototype.hasOwnProperty.call(edits,p.key)}));
  for(const [id,v] of Object.entries(edits))if(id.startsWith("manual|")&&!source.some(p=>p.key===id))all.push({...v,key:id,kind:"manual",_edited:true});
  return all.filter(p=>number(p.units)>100);
 }
@@ -24,7 +24,12 @@ function finalDate(p,allByKey){
  if(p.acpOutcome==="Granted"&&date(p.acpDecisionDate))return p.acpDecisionDate;
  if(p.kind==="acp"&&p.possibleDuplicateOf){const council=allByKey.get(p.possibleDuplicateOf);if(council&&date(council.finalGrantDate))return council.finalGrantDate;}
  if(p.kind!=="acp"){
-  for(const item of allByKey.values())if(item.kind==="acp"&&item.possibleDuplicateOf===p.key&&item.acpOutcome==="Granted"&&date(item.acpDecisionDate))return item.acpDecisionDate;
+  let hasLinkedAppeal=false;
+  for(const item of allByKey.values())if(item.kind==="acp"&&item.possibleDuplicateOf===p.key){
+   hasLinkedAppeal=true;
+   if(item.acpOutcome==="Granted"&&date(item.acpDecisionDate))return item.acpDecisionDate;
+  }
+  if(p.acpLodgedDate||hasLinkedAppeal)return "";
   if(date(p.councilGrantDate)&&!["refuse","refused","rejected","withdrawn"].some(x=>String(p.decision||"").toLowerCase().includes(x)))return p.councilGrantDate;
  }
  return "";
