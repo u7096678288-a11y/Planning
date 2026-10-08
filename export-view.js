@@ -39,7 +39,13 @@ async function screenshot(ext){
 }
 function annotate(f,key){
  const p=f.properties||{};
- return {type:"Feature",geometry:f.geometry||null,properties:{...p,ExportLayer:key,ExportSource:S[key]?.label||key,DecisionFlag:FLAG_LABELS[decisionFlag(p,S[key]?.type==="acp"?"acp":"planning")]}};
+ const links=typeof recordWebLinks==="function"?recordWebLinks(p,S[key]?.type||"planning"):[];
+ const official=links.find(l=>/official ACP case|planning application/.test(l.label));
+ const project=links.filter(l=>l!==official);
+ return {type:"Feature",geometry:f.geometry||null,properties:{...p,
+  Applicant:typeof applicantName==="function"?applicantName(p):"",
+  ApplicationURL:official?.url||"",ProjectWebsites:project.map(l=>l.url).join(" | "),
+  ExportLayer:key,ExportSource:S[key]?.label||key,DecisionFlag:FLAG_LABELS[decisionFlag(p,S[key]?.type==="acp"?"acp":"planning")]}};
 }
 function feature(f){
  if(f.type==="Feature")return f;
@@ -108,6 +114,9 @@ function shapeFeature(f){
  return {type:"Feature",geometry:f.geometry,properties:{
  REF:String(p.ApplicationNumber||p.ABPCASEID||p.SP_ID||"").slice(0,200),
  AUTHORITY:String(p.PlanningAuthority||p.PLANINGATY||"").slice(0,200),
+ APPLICANT:String(p.Applicant||"").slice(0,200),
+ APP_URL:String(p.ApplicationURL||"").slice(0,240),
+ SITE_URL:String(p.ProjectWebsites||"").slice(0,240),
  STATUS:String(p.DecisionFlag||"").slice(0,40),
  DECISION:String(p.Decision||p.DECISION||"").slice(0,200),
  UNITS:Number(p.NumResidentialUnits)||0,
