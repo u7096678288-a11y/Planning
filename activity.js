@@ -1,8 +1,8 @@
+"use strict";
 async function fetchCatalogueFile(name){
  try{const r=await fetch("../preview-r10/data/"+name+"?ts="+Date.now(),{cache:"no-store"});if(r.ok)return r;}catch(error){console.warn("Latest catalogue temporarily unavailable",error);}
  return fetch("data/"+name+"?ts="+Date.now(),{cache:"no-store"});
 }
-"use strict";
 const $=s=>document.querySelector(s);
 const SOURCE="https://services.arcgis.com/NzlPQPKn5QF9v2US/arcgis/rest/services/IrishPlanningApplications/FeatureServer/0/query";
 const STORAGE="radharc.major-schemes.edits.v1";
