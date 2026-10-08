@@ -26,64 +26,93 @@ function enrichmentFor(p={},kind="planning"){
 }
 function applicantGroup(name){
  const raw=String(name||"").trim();
- if(!raw)return "";
  const clean=raw.replace(/[.,]+/g," ").replace(/\s+/g," ").trim();
- return clean.replace(/\s+(?:limited|ltd|ltd\.|dac|designated activity company)$/i,"").trim()||clean;
+ return clean.replace(/\s+(?:limited|ltd|dac|designated activity company)$/i,"").trim()||clean;
 }
 let majorSchemes={projects:[],stats:{}};
 let majorSchemesByKey=new Map();
-let majorGroups=[];
-let majorShown=35;
-let majorActiveGroup="";
-let majorActiveProjectLimit=80;
+let majorShown=30,majorActiveGroup="",majorActiveProjectLimit=50,majorMode="applicants";
+function majorGroupId(name){return cleanKey(applicantGroup(name));}
 function groupProjects(){
- const groups=new Map();
- for(const project of majorSchemes.projects||[]){
-  if(!project.applicant)continue;
-  const name=applicantGroup(project.applicant);
-  const id=cleanKey(name);
+ const grouped=new Map();
+ for(const p of majorSchemes.projects||[]){
+  const name=majorMode==="promoters"?p.developer:majorMode==="sites"?p.siteName:p.applicant;
+  if(!name)continue;
+  const id=majorGroupId(name);
   if(!id)continue;
-  const group=groups.get(id)||{id,name,projects:[]};
-  group.projects.push(project);
-  groups.set(id,group);
+  const row=grouped.get(id)||{id,name:applicantGroup(name),projects:[]};
+  row.projects.push(p);
+  grouped.set(id,row);
  }
- const pending=(majorSchemes.projects||[]).filter(p=>!p.applicant);
- majorGroups=[...groups.values()].sort((a,b)=>b.projects.length-a.projects.length||a.name.localeCompare(b.name));
- if(pending.length)majorGroups.push({id:"__pending__",name:"Applicant not yet verified",projects:pending,pending:true});
+ const rows=[...grouped.values()].sort((a,b)=>b.projects.length-a.projects.length||a.name.localeCompare(b.name));
+ if(majorMode==="applicants"){
+  const pending=(majorSchemes.projects||[]).filter(p=>!p.applicant);
+  if(pending.length)rows.push({id:"__pending__",name:"Applicant not yet verified",projects:pending,pending:true});
+ }
+ return rows;
+}
+function majorProjectMatches(p,term){
+ if(!term)return true;
+ return [p.siteName,p.address,p.description,p.reference,p.planningReference,p.authority,
+         p.applicant,p.developer,p.type,p.category,p.caseId].some(v=>String(v||"").toLowerCase().includes(term));
+}
+function majorProjectMarkup(p){
+ const source=validWebAddress(p.source);
+ const ref=esc(p.reference||p.caseId||"Unknown");
+ const refHtml=source?'<a class="major-record-link" href="'+esc(source)+'" target="_blank" rel="noopener noreferrer" title="Open official application">Ref '+ref+' ↗</a>':'Ref '+ref+' · Link unavailable';
+ const other=majorSchemesByKey.get(p.possibleDuplicateOf);
+ const otherUrl=other&&validWebAddress(other.source);
+ const duplicate=p.possibleDuplicateOf?'<span class="major-duplicate">Linked ACP / council record'+(otherUrl?' · <a href="'+esc(otherUrl)+'" target="_blank" rel="noopener noreferrer">Matching application ↗</a>':'')+'</span>':'';
+ const kind=p.kind==="acp"?"ACP case":"Council application";
+ const place=p.address&&p.address!==p.siteName?'<span class="major-project-address">'+esc(p.address)+'</span>':'';
+ const promoter=p.developer?'<span>Developer / promoter: '+esc(p.developer)+'</span>':'';
+ const applicant=p.applicant?'<span>Applicant: '+esc(p.applicant)+'</span>':'<span>Applicant: awaiting verification</span>';
+ return '<article class="major-project">'+
+  '<strong>'+esc(p.siteName||p.address||"Residential scheme")+'</strong>'+
+  '<span class="major-project-type">'+esc(p.type||"Residential development")+' · '+kind+'</span>'+
+  place+'<span>'+esc(p.authority||"")+' · '+refHtml+' · '+fmt(p.units)+' homes</span>'+
+  applicant+promoter+
+  (p.decision&&p.decision!=="N/A"?'<span>Decision: '+esc(p.decision)+'</span>':'')+
+  (p.received?'<span>Received: '+esc(p.received)+'</span>':'')+
+  duplicate+'</article>';
 }
 function renderApplicantIntelligence(){
  const el=$("#applicantIntelligence"),statsEl=$("#applicantIntelligenceStats");
  if(!el)return;
+ const projects=majorSchemes.projects||[];
  const stats=majorSchemes.stats||{};
- const total=(majorSchemes.projects||[]).length;
- const named=(majorSchemes.projects||[]).filter(p=>p.applicant).length;
- const count=majorGroups.filter(g=>!g.pending).length;
- if(statsEl)statsEl.textContent=fmt(total)+" applications over 100 homes indexed · "+fmt(named)+" named · "+fmt(total-named)+" awaiting verification · "+fmt(count)+" applicant groups"+(stats.scanComplete?"":" · Scan in progress");
+ const named=projects.filter(p=>p.applicant).length;
+ const acp=projects.filter(p=>p.kind==="acp").length;
+ const duplicates=projects.filter(p=>p.possibleDuplicateOf).length;
+ const allGroups=groupProjects();
+ if(statsEl)statsEl.textContent=fmt(projects.length)+" indexed >100-home records ("+fmt(acp)+" ACP) · "+fmt(named)+" applicants verified · "+fmt(projects.length-named)+" unresolved · "+fmt(duplicates)+" linked council/ACP records"+(stats.scanComplete&&stats.acpScanComplete?"":" · Source scan continuing");
  const updated=$("#applicantIntelligenceUpdated");
  if(updated)updated.textContent=majorSchemes.updatedAt?"Catalogue updated "+new Date(majorSchemes.updatedAt).toLocaleDateString("en-IE"):"";
  const term=($("#applicantIntelligenceSearch")?.value||"").toLowerCase().trim();
- const filtered=majorGroups.filter(g=>!term||g.name.toLowerCase().includes(term)||g.projects.some(p=>
-  [p.authority,p.reference,p.address,p.description].some(v=>String(v||"").toLowerCase().includes(term))));
+ const filtered=allGroups.map(g=>{
+  const matchesName=g.name.toLowerCase().includes(term);
+  const matches=term&&!matchesName?g.projects.filter(p=>majorProjectMatches(p,term)):g.projects;
+  return {...g,projects:matches};
+ }).filter(g=>g.projects.length);
  const visible=filtered.slice(0,majorShown);
+ const label=majorMode==="sites"?"sites":majorMode==="promoters"?"promoters":"applicants";
+ const count=$("#majorGroupCount");
+ if(count)count.textContent=fmt(filtered.length)+" "+label+" · "+fmt(filtered.reduce((n,g)=>n+g.projects.length,0))+" matching records";
  el.innerHTML=visible.map(g=>{
-  const open=majorActiveGroup===g.id;
-  return '<li class="major-applicant-group"><button type="button" class="major-group-button" data-applicant-group="'+esc(g.id)+'" aria-expanded="'+open+'"><span>'+esc(g.name)+'</span><span>'+fmt(g.projects.length)+' applications '+(open?'▴':'▾')+'</span></button>'+
-  (open?'<div class="major-group-projects">'+g.projects.slice(0,majorActiveProjectLimit).map(p=>
-    '<article class="major-project"><strong>'+esc(p.address||p.description||"Residential scheme")+'</strong>'+
-    '<span>'+esc(p.authority||"")+' · Ref '+esc(p.reference||"")+' · '+fmt(p.units)+' homes</span>'+
-    (p.decision?'<span>Decision: '+esc(p.decision)+'</span>':'')+
-    (p.received?'<span>Received: '+esc(p.received)+'</span>':'')+
-    '</article>').join("")+(g.projects.length>majorActiveProjectLimit?'<button type="button" class="major-show-more" data-more-projects="'+esc(g.id)+'">Show more projects ('+fmt(g.projects.length-majorActiveProjectLimit)+' remaining)</button>':'')+'</div>':'')+'</li>';
- }).join("")||'<li class="data-quality-note">No matching applicant groups. Projects without a verified applicant remain in the indexed total.</li>';
+  const open=majorActiveGroup===g.id||(!!term&&g.projects.length<=4);
+  return '<li class="major-applicant-group"><button type="button" class="major-group-button" data-applicant-group="'+esc(g.id)+'" aria-expanded="'+open+'"><span>'+esc(g.name)+'</span><span>'+fmt(g.projects.length)+' record'+(g.projects.length===1?'':'s')+' '+(open?'▴':'▾')+'</span></button>'+
+  (open?'<div class="major-group-projects">'+g.projects.slice(0,majorActiveProjectLimit).map(majorProjectMarkup).join("")+
+    (g.projects.length>majorActiveProjectLimit?'<button type="button" class="major-show-more" data-more-projects="'+esc(g.id)+'">Show more projects ('+fmt(g.projects.length-majorActiveProjectLimit)+' remaining)</button>':'')+'</div>':'')+'</li>';
+ }).join("")||'<li class="data-quality-note">No matching projects in this indexed catalogue. Applicant names still awaiting verification are not assumed.</li>';
  const more=$("#applicantIntelligenceMore");
- if(more){more.hidden=filtered.length<=majorShown;more.textContent="Show more applicants ("+fmt(filtered.length-majorShown)+" remaining)";}
+ if(more){more.hidden=filtered.length<=majorShown;more.textContent="Show more "+label+" ("+fmt(filtered.length-majorShown)+" remaining)";}
  el.querySelectorAll("[data-applicant-group]").forEach(button=>button.addEventListener("click",()=>{
   const id=button.getAttribute("data-applicant-group");
   majorActiveGroup=majorActiveGroup===id?"":id;
-  majorActiveProjectLimit=80;
+  majorActiveProjectLimit=50;
   renderApplicantIntelligence();
  }));
- el.querySelectorAll("[data-more-projects]").forEach(button=>button.addEventListener("click",()=>{majorActiveProjectLimit+=80;renderApplicantIntelligence();}));
+ el.querySelectorAll("[data-more-projects]").forEach(button=>button.addEventListener("click",()=>{majorActiveProjectLimit+=50;renderApplicantIntelligence();}));
 }
 async function loadMajorSchemes(){
  try{
@@ -93,13 +122,12 @@ async function loadMajorSchemes(){
   if(data?.schemaVersion!==1||!Array.isArray(data.projects))throw Error("Invalid catalogue");
   majorSchemes=data;
   majorSchemesByKey=new Map(data.projects.map(p=>[p.key,p]));
-  groupProjects();
   renderApplicantIntelligence();
   if(lastSelectedFeature){const [k,f,ll]=lastSelectedFeature;select(k,f,ll);}
  }catch(error){
   console.warn("Major scheme catalogue unavailable",error);
   const status=$("#applicantIntelligenceStats");
-  if(status)status.textContent="Applicant catalogue is being prepared. Live map data remains available.";
+  if(status)status.textContent="Applicant catalogue temporarily unavailable. Live map data remains available.";
  }
 }
 
@@ -351,8 +379,9 @@ function bind(){
   $("#refreshButton").onclick=refreshAll;
   $("#searchForm").onsubmit=search;
   $("#copyBriefButton").onclick=copyBrief;
-  $("#applicantIntelligenceSearch")?.addEventListener("input",()=>{majorShown=35;majorActiveGroup="";renderApplicantIntelligence();});
-  $("#applicantIntelligenceMore")?.addEventListener("click",()=>{majorShown+=35;renderApplicantIntelligence();});
+  $("#applicantIntelligenceSearch")?.addEventListener("input",()=>{majorShown=30;majorActiveGroup="";renderApplicantIntelligence();});
+  $("#applicantIntelligenceMore")?.addEventListener("click",()=>{majorShown+=30;renderApplicantIntelligence();});
+  document.querySelectorAll("[data-major-mode]").forEach(button=>button.addEventListener("click",()=>{majorMode=button.dataset.majorMode;majorActiveGroup="";majorShown=30;document.querySelectorAll("[data-major-mode]").forEach(b=>b.setAttribute("aria-pressed",String(b===button)));renderApplicantIntelligence();}));
   $("#shareViewButton").onclick=async()=>{try{await navigator.clipboard.writeText(location.href);status("View link copied","ok")}catch{status("Copy link unavailable","error")}};
   $("#resetDashboardButton").onclick=()=>{
     $("#residentialType").value="all";$("#authorityExplorer").value="";
