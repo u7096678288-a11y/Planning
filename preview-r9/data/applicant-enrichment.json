@@ -1,0 +1,1728 @@
+{
+  "checked": {
+    "acp|324019": "2026-10-08",
+    "acp|324024": "2026-10-08",
+    "acp|324025": "2026-10-08",
+    "acp|324029": "2026-10-08",
+    "acp|324030": "2026-10-08",
+    "acp|324032": "2026-10-08",
+    "acp|324034": "2026-10-08",
+    "acp|324035": "2026-10-08",
+    "acp|324038": "2026-10-08",
+    "acp|324042": "2026-10-08",
+    "acp|324043": "2026-10-08",
+    "acp|324054": "2026-10-08",
+    "acp|324056": "2026-10-08",
+    "acp|324062": "2026-10-08",
+    "acp|324071": "2026-10-08",
+    "acp|324074": "2026-10-08",
+    "acp|324080": "2026-10-08",
+    "acp|324107": "2026-10-08",
+    "acp|324123": "2026-10-08",
+    "acp|324127": "2026-10-08",
+    "acp|324140": "2026-10-08",
+    "acp|324144": "2026-10-08",
+    "acp|324147": "2026-10-08",
+    "acp|324153": "2026-10-08",
+    "acp|324173": "2026-10-08",
+    "acp|324182": "2026-10-08",
+    "acp|324204": "2026-10-08",
+    "acp|324205": "2026-10-08",
+    "acp|324206": "2026-10-08",
+    "acp|324237": "2026-10-08",
+    "acp|324245": "2026-10-08",
+    "acp|324262": "2026-10-08",
+    "acp|324263": "2026-10-08",
+    "acp|324275": "2026-10-08",
+    "acp|324286": "2026-10-08",
+    "acp|324315": "2026-10-08",
+    "acp|324331": "2026-10-08",
+    "acp|324332": "2026-10-08",
+    "acp|324341": "2026-10-08",
+    "acp|324349": "2026-10-08",
+    "acp|324353": "2026-10-08",
+    "acp|324365": "2026-10-08",
+    "acp|324373": "2026-10-08",
+    "acp|324425": "2026-10-08",
+    "acp|324435": "2026-10-08",
+    "acp|324442": "2026-10-08",
+    "acp|324467": "2026-10-08",
+    "acp|324484": "2026-10-08",
+    "acp|324489": "2026-10-08",
+    "acp|324546": "2026-10-08",
+    "acp|324554": "2026-10-08",
+    "acp|324555": "2026-10-08",
+    "acp|324557": "2026-10-08",
+    "acp|324560": "2026-10-08",
+    "acp|324563": "2026-10-08",
+    "acp|324570": "2026-10-08",
+    "acp|324586": "2026-10-08",
+    "acp|324588": "2026-10-08",
+    "acp|324591": "2026-10-08",
+    "acp|324603": "2026-10-08",
+    "planning|cavancountycouncil|2660132": "2026-10-08",
+    "planning|cavancountycouncil|2660144": "2026-10-08",
+    "planning|cavancountycouncil|2660204": "2026-10-08",
+    "planning|cavancountycouncil|2660435": "2026-10-08",
+    "planning|clarecountycouncil|26131": "2026-10-08",
+    "planning|clarecountycouncil|2660148": "2026-10-08",
+    "planning|clarecountycouncil|2660433": "2026-10-08",
+    "planning|clarecountycouncil|2660449": "2026-10-08",
+    "planning|clarecountycouncil|2660511": "2026-10-08",
+    "planning|clarecountycouncil|2660594": "2026-10-08",
+    "planning|clarecountycouncil|2660617": "2026-10-08",
+    "planning|donegalcountycouncil|2660444": "2026-10-08",
+    "planning|donegalcountycouncil|2660670": "2026-10-08",
+    "planning|donegalcountycouncil|2661208": "2026-10-08",
+    "planning|donegalcountycouncil|2661346": "2026-10-08",
+    "planning|donegalcountycouncil|2661462": "2026-10-08",
+    "planning|donegalcountycouncil|2661512": "2026-10-08",
+    "planning|dublincitycouncil|web159426": "2026-10-08",
+    "planning|dublincitycouncil|web183626": "2026-10-08",
+    "planning|dublincitycouncil|web195126": "2026-10-08",
+    "planning|dublincitycouncil|web198826": "2026-10-08",
+    "planning|dublincitycouncil|web232426": "2026-10-08",
+    "planning|galwaycitycouncil|2660217": "2026-10-08",
+    "planning|galwaycitycouncil|2660282": "2026-10-08",
+    "planning|galwaycitycouncil|2660301": "2026-10-08",
+    "planning|kerrycountycouncil|2660536": "2026-10-08",
+    "planning|kildarecountycouncil|2660248": "2026-10-08",
+    "planning|kildarecountycouncil|2660381": "2026-10-08",
+    "planning|kildarecountycouncil|2660456": "2026-10-08",
+    "planning|kildarecountycouncil|2660468": "2026-10-08",
+    "planning|kildarecountycouncil|2660469": "2026-10-08",
+    "planning|kildarecountycouncil|2660519": "2026-10-08",
+    "planning|kildarecountycouncil|2660575": "2026-10-08",
+    "planning|kildarecountycouncil|2660621": "2026-10-08",
+    "planning|kildarecountycouncil|2660627": "2026-10-08",
+    "planning|kildarecountycouncil|2660643": "2026-10-08",
+    "planning|kilkennycountycouncil|2660143": "2026-10-08",
+    "planning|kilkennycountycouncil|2660241": "2026-10-08",
+    "planning|kilkennycountycouncil|2660277": "2026-10-08",
+    "planning|kilkennycountycouncil|2660312": "2026-10-08",
+    "planning|kilkennycountycouncil|2660332": "2026-10-08",
+    "planning|kilkennycountycouncil|2660399": "2026-10-08",
+    "planning|kilkennycountycouncil|2660523": "2026-10-08",
+    "planning|kilkennycountycouncil|2660543": "2026-10-08",
+    "planning|kilkennycountycouncil|2660625": "2026-10-08",
+    "planning|laoiscountycouncil|2660112": "2026-10-08",
+    "planning|laoiscountycouncil|2660255": "2026-10-08",
+    "planning|laoiscountycouncil|2660304": "2026-10-08",
+    "planning|laoiscountycouncil|2660387": "2026-10-08",
+    "planning|leitrimcountycouncil|2660191": "2026-10-08",
+    "planning|leitrimcountycouncil|2660222": "2026-10-08",
+    "planning|limerickcountycouncil|2660241": "2026-10-08",
+    "planning|limerickcountycouncil|2660275": "2026-10-08",
+    "planning|limerickcountycouncil|2660396": "2026-10-08",
+    "planning|limerickcountycouncil|2660675": "2026-10-08",
+    "planning|limerickcountycouncil|2660855": "2026-10-08",
+    "planning|limerickcountycouncil|2660886": "2026-10-08",
+    "planning|limerickcountycouncil|2661011": "2026-10-08",
+    "planning|longfordcountycouncil|2660078": "2026-10-08",
+    "planning|louthcountycouncil|2660181": "2026-10-08",
+    "planning|louthcountycouncil|2660189": "2026-10-08",
+    "planning|louthcountycouncil|2660204": "2026-10-08",
+    "planning|louthcountycouncil|2660229": "2026-10-08",
+    "planning|louthcountycouncil|2660235": "2026-10-08",
+    "planning|louthcountycouncil|2660279": "2026-10-08",
+    "planning|louthcountycouncil|2660283": "2026-10-08",
+    "planning|louthcountycouncil|2660319": "2026-10-08",
+    "planning|louthcountycouncil|2660348": "2026-10-08",
+    "planning|louthcountycouncil|2660355": "2026-10-08",
+    "planning|louthcountycouncil|2660444": "2026-10-08",
+    "planning|louthcountycouncil|2660456": "2026-10-08",
+    "planning|meathcountycouncil|2660256": "2026-10-08",
+    "planning|meathcountycouncil|2660278": "2026-10-08",
+    "planning|meathcountycouncil|2660470": "2026-10-08",
+    "planning|meathcountycouncil|2660481": "2026-10-08",
+    "planning|meathcountycouncil|2660788": "2026-10-08",
+    "planning|meathcountycouncil|2661080": "2026-10-08",
+    "planning|meathcountycouncil|2697": "2026-10-08",
+    "planning|offalycountycouncil|2660323": "2026-10-08",
+    "planning|offalycountycouncil|2660361": "2026-10-08",
+    "planning|roscommoncountycouncil|2660509": "2026-10-08",
+    "planning|southdublincountycouncil|lrd25a0014w": "2026-10-08",
+    "planning|southdublincountycouncil|lrd26a0002w": "2026-10-08",
+    "planning|southdublincountycouncil|lrd26a0005w": "2026-10-08",
+    "planning|southdublincountycouncil|pt8sd359": "2026-10-08",
+    "planning|southdublincountycouncil|sd16a0210fep": "2026-10-08",
+    "planning|southdublincountycouncil|sd16a0210fep1": "2026-10-08",
+    "planning|southdublincountycouncil|sdz25a0044w": "2026-10-08",
+    "planning|southdublincountycouncil|sdz26a0009w": "2026-10-08",
+    "planning|tipperarycountycouncil|2660537": "2026-10-08",
+    "planning|tipperarycountycouncil|2660539": "2026-10-08",
+    "planning|tipperarycountycouncil|2660724": "2026-10-08",
+    "planning|tipperarycountycouncil|2660728": "2026-10-08",
+    "planning|tipperarycountycouncil|2660760": "2026-10-08",
+    "planning|westmeathcountycouncil|2660134": "2026-10-08",
+    "planning|westmeathcountycouncil|2660165": "2026-10-08",
+    "planning|westmeathcountycouncil|2660199": "2026-10-08",
+    "planning|westmeathcountycouncil|2660222": "2026-10-08",
+    "planning|westmeathcountycouncil|2660344": "2026-10-08",
+    "planning|wexfordcountycouncil|20260262": "2026-10-08",
+    "planning|wexfordcountycouncil|20260326": "2026-10-08",
+    "planning|wexfordcountycouncil|20260417": "2026-10-08",
+    "planning|wexfordcountycouncil|20260592": "2026-10-08",
+    "planning|wexfordcountycouncil|20260625": "2026-10-08",
+    "planning|wexfordcountycouncil|20260682": "2026-10-08",
+    "planning|wexfordcountycouncil|20260747": "2026-10-08",
+    "planning|wexfordcountycouncil|20260760": "2026-10-08",
+    "planning|wexfordcountycouncil|20260761": "2026-10-08",
+    "planning|wexfordcountycouncil|20260819": "2026-10-08",
+    "planning|wexfordcountycouncil|20260966": "2026-10-08",
+    "planning|wexfordcountycouncil|20260993": "2026-10-08",
+    "planning|wicklowcountycouncil|2660290": "2026-10-08",
+    "planning|wicklowcountycouncil|2660402": "2026-10-08",
+    "planning|wicklowcountycouncil|2660429": "2026-10-08",
+    "planning|wicklowcountycouncil|2660484": "2026-10-08",
+    "planning|wicklowcountycouncil|2660551": "2026-10-08",
+    "planning|wicklowcountycouncil|2660597": "2026-10-08",
+    "planning|wicklowcountycouncil|2660640": "2026-10-08",
+    "planning|wicklowcountycouncil|2660673": "2026-10-08",
+    "planning|wicklowcountycouncil|2660713": "2026-10-08",
+    "planning|wicklowcountycouncil|2660742": "2026-10-08",
+    "planning|wicklowcountycouncil|2660775": "2026-10-08",
+    "planning|wicklowcountycouncil|2660797": "2026-10-08",
+    "planning|wicklowcountycouncil|2660806": "2026-10-08",
+    "planning|wicklowcountycouncil|2660824": "2026-10-08"
+  },
+  "cursor": {
+    "acp": 0,
+    "planning": 0
+  },
+  "description": "Source-backed applicant/developer enrichment; never infer a legal applicant from a generic page label.",
+  "majorSchemeChecked": {
+    "planning|cavancountycouncil|2560057": "2026-10-08",
+    "planning|cavancountycouncil|2560652": "2026-10-08",
+    "planning|clarecountycouncil|17495": "2026-10-08",
+    "planning|clarecountycouncil|2560108": "2026-10-08",
+    "planning|clarecountycouncil|2560393": "2026-10-08",
+    "planning|clarecountycouncil|2660433": "2026-10-08",
+    "planning|donegalcountycouncil|1851514": "2026-10-08",
+    "planning|donegalcountycouncil|2350689": "2026-10-08",
+    "planning|donegalcountycouncil|2661208": "2026-10-08",
+    "planning|galwaycitycouncil|1825": "2026-10-08",
+    "planning|galwaycitycouncil|2460270": "2026-10-08",
+    "planning|galwaycitycouncil|2560148": "2026-10-08",
+    "planning|galwaycitycouncil|2660282": "2026-10-08",
+    "planning|galwaycountycouncil|18129": "2026-10-08",
+    "planning|galwaycountycouncil|2460581": "2026-10-08",
+    "planning|kerrycountycouncil|22533": "2026-10-08",
+    "planning|kerrycountycouncil|2360201": "2026-10-08",
+    "planning|kerrycountycouncil|23967": "2026-10-08",
+    "planning|kerrycountycouncil|2460695": "2026-10-08",
+    "planning|kerrycountycouncil|2660536": "2026-10-08",
+    "planning|kildarecountycouncil|1726": "2026-10-08",
+    "planning|kildarecountycouncil|17487": "2026-10-08",
+    "planning|kildarecountycouncil|17523": "2026-10-08",
+    "planning|kildarecountycouncil|17764": "2026-10-08",
+    "planning|kildarecountycouncil|18300558": "2026-10-08",
+    "planning|kildarecountycouncil|18300606": "2026-10-08",
+    "planning|kildarecountycouncil|18301230": "2026-10-08",
+    "planning|kildarecountycouncil|18301371": "2026-10-08",
+    "planning|kildarecountycouncil|18301818": "2026-10-08",
+    "planning|kildarecountycouncil|18302141": "2026-10-08",
+    "planning|kildarecountycouncil|18303295": "2026-10-08",
+    "planning|kildarecountycouncil|19304632": "2026-10-08",
+    "planning|kildarecountycouncil|19305007": "2026-10-08",
+    "planning|kildarecountycouncil|19305416": "2026-10-08",
+    "planning|kildarecountycouncil|19305701": "2026-10-08",
+    "planning|kildarecountycouncil|20306504": "2026-10-08",
+    "planning|kildarecountycouncil|20306826": "2026-10-08",
+    "planning|kildarecountycouncil|20307013": "2026-10-08",
+    "planning|kildarecountycouncil|20307100": "2026-10-08",
+    "planning|kildarecountycouncil|20307223": "2026-10-08",
+    "planning|kildarecountycouncil|21310865": "2026-10-08",
+    "planning|kildarecountycouncil|21310892": "2026-10-08",
+    "planning|kildarecountycouncil|22312704": "2026-10-08",
+    "planning|kildarecountycouncil|22813": "2026-10-08",
+    "planning|kildarecountycouncil|23416": "2026-10-08",
+    "planning|kildarecountycouncil|23510": "2026-10-08",
+    "planning|kildarecountycouncil|23513": "2026-10-08",
+    "planning|kildarecountycouncil|2360485": "2026-10-08",
+    "planning|kildarecountycouncil|23656": "2026-10-08",
+    "planning|kildarecountycouncil|23972": "2026-10-08",
+    "planning|kildarecountycouncil|2460497": "2026-10-08",
+    "planning|kildarecountycouncil|2461111": "2026-10-08",
+    "planning|kildarecountycouncil|2461327": "2026-10-08",
+    "planning|kildarecountycouncil|2560003": "2026-10-08",
+    "planning|kildarecountycouncil|2561119": "2026-10-08",
+    "planning|kildarecountycouncil|2660469": "2026-10-08",
+    "planning|kildarecountycouncil|2660575": "2026-10-08",
+    "planning|kilkennycountycouncil|19887": "2026-10-08",
+    "planning|kilkennycountycouncil|2360037": "2026-10-08",
+    "planning|laoiscountycouncil|1994": "2026-10-08",
+    "planning|laoiscountycouncil|20307420": "2026-10-08",
+    "planning|laoiscountycouncil|21887": "2026-10-08",
+    "planning|laoiscountycouncil|22182": "2026-10-08",
+    "planning|laoiscountycouncil|22586": "2026-10-08",
+    "planning|laoiscountycouncil|22706": "2026-10-08",
+    "planning|laoiscountycouncil|23155": "2026-10-08",
+    "planning|laoiscountycouncil|23160": "2026-10-08",
+    "planning|laoiscountycouncil|23245": "2026-10-08",
+    "planning|laoiscountycouncil|2341": "2026-10-08",
+    "planning|laoiscountycouncil|2360366": "2026-10-08",
+    "planning|laoiscountycouncil|239": "2026-10-08",
+    "planning|laoiscountycouncil|2660255": "2026-10-08",
+    "planning|limerickcountycouncil|17470": "2026-10-08",
+    "planning|limerickcountycouncil|2025": "2026-10-08",
+    "planning|limerickcountycouncil|21311588": "2026-10-08",
+    "planning|limerickcountycouncil|218000": "2026-10-08",
+    "planning|limerickcountycouncil|22313124": "2026-10-08",
+    "planning|limerickcountycouncil|2360842": "2026-10-08",
+    "planning|limerickcountycouncil|2560271": "2026-10-08",
+    "planning|limerickcountycouncil|2561231": "2026-10-08",
+    "planning|louthcountycouncil|17310": "2026-10-08",
+    "planning|louthcountycouncil|17387": "2026-10-08",
+    "planning|louthcountycouncil|181024": "2026-10-08",
+    "planning|louthcountycouncil|191062": "2026-10-08",
+    "planning|louthcountycouncil|19912": "2026-10-08",
+    "planning|louthcountycouncil|20176": "2026-10-08",
+    "planning|louthcountycouncil|20696": "2026-10-08",
+    "planning|louthcountycouncil|22228": "2026-10-08",
+    "planning|louthcountycouncil|22853": "2026-10-08",
+    "planning|louthcountycouncil|2360053": "2026-10-08",
+    "planning|louthcountycouncil|2360330": "2026-10-08",
+    "planning|louthcountycouncil|2360476": "2026-10-08",
+    "planning|louthcountycouncil|2364": "2026-10-08",
+    "planning|louthcountycouncil|2560319": "2026-10-08",
+    "planning|mayocountycouncil|19755": "2026-10-08",
+    "planning|meathcountycouncil|22638": "2026-10-08",
+    "planning|meathcountycouncil|22924": "2026-10-08",
+    "planning|meathcountycouncil|2360181": "2026-10-08",
+    "planning|meathcountycouncil|2360290": "2026-10-08",
+    "planning|meathcountycouncil|23849": "2026-10-08",
+    "planning|meathcountycouncil|23930": "2026-10-08",
+    "planning|meathcountycouncil|24201": "2026-10-08",
+    "planning|meathcountycouncil|2460415": "2026-10-08",
+    "planning|meathcountycouncil|2460487": "2026-10-08",
+    "planning|meathcountycouncil|2460625": "2026-10-08",
+    "planning|meathcountycouncil|2460709": "2026-10-08",
+    "planning|meathcountycouncil|2460805": "2026-10-08",
+    "planning|meathcountycouncil|2560539": "2026-10-08",
+    "planning|meathcountycouncil|2560637": "2026-10-08",
+    "planning|meathcountycouncil|2560854": "2026-10-08",
+    "planning|meathcountycouncil|2560940": "2026-10-08",
+    "planning|meathcountycouncil|2561044": "2026-10-08",
+    "planning|meathcountycouncil|2561104": "2026-10-08",
+    "planning|meathcountycouncil|2660001": "2026-10-08",
+    "planning|meathcountycouncil|2660045": "2026-10-08",
+    "planning|meathcountycouncil|2660481": "2026-10-08",
+    "planning|meathcountycouncil|2660788": "2026-10-08",
+    "planning|meathcountycouncil|2661080": "2026-10-08",
+    "planning|meathcountycouncil|aa170488": "2026-10-08",
+    "planning|meathcountycouncil|aa170505": "2026-10-08",
+    "planning|meathcountycouncil|lb170675": "2026-10-08",
+    "planning|meathcountycouncil|na170747": "2026-10-08",
+    "planning|meathcountycouncil|ra170268": "2026-10-08",
+    "planning|meathcountycouncil|sh303433": "2026-10-08",
+    "planning|meathcountycouncil|sh305196": "2026-10-08",
+    "planning|meathcountycouncil|sh305552": "2026-10-08",
+    "planning|meathcountycouncil|sh305703": "2026-10-08",
+    "planning|meathcountycouncil|sh306021": "2026-10-08",
+    "planning|meathcountycouncil|sh307244": "2026-10-08",
+    "planning|meathcountycouncil|sh307507": "2026-10-08",
+    "planning|meathcountycouncil|sh308116": "2026-10-08",
+    "planning|meathcountycouncil|sh308803": "2026-10-08",
+    "planning|meathcountycouncil|sh314548": "2026-10-08",
+    "planning|meathcountycouncil|sh314550": "2026-10-08",
+    "planning|meathcountycouncil|ta171345": "2026-10-08",
+    "planning|offalycountycouncil|17231": "2026-10-08",
+    "planning|offalycountycouncil|2360059": "2026-10-08",
+    "planning|southdublincountycouncil|lrd22a0001": "2026-10-08",
+    "planning|southdublincountycouncil|lrd23a0001": "2026-10-08",
+    "planning|southdublincountycouncil|lrd23a0002": "2026-10-08",
+    "planning|southdublincountycouncil|lrd23a0003": "2026-10-08",
+    "planning|southdublincountycouncil|lrd23a0008": "2026-10-08",
+    "planning|southdublincountycouncil|lrd23a0010": "2026-10-08",
+    "planning|southdublincountycouncil|lrd23a0011": "2026-10-08",
+    "planning|southdublincountycouncil|lrd23a0014": "2026-10-08",
+    "planning|southdublincountycouncil|lrd24a0007": "2026-10-08",
+    "planning|southdublincountycouncil|lrd25a0001w": "2026-10-08",
+    "planning|southdublincountycouncil|lrd25a0002w": "2026-10-08",
+    "planning|southdublincountycouncil|lrd25a0003w": "2026-10-08",
+    "planning|southdublincountycouncil|lrd25a0005w": "2026-10-08",
+    "planning|southdublincountycouncil|lrd25a0008w": "2026-10-08",
+    "planning|southdublincountycouncil|lrd25a0009w": "2026-10-08",
+    "planning|southdublincountycouncil|lrd25a0011w": "2026-10-08",
+    "planning|southdublincountycouncil|lrd25a0012w": "2026-10-08",
+    "planning|southdublincountycouncil|lrd25a0013w": "2026-10-08",
+    "planning|southdublincountycouncil|lrd25a0014w": "2026-10-08",
+    "planning|southdublincountycouncil|lrd26a0002w": "2026-10-08",
+    "planning|southdublincountycouncil|lrd26a0005w": "2026-10-08",
+    "planning|southdublincountycouncil|s01a0114": "2026-10-08",
+    "planning|southdublincountycouncil|s01a0186": "2026-10-08",
+    "planning|southdublincountycouncil|s01a0242": "2026-10-08",
+    "planning|southdublincountycouncil|s01a0262": "2026-10-08",
+    "planning|southdublincountycouncil|s01a0664": "2026-10-08",
+    "planning|southdublincountycouncil|s01a0706": "2026-10-08",
+    "planning|southdublincountycouncil|s02a0044": "2026-10-08",
+    "planning|southdublincountycouncil|sd02a0275": "2026-10-08",
+    "planning|southdublincountycouncil|sd02a0288": "2026-10-08",
+    "planning|southdublincountycouncil|sd02a0296": "2026-10-08",
+    "planning|southdublincountycouncil|sd02a0394": "2026-10-08",
+    "planning|southdublincountycouncil|sd02a0427": "2026-10-08",
+    "planning|southdublincountycouncil|sd02a0549": "2026-10-08",
+    "planning|southdublincountycouncil|sd03a0002": "2026-10-08",
+    "planning|southdublincountycouncil|sd03a0276": "2026-10-08",
+    "planning|southdublincountycouncil|sd03a0320": "2026-10-08",
+    "planning|southdublincountycouncil|sd03a0323": "2026-10-08",
+    "planning|southdublincountycouncil|sd03a0421": "2026-10-08",
+    "planning|southdublincountycouncil|sd03a0433": "2026-10-08",
+    "planning|southdublincountycouncil|sd03a0474": "2026-10-08",
+    "planning|southdublincountycouncil|sd03a0633": "2026-10-08",
+    "planning|southdublincountycouncil|sd03a0648": "2026-10-08",
+    "planning|southdublincountycouncil|sd03a0673": "2026-10-08",
+    "planning|southdublincountycouncil|sd03a0691": "2026-10-08",
+    "planning|southdublincountycouncil|sd03a0801": "2026-10-08",
+    "planning|southdublincountycouncil|sd03a0804": "2026-10-08",
+    "planning|southdublincountycouncil|sd03a0822": "2026-10-08",
+    "planning|southdublincountycouncil|sd03a0857": "2026-10-08",
+    "planning|southdublincountycouncil|sd03a0889": "2026-10-08",
+    "planning|southdublincountycouncil|sd03a0972": "2026-10-08",
+    "planning|southdublincountycouncil|sd03a0982": "2026-10-08",
+    "planning|southdublincountycouncil|sd03a0997": "2026-10-08",
+    "planning|southdublincountycouncil|sd04a0099": "2026-10-08",
+    "planning|southdublincountycouncil|sd04a0242": "2026-10-08",
+    "planning|southdublincountycouncil|sd04a0393": "2026-10-08",
+    "planning|southdublincountycouncil|sd04a0686": "2026-10-08",
+    "planning|southdublincountycouncil|sd04a0936": "2026-10-08",
+    "planning|southdublincountycouncil|sd04a0975": "2026-10-08",
+    "planning|southdublincountycouncil|sd04a0979": "2026-10-08",
+    "planning|southdublincountycouncil|sd05a0090": "2026-10-08",
+    "planning|southdublincountycouncil|sd05a0128": "2026-10-08",
+    "planning|southdublincountycouncil|sd05a0262": "2026-10-08",
+    "planning|southdublincountycouncil|sd05a0344": "2026-10-08",
+    "planning|southdublincountycouncil|sd05a0433": "2026-10-08",
+    "planning|southdublincountycouncil|sd05a0818": "2026-10-08",
+    "planning|southdublincountycouncil|sd05a0872": "2026-10-08",
+    "planning|southdublincountycouncil|sd05a0875": "2026-10-08",
+    "planning|southdublincountycouncil|sd06a0238": "2026-10-08",
+    "planning|southdublincountycouncil|sd06a0349": "2026-10-08",
+    "planning|southdublincountycouncil|sd06a0494": "2026-10-08",
+    "planning|southdublincountycouncil|sd06a0611": "2026-10-08",
+    "planning|southdublincountycouncil|sd06a0631": "2026-10-08",
+    "planning|southdublincountycouncil|sd06a0654": "2026-10-08",
+    "planning|southdublincountycouncil|sd06a0699": "2026-10-08",
+    "planning|southdublincountycouncil|sd06a0933": "2026-10-08",
+    "planning|southdublincountycouncil|sd06a1003": "2026-10-08",
+    "planning|southdublincountycouncil|sd06a1108": "2026-10-08",
+    "planning|southdublincountycouncil|sd07a0013": "2026-10-08",
+    "planning|southdublincountycouncil|sd07a0113": "2026-10-08",
+    "planning|southdublincountycouncil|sd07a0246": "2026-10-08",
+    "planning|southdublincountycouncil|sd07a0309": "2026-10-08",
+    "planning|southdublincountycouncil|sd07a0377": "2026-10-08",
+    "planning|southdublincountycouncil|sd07a1035": "2026-10-08",
+    "planning|southdublincountycouncil|sd08a0709": "2026-10-08",
+    "planning|southdublincountycouncil|sd09a0149": "2026-10-08",
+    "planning|southdublincountycouncil|sd09a0461": "2026-10-08",
+    "planning|southdublincountycouncil|sd10a0041": "2026-10-08",
+    "planning|southdublincountycouncil|sd10a0064": "2026-10-08",
+    "planning|southdublincountycouncil|sd10a0213": "2026-10-08",
+    "planning|southdublincountycouncil|sd10a0260": "2026-10-08",
+    "planning|southdublincountycouncil|sd12a0168": "2026-10-08",
+    "planning|southdublincountycouncil|sd14a0028": "2026-10-08",
+    "planning|southdublincountycouncil|sd14a0033": "2026-10-08",
+    "planning|southdublincountycouncil|sd14a0121": "2026-10-08",
+    "planning|southdublincountycouncil|sd14a0180": "2026-10-08",
+    "planning|southdublincountycouncil|sd14a0222": "2026-10-08",
+    "planning|southdublincountycouncil|sd15a0012": "2026-10-08",
+    "planning|southdublincountycouncil|sd15a0017": "2026-10-08",
+    "planning|southdublincountycouncil|sd15a0095": "2026-10-08",
+    "planning|southdublincountycouncil|sd15a0127": "2026-10-08",
+    "planning|southdublincountycouncil|sd15a0217": "2026-10-08",
+    "planning|southdublincountycouncil|sd15a0388": "2026-10-08",
+    "planning|southdublincountycouncil|sd16a0078": "2026-10-08",
+    "planning|southdublincountycouncil|sd16a0210": "2026-10-08",
+    "planning|southdublincountycouncil|sd16a0210ep": "2026-10-08",
+    "planning|southdublincountycouncil|sd16a0210fep": "2026-10-08",
+    "planning|southdublincountycouncil|sd16a0210fep1": "2026-10-08",
+    "planning|southdublincountycouncil|sd16a0229": "2026-10-08",
+    "planning|southdublincountycouncil|sd16a0266": "2026-10-08",
+    "planning|southdublincountycouncil|sd16a0267": "2026-10-08",
+    "planning|southdublincountycouncil|sd16a0270": "2026-10-08",
+    "planning|southdublincountycouncil|sd17a0069": "2026-10-08",
+    "planning|southdublincountycouncil|sd17a0121": "2026-10-08",
+    "planning|southdublincountycouncil|sd17a0132": "2026-10-08",
+    "planning|southdublincountycouncil|sd17a0212": "2026-10-08",
+    "planning|southdublincountycouncil|sd18a0401": "2026-10-08",
+    "planning|southdublincountycouncil|sd20a0259": "2026-10-08",
+    "planning|southdublincountycouncil|sd21a0136": "2026-10-08",
+    "planning|southdublincountycouncil|sd21a0196": "2026-10-08",
+    "planning|southdublincountycouncil|sdz05a2": "2026-10-08",
+    "planning|southdublincountycouncil|sdz06a13": "2026-10-08",
+    "planning|southdublincountycouncil|sdz06a3": "2026-10-08",
+    "planning|southdublincountycouncil|sdz06a6": "2026-10-08",
+    "planning|southdublincountycouncil|sdz07a0001": "2026-10-08",
+    "planning|southdublincountycouncil|sdz07a0007": "2026-10-08",
+    "planning|southdublincountycouncil|sdz07a0011": "2026-10-08",
+    "planning|southdublincountycouncil|sdz07a0012": "2026-10-08",
+    "planning|southdublincountycouncil|sdz08a0002": "2026-10-08",
+    "planning|southdublincountycouncil|sdz08a0004": "2026-10-08",
+    "planning|southdublincountycouncil|sdz08a0005": "2026-10-08",
+    "planning|southdublincountycouncil|sdz10a0001": "2026-10-08",
+    "planning|southdublincountycouncil|sdz16a0003": "2026-10-08",
+    "planning|southdublincountycouncil|sdz16a0005": "2026-10-08",
+    "planning|southdublincountycouncil|sdz17a0001": "2026-10-08",
+    "planning|southdublincountycouncil|sdz17a0006": "2026-10-08",
+    "planning|southdublincountycouncil|sdz18a0002": "2026-10-08",
+    "planning|southdublincountycouncil|sdz18a0004": "2026-10-08",
+    "planning|southdublincountycouncil|sdz18a0011": "2026-10-08",
+    "planning|southdublincountycouncil|sdz18a0011ep": "2026-10-08",
+    "planning|southdublincountycouncil|sdz19a0003": "2026-10-08",
+    "planning|southdublincountycouncil|sdz19a0004": "2026-10-08",
+    "planning|southdublincountycouncil|sdz19a0004ep": "2026-10-08",
+    "planning|southdublincountycouncil|sdz19a0008": "2026-10-08",
+    "planning|southdublincountycouncil|sdz19a0011": "2026-10-08",
+    "planning|southdublincountycouncil|sdz20a0008": "2026-10-08",
+    "planning|southdublincountycouncil|sdz20a0017": "2026-10-08",
+    "planning|southdublincountycouncil|sdz20a0020": "2026-10-08",
+    "planning|southdublincountycouncil|sdz21a0003": "2026-10-08",
+    "planning|southdublincountycouncil|sdz21a0007": "2026-10-08",
+    "planning|southdublincountycouncil|sdz21a0014": "2026-10-08",
+    "planning|southdublincountycouncil|sdz21a0020": "2026-10-08",
+    "planning|southdublincountycouncil|sdz21a0022": "2026-10-08",
+    "planning|southdublincountycouncil|sdz21a0023": "2026-10-08",
+    "planning|southdublincountycouncil|sdz22a0005": "2026-10-08",
+    "planning|southdublincountycouncil|sdz22a0006": "2026-10-08",
+    "planning|southdublincountycouncil|sdz22a0010": "2026-10-08",
+    "planning|southdublincountycouncil|sdz22a0014": "2026-10-08",
+    "planning|southdublincountycouncil|sdz22a0017": "2026-10-08",
+    "planning|southdublincountycouncil|sdz22a0018": "2026-10-08",
+    "planning|southdublincountycouncil|sdz23a0004": "2026-10-08",
+    "planning|southdublincountycouncil|sdz23a0012": "2026-10-08",
+    "planning|southdublincountycouncil|sdz23a0018": "2026-10-08",
+    "planning|southdublincountycouncil|sdz23a0026": "2026-10-08",
+    "planning|southdublincountycouncil|sdz23a0043": "2026-10-08",
+    "planning|southdublincountycouncil|sdz24a0029w": "2026-10-08",
+    "planning|southdublincountycouncil|sdz25a0013w": "2026-10-08",
+    "planning|southdublincountycouncil|sdz25a0019w": "2026-10-08",
+    "planning|southdublincountycouncil|shd3abp30055518": "2026-10-08",
+    "planning|southdublincountycouncil|shd3abp30055518ep": "2026-10-08",
+    "planning|southdublincountycouncil|shd3abp30239818": "2026-10-08",
+    "planning|southdublincountycouncil|shd3abp30252118": "2026-10-08",
+    "planning|southdublincountycouncil|shd3abp30330618": "2026-10-08",
+    "planning|southdublincountycouncil|shd3abp30380319": "2026-10-08",
+    "planning|southdublincountycouncil|shd3abp30391119": "2026-10-08",
+    "planning|southdublincountycouncil|shd3abp30482819": "2026-10-08",
+    "planning|southdublincountycouncil|shd3abp30526719": "2026-10-08",
+    "planning|southdublincountycouncil|shd3abp30534319": "2026-10-08",
+    "planning|southdublincountycouncil|shd3abp30555619": "2026-10-08",
+    "planning|southdublincountycouncil|shd3abp30556319": "2026-10-08",
+    "planning|southdublincountycouncil|shd3abp30572519": "2026-10-08",
+    "planning|southdublincountycouncil|shd3abp30576319": "2026-10-08",
+    "planning|southdublincountycouncil|shd3abp30585719": "2026-10-08",
+    "planning|southdublincountycouncil|shd3abp30587819": "2026-10-08",
+    "planning|southdublincountycouncil|shd3abp30660220": "2026-10-08",
+    "planning|southdublincountycouncil|shd3abp30670520": "2026-10-08",
+    "planning|southdublincountycouncil|shd3abp30709220": "2026-10-08",
+    "planning|southdublincountycouncil|shd3abp30722220": "2026-10-08",
+    "planning|southdublincountycouncil|shd3abp30769820": "2026-10-08",
+    "planning|southdublincountycouncil|shd3abp30808820": "2026-10-08",
+    "planning|southdublincountycouncil|shd3abp30839820": "2026-10-08",
+    "planning|southdublincountycouncil|shd3abp30876320": "2026-10-08",
+    "planning|southdublincountycouncil|shd3abp30898520": "2026-10-08",
+    "planning|southdublincountycouncil|shd3abp30965821": "2026-10-08",
+    "planning|southdublincountycouncil|shd3abp30973121": "2026-10-08",
+    "planning|southdublincountycouncil|shd3abp30983621": "2026-10-08",
+    "planning|southdublincountycouncil|shd3abp30991621": "2026-10-08",
+    "planning|southdublincountycouncil|shd3abp31039821": "2026-10-08",
+    "planning|southdublincountycouncil|shd3abp31057021": "2026-10-08",
+    "planning|southdublincountycouncil|shd3abp31057821": "2026-10-08",
+    "planning|southdublincountycouncil|shd3abp31161621": "2026-10-08",
+    "planning|southdublincountycouncil|shd3abp31243022": "2026-10-08",
+    "planning|southdublincountycouncil|shd3abp31250122": "2026-10-08",
+    "planning|southdublincountycouncil|shd3abp31305922": "2026-10-08",
+    "planning|southdublincountycouncil|shd3abp31312922": "2026-10-08",
+    "planning|southdublincountycouncil|shd3abp31314522": "2026-10-08",
+    "planning|southdublincountycouncil|shd3abp31359022": "2026-10-08",
+    "planning|southdublincountycouncil|shd3abp31359122": "2026-10-08",
+    "planning|southdublincountycouncil|shd3abp31470122": "2026-10-08",
+    "planning|southdublincountycouncil|tc06stc0013": "2026-10-08",
+    "planning|tipperarycountycouncil|201383": "2026-10-08",
+    "planning|tipperarycountycouncil|2361027": "2026-10-08",
+    "planning|tipperarycountycouncil|2460316": "2026-10-08",
+    "planning|waterfordcityandcountycouncil|2460334": "2026-10-08",
+    "planning|waterfordcityandcountycouncil|2560097": "2026-10-08",
+    "planning|waterfordcityandcountycouncil|2560471": "2026-10-08",
+    "planning|waterfordcityandcountycouncil|2560638": "2026-10-08",
+    "planning|westmeathcountycouncil|21200": "2026-10-08",
+    "planning|westmeathcountycouncil|22515": "2026-10-08",
+    "planning|westmeathcountycouncil|2360074": "2026-10-08",
+    "planning|westmeathcountycouncil|2360192": "2026-10-08",
+    "planning|westmeathcountycouncil|2360270": "2026-10-08",
+    "planning|westmeathcountycouncil|2360374": "2026-10-08",
+    "planning|westmeathcountycouncil|2460376": "2026-10-08",
+    "planning|westmeathcountycouncil|2560084": "2026-10-08",
+    "planning|westmeathcountycouncil|2560234": "2026-10-08",
+    "planning|westmeathcountycouncil|2560240": "2026-10-08",
+    "planning|westmeathcountycouncil|2660222": "2026-10-08",
+    "planning|wexfordcountycouncil|20160623": "2026-10-08",
+    "planning|wexfordcountycouncil|20161456": "2026-10-08",
+    "planning|wexfordcountycouncil|20170308": "2026-10-08",
+    "planning|wexfordcountycouncil|20170382": "2026-10-08",
+    "planning|wexfordcountycouncil|20221652": "2026-10-08",
+    "planning|wexfordcountycouncil|20221690": "2026-10-08",
+    "planning|wexfordcountycouncil|20241279": "2026-10-08",
+    "planning|wexfordcountycouncil|20241358": "2026-10-08",
+    "planning|wicklowcountycouncil|22837": "2026-10-08",
+    "planning|wicklowcountycouncil|24154": "2026-10-08",
+    "planning|wicklowcountycouncil|24263": "2026-10-08",
+    "planning|wicklowcountycouncil|2460694": "2026-10-08",
+    "planning|wicklowcountycouncil|2560548": "2026-10-08",
+    "planning|wicklowcountycouncil|sh201903": "2026-10-08",
+    "planning|wicklowcountycouncil|sh201904": "2026-10-08",
+    "planning|wicklowcountycouncil|sh202003": "2026-10-08",
+    "planning|wicklowcountycouncil|sh202103": "2026-10-08",
+    "planning|wicklowcountycouncil|sh202104": "2026-10-08"
+  },
+  "records": {
+    "acp|324062": {
+      "applicant": "Glenveagh Homes Ltd.",
+      "applicantEvidence": "Matched ACP case to exact council application reference; applicant named in linked official record",
+      "applicantSource": "http://www.eplanning.ie/ClareCC/AppFileRefDetails/2560393/0",
+      "planningAuthority": "Clare County Council",
+      "planningReference": "2560393",
+      "verifiedAt": "2026-10-08"
+    },
+    "acp|324107": {
+      "applicant": "Glenveagh Homes Ltd.",
+      "applicantEvidence": "Matched ACP case to exact council application reference; applicant named in linked official record",
+      "applicantSource": "http://www.eplanning.ie/KildareCC/AppFileRefDetails/2560877/0",
+      "planningAuthority": "Kildare County Council",
+      "planningReference": "2560877",
+      "verifiedAt": "2026-10-08"
+    },
+    "acp|324204": {
+      "applicant": "Earlsfort Developments Drogheda Limited",
+      "applicantEvidence": "Matched ACP case to exact council application reference; applicant named in linked official record",
+      "applicantSource": "http://www.eplanning.ie/MeathCC/AppFileRefDetails/2560940/0",
+      "planningAuthority": "Meath County Council",
+      "planningReference": "2560940",
+      "verifiedAt": "2026-10-08"
+    },
+    "acp|324205": {
+      "applicant": "Corestone 16 Ltd",
+      "applicantEvidence": "Matched ACP case to exact council application reference; applicant named in linked official record",
+      "applicantSource": "http://www.eplanning.ie/GalwayCC/AppFileRefDetails/2660056/0",
+      "planningAuthority": "Galway County Council",
+      "planningReference": "2660056",
+      "verifiedAt": "2026-10-08"
+    },
+    "acp|324442": {
+      "developer": "Land Development Agency",
+      "developerEvidence": "The project website states that the Land Development Agency intends to apply for this Galway Port LRD; this is promoter evidence, not a verified legal applicant.",
+      "developerSource": "https://galwayportlrd.ie/",
+      "planningAuthority": "Galway City Council",
+      "planningReference": "2560296",
+      "reviewedAt": "2026-10-08"
+    },
+    "planning|cavancountycouncil|2560057": {
+      "applicant": "Shire Development Partnership",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/CavanCC/AppFileRefDetails/2560057/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|cavancountycouncil|2560652": {
+      "applicant": "Lisdaran Developments Limited",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/CavanCC/AppFileRefDetails/2560652/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|cavancountycouncil|2660132": {
+      "applicant": "South of Ireland Crushing Ltd",
+      "applicantEvidence": "Applicant explicitly labelled on the linked planning-authority page",
+      "applicantSource": "http://www.eplanning.ie/CavanCC/AppFileRefDetails/2660132/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|cavancountycouncil|2660144": {
+      "applicant": "L&M McCabe Developments Limited",
+      "applicantEvidence": "Applicant explicitly labelled on the linked planning-authority page",
+      "applicantSource": "http://www.eplanning.ie/CavanCC/AppFileRefDetails/2660144/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|clarecountycouncil|17495": {
+      "applicant": "Abadair Investments Ltd",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/ClareCC/AppFileRefDetails/17495/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|clarecountycouncil|2560108": {
+      "applicant": "KPH Construction",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/ClareCC/AppFileRefDetails/2560108/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|clarecountycouncil|2560393": {
+      "applicant": "Glenveagh Homes Ltd.",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/ClareCC/AppFileRefDetails/2560393/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|clarecountycouncil|2660148": {
+      "applicant": "Michael Pearl",
+      "applicantEvidence": "Applicant explicitly labelled on the linked planning-authority page",
+      "applicantSource": "http://www.eplanning.ie/ClareCC/AppFileRefDetails/2660148/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|clarecountycouncil|2660433": {
+      "applicant": "Walsh & Sheehan OLE Investments Limited",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/ClareCC/AppFileRefDetails/2660433/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|donegalcountycouncil|1851514": {
+      "applicant": "PROPERTY HOLD LTD",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/DonegalCC/AppFileRefDetails/1851514/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|donegalcountycouncil|2350689": {
+      "applicant": "PJ MCDERMOTT",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/DonegalCC/AppFileRefDetails/2350689/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|donegalcountycouncil|2660444": {
+      "applicant": "CILLANOIR DEVELOPMENTS LIMITED",
+      "applicantEvidence": "Applicant explicitly labelled on the linked planning-authority page",
+      "applicantSource": "http://www.eplanning.ie/DonegalCC/AppFileRefDetails/2660444/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|donegalcountycouncil|2661208": {
+      "applicant": "WINDYHALL DEVELOPMENTS LIMITED",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/DonegalCC/AppFileRefDetails/2661208/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|galwaycitycouncil|1825": {
+      "applicant": "Evolution Asset Holdings Ltd.",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/GalwayCity/AppFileRefDetails/1825/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|galwaycitycouncil|2460270": {
+      "applicant": "Cairn Homes Properties Limited",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/GalwayCity/AppFileRefDetails/2460270/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|galwaycitycouncil|2560148": {
+      "applicant": "Lock House Developments Limited",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/GalwayCity/AppFileRefDetails/2560148/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|galwaycitycouncil|2560296": {
+      "developer": "Land Development Agency",
+      "developerEvidence": "Project website identifies the Land Development Agency as the intended applicant/promoter.",
+      "developerSource": "https://galwayportlrd.ie/",
+      "reviewedAt": "2026-10-08"
+    },
+    "planning|galwaycitycouncil|2660282": {
+      "applicant": "Kingston Stables Ltd",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/GalwayCity/AppFileRefDetails/2660282/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|galwaycountycouncil|18129": {
+      "applicant": "Paul Collins",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/GalwayCC/AppFileRefDetails/18129/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|galwaycountycouncil|2460581": {
+      "applicant": "Marshall Yards Development Company Ltd.",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/GalwayCC/AppFileRefDetails/2460581/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|kerrycountycouncil|22533": {
+      "applicant": "SOCIAL HOUSING COMPANY",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/KerryCC/AppFileRefDetails/22533/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|kerrycountycouncil|2360201": {
+      "applicant": "Ned O'Shea & Sons (Rock) ltd.",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/KerryCC/AppFileRefDetails/2360201/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|kerrycountycouncil|23967": {
+      "applicant": "KPH CONSTRUCTION",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/KerryCC/AppFileRefDetails/23967/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|kerrycountycouncil|2460695": {
+      "applicant": "KPH Construction",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/KerryCC/AppFileRefDetails/2460695/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|kerrycountycouncil|2660536": {
+      "applicant": "Dipharma Unlimited Company",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/KerryCC/AppFileRefDetails/2660536/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|kildarecountycouncil|1726": {
+      "applicant": "Michael Dunne",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/KildareCC/AppFileRefDetails/1726/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|kildarecountycouncil|17487": {
+      "applicant": "Greyabbey Investments Limited,",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/KildareCC/AppFileRefDetails/17487/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|kildarecountycouncil|17523": {
+      "applicant": "Greyabbey Investments Limited",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/KildareCC/AppFileRefDetails/17523/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|kildarecountycouncil|17764": {
+      "applicant": "Makros Limited",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/KildareCC/AppFileRefDetails/17764/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|kildarecountycouncil|18300558": {
+      "applicant": "McCourt Investments Ltd.",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/KildareCC/AppFileRefDetails/18300558/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|kildarecountycouncil|18300606": {
+      "applicant": "Ardstone Homes Limited",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/KildareCC/AppFileRefDetails/18300606/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|kildarecountycouncil|18301230": {
+      "applicant": "Cairn Homes Properties Ltd.",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/KildareCC/AppFileRefDetails/18301230/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|kildarecountycouncil|18301371": {
+      "applicant": "Ballymount Properties Limited",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/KildareCC/AppFileRefDetails/18301371/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|kildarecountycouncil|18301818": {
+      "applicant": "Stennock Ltd",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/KildareCC/AppFileRefDetails/18301818/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|kildarecountycouncil|18302141": {
+      "applicant": "Ardstone Homes Ltd",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/KildareCC/AppFileRefDetails/18302141/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|kildarecountycouncil|18303295": {
+      "applicant": "O'Flynn Construction Co. Unlimited Company",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/KildareCC/AppFileRefDetails/18303295/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|kildarecountycouncil|19304632": {
+      "applicant": "Ardstone Homes Limited",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/KildareCC/AppFileRefDetails/19304632/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|kildarecountycouncil|19305007": {
+      "applicant": "Ballymount Properties Ltd.",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/KildareCC/AppFileRefDetails/19305007/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|kildarecountycouncil|19305416": {
+      "applicant": "Resource Five Limited",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/KildareCC/AppFileRefDetails/19305416/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|kildarecountycouncil|19305701": {
+      "applicant": "Cairn Homes Properties Ltd",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/KildareCC/AppFileRefDetails/19305701/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|kildarecountycouncil|20306504": {
+      "applicant": "Ardstone Homes Limited",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/KildareCC/AppFileRefDetails/20306504/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|kildarecountycouncil|20306826": {
+      "applicant": "Rycroft Homes Limited",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/KildareCC/AppFileRefDetails/20306826/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|kildarecountycouncil|20307013": {
+      "applicant": "McCourt Investments Ltd.",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/KildareCC/AppFileRefDetails/20307013/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|kildarecountycouncil|20307100": {
+      "applicant": "Crodaun Development Company",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/KildareCC/AppFileRefDetails/20307100/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|kildarecountycouncil|20307223": {
+      "applicant": "ES Leixlip Greenfields Ltd",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/KildareCC/AppFileRefDetails/20307223/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|kildarecountycouncil|21310865": {
+      "applicant": "Cairn Homes",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/KildareCC/AppFileRefDetails/21310865/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|kildarecountycouncil|21310892": {
+      "applicant": "Debussy Properties Ltd",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/KildareCC/AppFileRefDetails/21310892/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|kildarecountycouncil|22312704": {
+      "applicant": "Briargate Developments Newbridge Ltd",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/KildareCC/AppFileRefDetails/22312704/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|kildarecountycouncil|22813": {
+      "applicant": "William Neville & Sons Construction Unlimited Company,",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/KildareCC/AppFileRefDetails/22813/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|kildarecountycouncil|23416": {
+      "applicant": "Pousterle Limited",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/KildareCC/AppFileRefDetails/23416/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|kildarecountycouncil|23510": {
+      "applicant": "MRP Oakland Limited",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/KildareCC/AppFileRefDetails/23510/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|kildarecountycouncil|23513": {
+      "applicant": "Glenveagh Homes Ltd.,",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/KildareCC/AppFileRefDetails/23513/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|kildarecountycouncil|2360485": {
+      "applicant": "Cairn Homes Properties Limited",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/KildareCC/AppFileRefDetails/2360485/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|kildarecountycouncil|23656": {
+      "applicant": "ESJ Blackparks Ltd.,",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/KildareCC/AppFileRefDetails/23656/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|kildarecountycouncil|23972": {
+      "applicant": "Debussy Properties Ltd.",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/KildareCC/AppFileRefDetails/23972/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|kildarecountycouncil|2460497": {
+      "applicant": "Marshall Yards Development Company Limited",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/KildareCC/AppFileRefDetails/2460497/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|kildarecountycouncil|2461111": {
+      "applicant": "Bernard Moran",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/KildareCC/AppFileRefDetails/2461111/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|kildarecountycouncil|2461327": {
+      "applicant": "Oakway Homes",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/KildareCC/AppFileRefDetails/2461327/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|kildarecountycouncil|2560003": {
+      "applicant": "Dunform Properties Limited",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/KildareCC/AppFileRefDetails/2560003/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|kildarecountycouncil|2561119": {
+      "applicant": "Cozone Ventures Limited",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/KildareCC/AppFileRefDetails/2561119/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|kildarecountycouncil|2660248": {
+      "applicant": "Pousterle Limited",
+      "applicantEvidence": "Applicant explicitly labelled on the linked planning-authority page",
+      "applicantSource": "http://www.eplanning.ie/KildareCC/AppFileRefDetails/2660248/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|kildarecountycouncil|2660469": {
+      "applicant": "Ballymore Development Limited",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/KildareCC/AppFileRefDetails/2660469/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|kildarecountycouncil|2660575": {
+      "applicant": "Maynooth Montane Limited",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/KildareCC/AppFileRefDetails/2660575/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|kilkennycountycouncil|19887": {
+      "applicant": "Daly's Hill Limited",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/KilkennyCC/AppFileRefDetails/19887/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|kilkennycountycouncil|2360037": {
+      "applicant": "Cairn Homes Properties Ltd.",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/KilkennyCC/AppFileRefDetails/2360037/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|kilkennycountycouncil|2660143": {
+      "applicant": "BPBJ LAND DEVELOPERS LTD.",
+      "applicantEvidence": "Applicant explicitly labelled on the linked planning-authority page",
+      "applicantSource": "http://www.eplanning.ie/KilkennyCC/AppFileRefDetails/2660143/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|laoiscountycouncil|1994": {
+      "applicant": "Garryduff Properties Ltd",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/LaoisCC/AppFileRefDetails/1994/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|laoiscountycouncil|20307420": {
+      "applicant": "Boderg Developments Limited",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/LaoisCC/AppFileRefDetails/20307420/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|laoiscountycouncil|21887": {
+      "applicant": "Salzagold Limited",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/LaoisCC/AppFileRefDetails/21887/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|laoiscountycouncil|22182": {
+      "applicant": "Boderg Developments Ltd",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/LaoisCC/AppFileRefDetails/22182/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|laoiscountycouncil|22586": {
+      "applicant": "Boderg Developments Limited",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/LaoisCC/AppFileRefDetails/22586/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|laoiscountycouncil|22706": {
+      "applicant": "Kilkenny Investment Property Holdings Limited",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/LaoisCC/AppFileRefDetails/22706/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|laoiscountycouncil|23155": {
+      "applicant": "Bluemont Developments (Kilminchy) Ltd.",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/LaoisCC/AppFileRefDetails/23155/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|laoiscountycouncil|23160": {
+      "applicant": "Garryduff Properties Limited",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/LaoisCC/AppFileRefDetails/23160/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|laoiscountycouncil|23245": {
+      "applicant": "Cosmo Developments Rockview Ltd",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/LaoisCC/AppFileRefDetails/23245/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|laoiscountycouncil|2341": {
+      "applicant": "Boderg Developments Limited",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/LaoisCC/AppFileRefDetails/2341/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|laoiscountycouncil|2360366": {
+      "applicant": "Marina Quarter Ltd",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/LaoisCC/AppFileRefDetails/2360366/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|laoiscountycouncil|239": {
+      "applicant": "Boderg Developments Ltd",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/LaoisCC/AppFileRefDetails/239/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|laoiscountycouncil|2660112": {
+      "applicant": "Dargan Woods Devco Ltd",
+      "applicantEvidence": "Applicant explicitly labelled on the linked planning-authority page",
+      "applicantSource": "http://www.eplanning.ie/LaoisCC/AppFileRefDetails/2660112/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|laoiscountycouncil|2660255": {
+      "applicant": "Dargan Woods Devco Ltd",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/LaoisCC/AppFileRefDetails/2660255/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|limerickcountycouncil|17470": {
+      "applicant": "Eoin Ryan Statutory Receiver to Certain Specified Assets of Doublejig Limited",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "https://eplanning.ie/LimerickCCC/AppFileRefDetails/17470/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|limerickcountycouncil|2025": {
+      "applicant": "Novelty ICAV",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "https://eplanning.ie/LimerickCCC/AppFileRefDetails/2025/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|limerickcountycouncil|21311588": {
+      "applicant": "SHD - Voyage Properties Ltd",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "https://eplanning.ie/LimerickCCC/AppFileRefDetails/21311588/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|limerickcountycouncil|218000": {
+      "applicant": "Part 8",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "https://eplanning.ie/LimerickCCC/AppFileRefDetails/218000/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|limerickcountycouncil|22313124": {
+      "applicant": "SHD DW Raheen Developments Ltd.",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "https://eplanning.ie/LimerickCCC/AppFileRefDetails/22313124/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|limerickcountycouncil|2360842": {
+      "applicant": "Philip Collins",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "https://eplanning.ie/LimerickCCC/AppFileRefDetails/2360842/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|limerickcountycouncil|2560271": {
+      "applicant": "Sonnervale Ltd.",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "https://eplanning.ie/LimerickCCC/AppFileRefDetails/2560271/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|limerickcountycouncil|2561231": {
+      "applicant": "Marshall Yards Development Company Ltd",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "https://eplanning.ie/LimerickCCC/AppFileRefDetails/2561231/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|limerickcountycouncil|2660241": {
+      "applicant": "Columbia Estates Management (IE) Limited",
+      "applicantEvidence": "Applicant explicitly labelled on the linked planning-authority page",
+      "applicantSource": "https://eplanning.ie/LimerickCCC/AppFileRefDetails/2660241/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|limerickcountycouncil|2660275": {
+      "applicant": "Clonshire Construction Limited",
+      "applicantEvidence": "Applicant explicitly labelled on the linked planning-authority page",
+      "applicantSource": "https://eplanning.ie/LimerickCCC/AppFileRefDetails/2660275/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|limerickcountycouncil|2660396": {
+      "applicant": "Homeland Projects Ltd.",
+      "applicantEvidence": "Applicant explicitly labelled on the linked planning-authority page",
+      "applicantSource": "https://eplanning.ie/LimerickCCC/AppFileRefDetails/2660396/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|limerickcountycouncil|2660675": {
+      "applicant": "GLR Property Ltd.",
+      "applicantEvidence": "Applicant explicitly labelled on the linked planning-authority page",
+      "applicantSource": "https://eplanning.ie/LimerickCCC/AppFileRefDetails/2660675/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|limerickcountycouncil|2660855": {
+      "applicant": "Homely Technologies Ltd.",
+      "applicantEvidence": "Applicant explicitly labelled on the linked planning-authority page",
+      "applicantSource": "https://eplanning.ie/LimerickCCC/AppFileRefDetails/2660855/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|limerickcountycouncil|2660886": {
+      "applicant": "Vales Ventures Limited",
+      "applicantEvidence": "Applicant explicitly labelled on the linked planning-authority page",
+      "applicantSource": "https://eplanning.ie/LimerickCCC/AppFileRefDetails/2660886/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|limerickcountycouncil|2661011": {
+      "applicant": "Homeland Projects Ltd.",
+      "applicantEvidence": "Applicant explicitly labelled on the linked planning-authority page",
+      "applicantSource": "https://eplanning.ie/LimerickCCC/AppFileRefDetails/2661011/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|longfordcountycouncil|2660078": {
+      "applicant": "Martina Smyth",
+      "applicantEvidence": "Applicant explicitly labelled on the linked planning-authority page",
+      "applicantSource": "http://www.eplanning.ie/LongfordCC/AppFileRefDetails/2660078/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|louthcountycouncil|17310": {
+      "applicant": "North Drogheda Development Partnership",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/LouthCC/AppFileRefDetails/17310/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|louthcountycouncil|17387": {
+      "applicant": "J. Murphy Developments Ltd.",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/LouthCC/AppFileRefDetails/17387/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|louthcountycouncil|181024": {
+      "applicant": "McCaughey Homes Ltd.",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/LouthCC/AppFileRefDetails/181024/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|louthcountycouncil|191062": {
+      "applicant": "Sprucetree Park Ltd.",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/LouthCC/AppFileRefDetails/191062/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|louthcountycouncil|19912": {
+      "applicant": "Lagan Homes Drogheda Ltd.",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/LouthCC/AppFileRefDetails/19912/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|louthcountycouncil|20696": {
+      "applicant": "PJ & EJ Doherty",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/LouthCC/AppFileRefDetails/20696/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|louthcountycouncil|22228": {
+      "applicant": "The Ardee Partnership",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/LouthCC/AppFileRefDetails/22228/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|louthcountycouncil|22853": {
+      "applicant": "Dwellings Developments Drogheda Ltd",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/LouthCC/AppFileRefDetails/22853/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|louthcountycouncil|2360330": {
+      "applicant": "Marina Quarter Limited",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/LouthCC/AppFileRefDetails/2360330/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|louthcountycouncil|2360476": {
+      "applicant": "Marina Quarter Ltd",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/LouthCC/AppFileRefDetails/2360476/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|louthcountycouncil|2364": {
+      "applicant": "McParland Bros Builders Limited",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/LouthCC/AppFileRefDetails/2364/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|louthcountycouncil|2560319": {
+      "applicant": "Marina Quarter Ltd.",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/LouthCC/AppFileRefDetails/2560319/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|mayocountycouncil|19755": {
+      "applicant": "NEIL MCGURRIN & CIARA FLATLEY",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/MayoCC/AppFileRefDetails/19755/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|meathcountycouncil|22638": {
+      "applicant": "McGarrell Reilly",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/MeathCC/AppFileRefDetails/22638/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|meathcountycouncil|22924": {
+      "applicant": "Glenveagh Homes Ltd",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/MeathCC/AppFileRefDetails/22924/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|meathcountycouncil|2360181": {
+      "applicant": "Rocture 1 Limited Rocture 1 Limited",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/MeathCC/AppFileRefDetails/2360181/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|meathcountycouncil|2360290": {
+      "applicant": "Marina Quarter Ltd. N/A",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/MeathCC/AppFileRefDetails/2360290/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|meathcountycouncil|23849": {
+      "applicant": "Azra Property Company Limited,",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/MeathCC/AppFileRefDetails/23849/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|meathcountycouncil|23930": {
+      "applicant": "Marina Quarter Limited",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/MeathCC/AppFileRefDetails/23930/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|meathcountycouncil|24201": {
+      "applicant": "Cairn Homes Properties Limited",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/MeathCC/AppFileRefDetails/24201/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|meathcountycouncil|2460415": {
+      "applicant": "Albert Developments Ltd",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/MeathCC/AppFileRefDetails/2460415/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|meathcountycouncil|2460487": {
+      "applicant": "Marshall Yards Development Company Limited",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/MeathCC/AppFileRefDetails/2460487/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|meathcountycouncil|2460625": {
+      "applicant": "Carroll Estates Dunboyne Ltd",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/MeathCC/AppFileRefDetails/2460625/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|meathcountycouncil|2460709": {
+      "applicant": "John Connaughton Limited",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/MeathCC/AppFileRefDetails/2460709/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|meathcountycouncil|2460805": {
+      "applicant": "Marina Quarter Ltd.",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/MeathCC/AppFileRefDetails/2460805/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|meathcountycouncil|2560539": {
+      "applicant": "Michael Smith",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/MeathCC/AppFileRefDetails/2560539/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|meathcountycouncil|2560637": {
+      "applicant": "Beo Properties Limited",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/MeathCC/AppFileRefDetails/2560637/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|meathcountycouncil|2560854": {
+      "applicant": "Azra Property Company Limited",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/MeathCC/AppFileRefDetails/2560854/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|meathcountycouncil|2560940": {
+      "applicant": "Earlsfort Developments Drogheda Limited",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/MeathCC/AppFileRefDetails/2560940/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|meathcountycouncil|2561044": {
+      "applicant": "Arnub Limited",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/MeathCC/AppFileRefDetails/2561044/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|meathcountycouncil|2561104": {
+      "applicant": "Marshall Yards Development Company Limited",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/MeathCC/AppFileRefDetails/2561104/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|meathcountycouncil|2660001": {
+      "applicant": "Marina Quarter Ltd",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/MeathCC/AppFileRefDetails/2660001/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|meathcountycouncil|2660045": {
+      "applicant": "KINGSCROFT DEVELOPMENTS LIMITED",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/MeathCC/AppFileRefDetails/2660045/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|meathcountycouncil|2660256": {
+      "applicant": "Andrews Construction Ltd.",
+      "applicantEvidence": "Applicant explicitly labelled on the linked planning-authority page",
+      "applicantSource": "http://www.eplanning.ie/MeathCC/AppFileRefDetails/2660256/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|meathcountycouncil|2660278": {
+      "applicant": "Leinster Land Developments Limited",
+      "applicantEvidence": "Applicant explicitly labelled on the linked planning-authority page",
+      "applicantSource": "http://www.eplanning.ie/MeathCC/AppFileRefDetails/2660278/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|meathcountycouncil|2660481": {
+      "applicant": "Castlethorn Construction ULC",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/MeathCC/AppFileRefDetails/2660481/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|meathcountycouncil|2660788": {
+      "applicant": "Loughglynn Developments Limited",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/MeathCC/AppFileRefDetails/2660788/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|meathcountycouncil|2661080": {
+      "applicant": "Solkerry Ventures Limited",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/MeathCC/AppFileRefDetails/2661080/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|meathcountycouncil|2697": {
+      "applicant": "Glenveagh Homes Limited",
+      "applicantEvidence": "Applicant explicitly labelled on the linked planning-authority page",
+      "applicantSource": "http://www.eplanning.ie/MeathCC/AppFileRefDetails/2697/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|meathcountycouncil|aa170488": {
+      "applicant": "Cairn Homes Properties Limited",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/MeathCC/AppFileRefDetails/AA170488/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|meathcountycouncil|aa170505": {
+      "applicant": "McGarrell Reilly Homes",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/MeathCC/AppFileRefDetails/AA170505/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|meathcountycouncil|lb170675": {
+      "applicant": "Gallow Ash Limited",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/MeathCC/AppFileRefDetails/LB170675/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|meathcountycouncil|na170747": {
+      "applicant": "Targeted Investments Opportunities ICAV",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/MeathCC/AppFileRefDetails/NA170747/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|meathcountycouncil|ra170268": {
+      "applicant": "Laragh Homes",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/MeathCC/AppFileRefDetails/RA170268/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|meathcountycouncil|sh303433": {
+      "applicant": "Rockture 1 Limited",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/MeathCC/AppFileRefDetails/SH303433/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|meathcountycouncil|sh305196": {
+      "applicant": "Sherwood Homes (Ratoath Ltd.)",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/MeathCC/AppFileRefDetails/SH305196/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|meathcountycouncil|sh305552": {
+      "applicant": "Trailford Ltd",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/MeathCC/AppFileRefDetails/SH305552/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|meathcountycouncil|sh305703": {
+      "applicant": "Shannon Homes Drogheda Ltd",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/MeathCC/AppFileRefDetails/SH305703/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|meathcountycouncil|sh306021": {
+      "applicant": "Coindale Limited",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/MeathCC/AppFileRefDetails/SH306021/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|meathcountycouncil|sh307244": {
+      "applicant": "Loughglynn Development Limited",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/MeathCC/AppFileRefDetails/SH307244/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|meathcountycouncil|sh307507": {
+      "applicant": "Keegan Land Holdings Ltd.",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/MeathCC/AppFileRefDetails/SH307507/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|meathcountycouncil|sh308116": {
+      "applicant": "Shannon Homes Drogheda Limited",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/MeathCC/AppFileRefDetails/SH308116/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|meathcountycouncil|sh308803": {
+      "applicant": "Manley Construction Limited",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/MeathCC/AppFileRefDetails/SH308803/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|meathcountycouncil|sh314548": {
+      "applicant": "Sky Castle Ltd",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/MeathCC/AppFileRefDetails/SH314548/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|meathcountycouncil|sh314550": {
+      "applicant": "Arnub Ltd. & Aspect Homes (ADC) Ltd.",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/MeathCC/AppFileRefDetails/SH314550/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|meathcountycouncil|ta171345": {
+      "applicant": "Urban Synergy Investments Ltd.",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/MeathCC/AppFileRefDetails/TA171345/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|offalycountycouncil|17231": {
+      "applicant": "CODD PROPERTY HOLDINGS LIMITED",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/OffalyCC/AppFileRefDetails/17231/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|offalycountycouncil|2360059": {
+      "applicant": "Collins Lane Housing Development Ltd.",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/OffalyCC/AppFileRefDetails/2360059/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|tipperarycountycouncil|201383": {
+      "applicant": "Pramukh Gogineni",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/TipperaryCC/AppFileRefDetails/201383/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|tipperarycountycouncil|2361027": {
+      "applicant": "JSF Property Holding Ltd",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/TipperaryCC/AppFileRefDetails/2361027/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|tipperarycountycouncil|2460316": {
+      "applicant": "Torca Developments Ltd",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/TipperaryCC/AppFileRefDetails/2460316/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|waterfordcityandcountycouncil|2460334": {
+      "applicant": "Monaco Developments(Tramore) Limited",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/WaterfordCCC/AppFileRefDetails/2460334/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|waterfordcityandcountycouncil|2560097": {
+      "applicant": "S & K Carey LTD",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/WaterfordCCC/AppFileRefDetails/2560097/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|waterfordcityandcountycouncil|2560471": {
+      "applicant": "Cosmo Developments Dungarvan Limited",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/WaterfordCCC/AppFileRefDetails/2560471/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|waterfordcityandcountycouncil|2560638": {
+      "applicant": "Belindere Homes Limited",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/WaterfordCCC/AppFileRefDetails/2560638/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|westmeathcountycouncil|21200": {
+      "applicant": "Shane Johnston of Nooney Reps of Kathleen Gibney Decd",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/WestmeathCC/AppFileRefDetails/21200/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|westmeathcountycouncil|22515": {
+      "applicant": "Glenveagh Homes Ltd",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/WestmeathCC/AppFileRefDetails/22515/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|westmeathcountycouncil|2360074": {
+      "applicant": "Akiyda Limited",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/WestmeathCC/AppFileRefDetails/2360074/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|westmeathcountycouncil|2360192": {
+      "applicant": "Andrews Construction Ltd.",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/WestmeathCC/AppFileRefDetails/2360192/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|westmeathcountycouncil|2360270": {
+      "applicant": "Marina Quarter Ltd",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/WestmeathCC/AppFileRefDetails/2360270/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|westmeathcountycouncil|2360374": {
+      "applicant": "Marina Quarter Limited",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/WestmeathCC/AppFileRefDetails/2360374/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|westmeathcountycouncil|2460376": {
+      "applicant": "Andrews Construction Ltd.",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/WestmeathCC/AppFileRefDetails/2460376/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|westmeathcountycouncil|2560084": {
+      "applicant": "Ballymount Contracting Limited",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/WestmeathCC/AppFileRefDetails/2560084/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|westmeathcountycouncil|2560234": {
+      "applicant": "JH Kinnie Limited",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/WestmeathCC/AppFileRefDetails/2560234/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|westmeathcountycouncil|2560240": {
+      "applicant": "Lynx Developments Limited",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/WestmeathCC/AppFileRefDetails/2560240/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|westmeathcountycouncil|2660134": {
+      "applicant": "Garrycastle Homes Ltd trading as Alanna Homes",
+      "applicantEvidence": "Applicant explicitly labelled on the linked planning-authority page",
+      "applicantSource": "http://www.eplanning.ie/WestmeathCC/AppFileRefDetails/2660134/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|westmeathcountycouncil|2660222": {
+      "applicant": "Glenveagh Homes Ltd",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/WestmeathCC/AppFileRefDetails/2660222/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|wicklowcountycouncil|22837": {
+      "applicant": "Keldrum Limited",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/WicklowCC/AppFileRefDetails/22837/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|wicklowcountycouncil|24154": {
+      "applicant": "Gilkerry Ventures Limited",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/WicklowCC/AppFileRefDetails/24154/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|wicklowcountycouncil|24263": {
+      "applicant": "Tom & Pat Redmond",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/WicklowCC/AppFileRefDetails/24263/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|wicklowcountycouncil|2460694": {
+      "applicant": "Marshall Yards Development Company Limited",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/WicklowCC/AppFileRefDetails/2460694/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|wicklowcountycouncil|2560548": {
+      "applicant": "Cairn Homes Properties Limited",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/WicklowCC/AppFileRefDetails/2560548/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|wicklowcountycouncil|sh201903": {
+      "applicant": "Cairn Homes Properties Ltd",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/WicklowCC/AppFileRefDetails/sh201903/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|wicklowcountycouncil|sh201904": {
+      "applicant": "Cairn Homes Properties Ltd",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/WicklowCC/AppFileRefDetails/sh201904/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|wicklowcountycouncil|sh202003": {
+      "applicant": "Ardstone Homes Ltd",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/WicklowCC/AppFileRefDetails/SH202003/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|wicklowcountycouncil|sh202103": {
+      "applicant": "Shankill Property Investments Ltd.",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/WicklowCC/AppFileRefDetails/SH202103/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|wicklowcountycouncil|sh202104": {
+      "applicant": "Denver Valley Developments Limited",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/WicklowCC/AppFileRefDetails/SH202104/0",
+      "verifiedAt": "2026-10-08"
+    }
+  },
+  "schemaVersion": 1,
+  "stats": {
+    "acpCasesInspected": 30,
+    "candidates": 125,
+    "date": "2026-10-08",
+    "newApplicants": 23,
+    "sourcePagesInspected": 33
+  },
+  "updatedAt": "2026-10-08T00:40:41.327337+00:00"
+}

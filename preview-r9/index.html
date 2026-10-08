@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Radharc Pleanála — a live Irish planning, ACP case and cadastral mapping dashboard powered by public ArcGIS and CKAN services." />
+  <title>Radharc Pleanála</title>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="styles.css?v=20261007-1" />
+  <style>
+    /* Local Leaflet fallback: keeps the basemap intact if the CDN stylesheet is delayed or blocked. */
+    .leaflet-container{overflow:hidden;outline:0;background:#dfe7eb}
+    .leaflet-pane,.leaflet-tile,.leaflet-marker-icon,.leaflet-marker-shadow,
+    .leaflet-tile-container,.leaflet-pane>svg,.leaflet-pane>canvas,
+    .leaflet-zoom-box,.leaflet-image-layer,.leaflet-layer{position:absolute;left:0;top:0}
+    .leaflet-tile{visibility:hidden;user-select:none;-webkit-user-drag:none}
+    .leaflet-tile-loaded{visibility:inherit}
+    .leaflet-top,.leaflet-bottom{position:absolute;z-index:1000;pointer-events:none}
+    .leaflet-top{top:0}.leaflet-right{right:0}.leaflet-bottom{bottom:0}.leaflet-left{left:0}
+    .leaflet-control{position:relative;z-index:800;pointer-events:auto}
+    .patreon-button{display:inline-flex;align-items:center;text-decoration:none;white-space:nowrap}
+    .custom-date-panel{margin-top:12px;padding:12px;background:#f3f6f7;border:1px solid #dce4e8;border-radius:7px}
+    .custom-date-panel h3{font-size:12px;margin:0 0 9px}
+    .date-input-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+    .date-input-grid label{margin:0!important}
+    .date-input-grid input{width:100%;margin-top:5px;border:1px solid #cbd6dc;border-radius:6px;padding:8px;background:#fff;color:#132538}
+    .date-actions{display:flex;gap:7px;margin-top:9px}
+    .date-actions button{flex:1;border:1px solid #b9c7cf;background:#fff;color:#132538;border-radius:6px;padding:8px;font-weight:bold}
+    .date-actions .apply-date-button{background:#102f49;color:#fff;border-color:#102f49}
+    .date-status{min-height:16px;margin:8px 0 0;font-size:11px;color:#687b88;line-height:1.4}
+    .smart-filter-summary{margin:0;padding:10px 14px;background:#eef5f5;border-bottom:1px solid #dce4e8;display:flex;align-items:center;gap:10px}
+    .smart-filter-summary p{margin:0;flex:1;font-size:11px;line-height:1.4;color:#425c6c}
+    .smart-filter-summary button{border:1px solid #b9c7cf;background:#fff;color:#132538;border-radius:6px;padding:7px 9px;font-size:11px;font-weight:bold;white-space:nowrap}
+    .smart-filter-summary button:disabled{opacity:.45;cursor:not-allowed}
+    .chart-filter-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px}
+    .chart-filter-row h2{margin:0!important}
+    .selection-count{background:#eef5f5;border:1px solid #d5e3e4;border-radius:999px;color:#425c6c;font-size:10px;font-weight:bold;padding:5px 8px;white-space:nowrap}
+    .multi-filter-select{display:block;width:100%;min-height:102px;border:1px solid #b8c8d0;border-radius:6px;background:#fff;color:#132538;padding:4px;font-size:11px}
+    .multi-filter-select option{padding:6px 7px;border-radius:4px;margin:1px 0;white-space:normal}
+    .multi-filter-select option:checked{background:#dcecee linear-gradient(0deg,#dcecee,#dcecee);color:#102f49}
+    .filter-help{margin:7px 0 8px;font-size:10px;color:#687b88;line-height:1.4}
+    @media(max-width:700px){.smart-filter-summary{align-items:flex-start;flex-direction:column}.smart-filter-summary button{width:100%}.multi-filter-select{min-height:120px}}
+    .decision-legend{display:flex;flex-wrap:wrap;gap:8px 13px;padding:10px 13px;background:#fff;border-bottom:1px solid #e1e7eb;font-size:12px;color:#425466}
+    .decision-legend span{display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+    .decision-legend i{display:inline-block;width:11px;height:11px;border-radius:50%;border:1px solid #fff;box-shadow:0 0 0 1px #b5c0c8}
+    .cork-coverage{margin:0;padding:7px 13px;background:#f5f8f8;border-bottom:1px solid #e1e7eb;color:#526776;font-size:11px}
+    .export-control{position:relative;display:inline-block}.export-menu{position:absolute;right:0;top:calc(100% + 7px);z-index:2200;width:min(300px,85vw);padding:9px;background:#fff;color:#172b3d;border:1px solid #cdd9df;border-radius:9px;box-shadow:0 10px 32px #132d3b30}.export-menu[hidden]{display:none}.export-menu-title{margin:4px 7px 7px;font-size:12px;font-weight:750}.export-menu button{display:block;width:100%;padding:10px 8px;text-align:left;background:#fff;color:#183246;border:0;border-radius:5px;font-size:12px;cursor:pointer}.export-menu button:hover,.export-menu button:focus-visible{background:#eaf3f4}.export-menu button:disabled{opacity:.5;cursor:wait}.export-status{margin:8px 7px 3px;font-size:11px;line-height:1.45;color:#617686;overflow-wrap:anywhere}@media(max-width:700px){.export-control{position:static}.export-menu{position:fixed;top:80px;right:12px;left:12px;width:auto;max-height:75vh;overflow:auto}}
+    .record-card dl,.planning-map-popup dl{display:grid;gap:8px;margin:10px 0}.record-card dl>div,.planning-map-popup dl>div{min-width:0}.record-card dt,.planning-map-popup dt{font-size:11px;font-weight:700;color:#637586}.record-card dd,.planning-map-popup dd{margin:3px 0 0;overflow-wrap:anywhere;white-space:pre-wrap;line-height:1.4}.record-card a,.planning-map-popup a{color:#126c90;text-decoration:underline;text-underline-offset:2px;overflow-wrap:anywhere}.record-links{margin-top:12px;padding-top:10px;border-top:1px solid #e0e7e9}.record-links strong{display:block;margin-bottom:8px;font-size:12px}.record-links>div{display:flex;flex-wrap:wrap;gap:7px}.record-external-link{display:inline-flex;padding:7px 9px;border:1px solid #bdd5e1;border-radius:6px;background:#edf7fa;font-size:12px;font-weight:700;text-decoration:none!important}.record-link-empty{font-size:12px;color:#687985}.planning-map-popup{max-height:min(45vh,310px);overflow-y:auto;overflow-x:hidden;min-width:0;font-size:12px;line-height:1.4}.planning-map-popup>strong{font-size:14px}.planning-map-popup .record-links{position:sticky;bottom:0;background:#fff;padding-bottom:3px}.leaflet-popup-content{margin:12px 13px}.leaflet-popup-content-wrapper{border-radius:10px}
+    .applicant-intelligence{margin:16px 0;border:1px solid #d7e2e7;border-radius:9px;padding:12px;background:#fff}.applicant-intelligence summary{cursor:pointer;font-size:14px;font-weight:750;color:#203c4d}.applicant-intelligence-label{font-size:10px;font-weight:500;color:#71818d;margin-left:5px}.applicant-intelligence-list{padding-left:22px;margin:8px 0 12px}.applicant-intelligence-list li{padding:8px 0;border-bottom:1px solid #edf1f2;line-height:1.4;font-size:12px}.applicant-intelligence-list li span{display:block}.applicant-intel-count{font-size:11px;color:#627481}.applicant-intelligence-list a{color:#0a668c;text-decoration:underline}
+    .major-search-label{display:block;margin:12px 0 6px;font-size:12px;font-weight:700;color:#314756}.applicant-intelligence input[type=search]{box-sizing:border-box;width:100%;border:1px solid #cbd7dd;border-radius:7px;padding:10px;font-size:13px;background:#fff;color:#182d40}.major-applicant-group{list-style:none;padding:0!important}.applicant-intelligence-list{list-style:none;padding:0;margin:10px 0}.major-group-button{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;padding:10px 2px;text-align:left;border:0;background:transparent;color:#183b4c;cursor:pointer;font-size:13px;font-weight:650}.major-group-button span:last-child{white-space:nowrap;color:#5b7280;font-size:11px;font-weight:500}.major-group-projects{padding:4px 9px 12px;background:#f5f9fa;border-radius:8px}.major-project{padding:10px 0;border-bottom:1px solid #dce6e9;display:grid;gap:4px}.major-project strong{font-size:12px;line-height:1.4}.major-project span{font-size:11px;color:#637482}.major-show-more{padding:10px;width:100%;background:#eef6f8;border:1px solid #c5dce3;border-radius:7px;color:#155f78;font-weight:650;cursor:pointer}
+    .major-view-switch{display:flex;gap:5px;flex-wrap:wrap;margin:12px 0 6px}.major-view-switch button{border:1px solid #cbdbe1;background:#fff;color:#3d5967;border-radius:8px;padding:9px 11px;font-size:12px;font-weight:650;cursor:pointer;flex:1}.major-view-switch button[aria-pressed=true]{background:#e6f2f5;color:#075873;border-color:#73b2c4}.major-project-type{font-weight:700;color:#23657a!important}.major-record-link{font-weight:700;color:#0a6788;text-decoration:underline;text-underline-offset:2px}.major-duplicate{color:#945b11!important;font-weight:700}.major-duplicate a{color:#945b11}.major-project-address{font-style:italic}.major-group-button:focus-visible,.major-view-switch button:focus-visible,.major-record-link:focus-visible{outline:3px solid #277ac7;outline-offset:2px}
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <p class="eyebrow">LIVE PUBLIC DATA</p>
+      <h1>Radharc Pleanála</h1>
+      <p class="subtitle">Residential planning applications and housing development intelligence in one lighter browser-based view.</p>
+    </div>
+    <div class="topbar-actions">
+      <a class="secondary-button patreon-button" href="https://www.patreon.com/16538169/join" target="_blank" rel="noopener noreferrer" aria-label="Support Radharc Pleanála on Patreon">Support on Patreon</a>
+      <span id="connectionStatus" class="status-pill">Connecting…</span>
+      <button id="refreshButton" class="secondary-button" type="button">Refresh data</button>
+      <div class="export-control">
+        <button id="exportViewButton" class="secondary-button" type="button" aria-expanded="false" aria-controls="exportMenu">Export view ▾</button>
+        <div id="exportMenu" class="export-menu" hidden>
+          <p class="export-menu-title">Export current map view</p>
+          <button type="button" data-export="png">PNG · map image</button>
+          <button type="button" data-export="jpeg">JPEG · map image</button>
+          <button type="button" data-export="xlsx">Excel · spatial records</button>
+          <button type="button" data-export="csv">CSV · spatial records</button>
+          <button type="button" data-export="shp">Shapefile · ZIP (WGS84)</button>
+          <button type="button" data-export="geojson">JSON · GeoJSON (WGS84)</button>
+          <p id="exportStatus" class="export-status" role="status">Uses current map extent, filters and visible layers.</p>
+        </div>
+      </div>
+      <button id="shareViewButton" class="secondary-button" type="button">Share view</button>
+      <button id="resetDashboardButton" class="secondary-button" type="button">Reset dashboard</button>
+    </div>
+  </header>
+
+  <main class="app-shell residential-shell">
+    <aside class="sidebar left-panel light-panel" aria-label="Residential planning search">
+      <section class="panel-section search-primary">
+        <p class="eyebrow panel-eyebrow">RESIDENTIAL PLANNING</p>
+        <h2>Find residential schemes</h2>
+        <form id="searchForm" class="search-form">
+          <div class="search-row">
+            <input id="searchInput" name="search" type="search" placeholder="Reference, address or description" autocomplete="off" />
+            <button type="submit">Search</button>
+          </div>
+        </form>
+        <div id="searchStatus" class="muted small" aria-live="polite">Search live residential planning records.</div>
+        <div id="searchResults" class="result-list"></div>
+      </section>
+
+      <details class="light-filter">
+        <summary>Filters</summary>
+        <section class="panel-section compact-section">
+          <label for="residentialType">Housing type</label>
+          <select id="residentialType">
+            <option value="all" selected>All residential</option>
+            <option value="oneoff">One-off housing · 1 unit</option>
+            <option value="lrd">Large Residential Development (LRD)</option>
+            <option value="shd">Strategic Housing Development (SHD)</option>
+            <option value="sdz">Strategic Development Zone (SDZ)</option>
+          </select>
+          <label for="authorityExplorer" style="margin-top:12px">County / local authority</label>
+          <select id="authorityExplorer"><option value="">All authorities</option></select>
+          <label style="margin-top:12px">Date range</label>
+          <div class="date-input-grid">
+            <label for="customStartDate">From<input id="customStartDate" type="date"></label>
+            <label for="customEndDate">To<input id="customEndDate" type="date"></label>
+          </div>
+          <div class="date-actions">
+            <button id="applyCustomDates" class="apply-date-button" type="button">Apply dates</button>
+            <button id="clearCustomDates" type="button">Clear</button>
+          </div>
+          <p id="customDateStatus" class="date-status">All available dates</p>
+          <select id="dateRange" hidden><option value="all" selected>All available records</option><option value="custom">Custom calendar range</option></select>
+        </section>
+      </details>
+
+      <section class="panel-section selected-light">
+        <h2>Selected scheme</h2>
+        <div id="selectedRecord" class="empty-state">Select a residential planning record on the map.</div>
+        <button id="copyBriefButton" class="secondary-button full-width" type="button" disabled>Copy record brief</button>
+      </section>
+
+      <div id="layerToggles" class="layer-toggle-list hidden-layer-controls" aria-hidden="true"></div>
+    </aside>
+
+    <section class="map-column">
+      <div id="decisionLegend" class="decision-legend" aria-label="Application decision colour key">
+ <span><i style="background:#d74646"></i>Refused</span>
+ <span><i style="background:#ec9b24"></i>Pending</span>
+ <span><i style="background:#2f9b65"></i>Approved</span>
+ <span><i style="background:#277ac7"></i>New</span>
+ <span><i style="background:#8b98a7"></i>Other / unclear</span>
+ </div><p id="corkCoverage" class="cork-coverage" aria-live="polite">Checking Cork City direct planning records…</p>
+      <div id="map" role="application" aria-label="Interactive map of Irish residential planning data"></div>
+      <div class="map-help">Residential planning · move or zoom the map to refresh.</div>
+    </section>
+
+    <aside class="sidebar right-panel light-dashboard" aria-label="Residential dashboard">
+      <section class="panel-section dashboard-heading">
+        <div><p class="eyebrow panel-eyebrow">VISIBLE MAP AREA</p><h2>Residential overview</h2></div>
+        <span id="dashboardUpdated" class="muted small">Starting live checks…</span>
+      </section>
+      <p id="sourceFreshness" class="source-freshness" aria-live="polite">Connecting to live planning and ACP services…</p>
+      <div id="activeFilterSummary" class="residential-filter-note">All residential · All authorities · All dates</div>
+      <button id="clearSmartFilters" type="button" hidden disabled>Clear filters</button>
+
+      <section class="metric-grid residential-metrics" aria-label="Residential headline metrics">
+        <article class="metric-card"><span>Residential applications</span><strong id="planningCount">—</strong><small>Matching the selected housing type</small></article>
+        <article class="metric-card"><span>Residential units</span><strong id="unitCount">—</strong><small id="unitCoverage">Waiting for live data</small></article>
+        <article class="metric-card"><span>Floor area (m²)</span><strong id="floorAreaCount">—</strong><small id="floorCoverage">Rounded to nearest m²</small></article>
+        <article class="metric-card"><span>Site area (ha)</span><strong id="siteAreaCount">—</strong><small id="siteCoverage">Rounded to nearest hectare</small></article>
+      </section>
+
+      <div class="compat-hidden" aria-hidden="true">
+        <strong id="acpCount">—</strong><strong id="parcelCount">—</strong>
+        <select id="decisionFilter" multiple></select><span id="decisionSelection"></span>
+        <select id="authorityFilter" multiple></select><span id="authoritySelection"></span>
+        <select id="categoryFilter" multiple></select><span id="categorySelection"></span>
+        <canvas id="planningDecisionChart"></canvas><div id="planningDecisionFallback"></div>
+        <canvas id="authorityChart"></canvas><div id="authorityFallback"></div>
+        <canvas id="acpCategoryChart"></canvas><div id="acpCategoryFallback"></div>
+        <div id="aiInsight"></div>
+      </div>
+
+      <details class="applicant-intelligence">
+        <summary>Major scheme applicants <span class="applicant-intelligence-label">Over 100 homes</span></summary>
+        <p id="applicantIntelligenceStats" class="data-quality-note">Loading national scheme catalogue…</p>
+        <p id="applicantIntelligenceUpdated" class="data-quality-note"></p>
+        <div class="major-view-switch" role="group" aria-label="Group major schemes by">
+          <button type="button" data-major-mode="applicants" aria-pressed="true">Applicants</button>
+          <button type="button" data-major-mode="promoters" aria-pressed="false">Developers</button>
+          <button type="button" data-major-mode="sites" aria-pressed="false">Sites</button>
+        </div>
+        <label class="major-search-label" for="applicantIntelligenceSearch">Find an applicant, developer or project</label>
+        <input id="applicantIntelligenceSearch" type="search" placeholder="Name, council, site, type or reference" autocomplete="off" />
+        <p id="majorGroupCount" class="data-quality-note"></p>
+        <ol id="applicantIntelligence" class="applicant-intelligence-list" aria-live="polite"><li>Loading applicant groups…</li></ol>
+        <button id="applicantIntelligenceMore" class="major-show-more" type="button" hidden>Show more applicants</button>
+        <p class="data-quality-note">Select a group to expand its projects. Click a reference to open the official council application or ACP case. Developer/promoter groupings are shown separately from legal applicants. Exact council/ACP cross-references are flagged; other possible overlaps may remain. Projects with no verifiable applicant are retained.</p>
+      </details>
+      <p id="acpAvailability" class="data-quality-note" aria-live="polite">Checking ACP cases…</p>
+      <p class="data-quality-note">Headline figures are calculated from the live planning feed for the visible map area. Records without reported residential-unit data are excluded from the unit total.</p>
+    </aside>
+  </main>
+
+  <noscript>This tool requires JavaScript to query the live public ArcGIS and CKAN services.</noscript>
+
+  <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js" onerror="this.onerror=null;this.src='https://unpkg.com/leaflet@1.9.4/dist/leaflet.js'"></script>
+  <script src="https://cdn.jsdelivr.net/npm/esri-leaflet@3.0.15/dist/esri-leaflet.js" onerror="this.onerror=null;this.src='https://unpkg.com/esri-leaflet@3.0.15/dist/esri-leaflet.js'"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/proj4@2.11.0/dist/proj4.js" onerror="this.onerror=null;this.src='https://unpkg.com/proj4@2.11.0/dist/proj4.js'"></script>
+  <script src="app.js?v=20261008-major2"></script>
+  <script src="export-view.js?v=20261008-major2"></script>
+</body>
+</html>
