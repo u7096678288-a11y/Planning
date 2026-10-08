@@ -15,7 +15,7 @@ let applicantEnrichment={records:{}};
 let lastSelectedFeature=null;
 const cleanKey=value=>String(value||"").toLowerCase().replace(/[^a-z0-9]/g,"");
 function enrichmentFor(p={},kind="planning"){
- const ref=kind==="acp"?String(p.ABPCASEID||"").match(/\\d{6}/)?.[0]:cleanKey(p.ApplicationNumber);
+ const ref=kind==="acp"?String(p.ABPCASEID||"").match(/\d{6}/)?.[0]:cleanKey(p.ApplicationNumber);
  const key=kind==="acp"?"acp|"+(ref||""):"planning|"+cleanKey(p.PlanningAuthority)+"|"+(ref||"");
  return applicantEnrichment.records?.[key]||null;
 }
