@@ -155,11 +155,14 @@ def scan_cork(found):
     if count == 0:
         # Stream the council's published CSV when the CKAN SQL API is unavailable.
         try:
+            rows_scanned = 0
+            highest_reported = 0
             url = "https://data.corkcity.ie/datastore/dump/" + resource
             req = Request(url, headers={"User-Agent": base.UA, "Accept": "text/csv"})
             with urlopen(req, timeout=35) as response:
                 reader = csv.DictReader(io.TextIOWrapper(response, encoding="utf-8-sig", errors="replace"))
                 for row in reader:
+                    rows_scanned += 1
                     ref = clean(row.get("ApplicationNumber"), 70)
                     if not ref:
                         continue
@@ -167,6 +170,11 @@ def scan_cork(found):
                         units = int(float(row.get("NumResidentialUnits") or 0))
                     except (ValueError, TypeError):
                         continue
+                    highest_reported = max(highest_reported, units)
+                    units_from_description = 0
+                    if units <= 100:
+                        units_from_description = logic.extract_units(row.get("DevelopmentDescription", ""))
+                        units = units_from_description
                     if units <= 100:
                         continue
                     identifier = key("Cork City Council", ref)
@@ -175,6 +183,7 @@ def scan_cork(found):
                     found[identifier] = {
                         "key": identifier, "reference": ref, "authority": "Cork City Council",
                         "kind": "planning", "units": units,
+                        "unitsSource": "Cork City description" if units_from_description else "Cork City Council open data",
                         "address": clean(row.get("DevelopmentAddress"), 180),
                         "description": clean(row.get("DevelopmentDescription"), 700),
                         "decision": clean(row.get("Decision"), 90),
@@ -185,7 +194,7 @@ def scan_cork(found):
                         "source": clean(row.get("LinkAppDetails"), 400),
                     }
                     count += 1
-            print("Cork CSV fallback indexed:", count)
+            print("Cork CSV fallback indexed:", count, "rows scanned:", rows_scanned, "max reported units:", highest_reported)
         except Exception as error:
             print("Cork CSV fallback unavailable:", str(error)[:180])
     return count
