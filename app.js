@@ -379,39 +379,122 @@ function draw(id,features,label,value,type){
   });
 }
 
+function applicantName(p){
+ const direct=[p.ApplicantName,p.APPLICANT_NAME,p.Applicant,p.APPLICANT,p.ApplicantFullName,p.APPLICANTNAME,p.Applicant_Name].find(v=>v!=null&&String(v).trim());
+ if(direct)return String(direct).trim();
+ return [p.ApplicantForename,p.ApplicantSurname].filter(v=>v!=null&&String(v).trim()).join(" ").trim();
+}
+function validWebAddress(raw){
+ if(raw==null)return null;
+ let value=String(raw).trim().replace(/&amp;/gi,"&");
+ if(!value)return null;
+ value=value.replace(/^[<"'(\s]+/,"").replace(/[>"')\s.,;!?]+$/,"");
+ if(/^www\./i.test(value))value="https://"+value;
+ if(!/^https?:\/\//i.test(value))return null;
+ try{
+  const url=new URL(value);
+  if(!["http:","https:"].includes(url.protocol)||!url.hostname.includes(".")||url.username||url.password)return null;
+  return url.href;
+ }catch{return null;}
+}
+function recordWebLinks(p,kind){
+ const found=new Map();
+ const add=(value,label)=>{
+  const url=validWebAddress(value);
+  if(!url||found.has(url))return;
+  found.set(url,{url,label});
+ };
+ const sourceFields=kind==="acp"?
+  [["LINKABPWEB","Open official ACP case"]]:
+  [["LinkAppDetails","Open planning application"]];
+ for(const [key,label] of sourceFields)add(p[key],label);
+ const explicit=[
+  ["Website","Project website"],["ProjectWebsite","Project website"],
+  ["DevelopmentWebsite","Development website"],["LRDWebsite","LRD website"],
+  ["ApplicationWebsite","Application website"],["WebLink","Website"],
+  ["MORE_INFORMATION","Application information"],["More_Information","Application information"],
+  ["URL","Website"],["url","Website"],["WEBSITE","Website"]
+ ];
+ for(const [key,label] of explicit)add(p[key],label);
+ const desc=String(p.DevelopmentDescription||p.DEVDESC||p.Description||"");
+ const regex=/(?:https?:\/\/|www\.)[^\s<>"'()[\]]+/gi;
+ for(const match of desc.matchAll(regex))add(match[0],"Website mentioned in description");
+ const href=/(?:href\s*=\s*["'])(https?:\/\/[^"']+)(?:["'])/gi;
+ for(const match of desc.matchAll(href))add(match[1],"Website mentioned in description");
+ if(kind==="acp"&&!found.size&&/^\d{6}$/.test(String(p.ABPCASEID||"").trim()))
+  add("https://www.pleanala.ie/en-ie/case/"+String(p.ABPCASEID).trim(),"Open official ACP case");
+ return [...found.values()];
+}
+function clickableText(value){
+ const text=String(value??"");
+ const re=/(?:https?:\/\/|www\.)[^\s<>"'()[\]]+/gi;
+ let html="",last=0;
+ for(const match of text.matchAll(re)){
+  const full=match[0],url=validWebAddress(full);
+  html+=esc(text.slice(last,match.index));
+  if(url){
+   const display=full.replace(/[.,;!?]+$/,"");
+   html+='<a href="'+esc(url)+'" target="_blank" rel="noopener noreferrer">'+esc(display)+'</a>';
+   html+=esc(full.slice(display.length));
+  }else html+=esc(full);
+  last=match.index+full.length;
+ }
+ return html+esc(text.slice(last));
+}
+function recordLinksMarkup(links){
+ if(!links.length)return '<span class="record-link-empty">No website link supplied in this record</span>';
+ return links.map(({url,label})=>'<a class="record-external-link" href="'+esc(url)+'" target="_blank" rel="noopener noreferrer">'+esc(label)+' ↗</a>').join("");
+}
+function recordRowsMarkup(fields){
+ return fields.filter(x=>x[1]!=null&&x[1]!=="").map(([label,value])=>
+  '<div><dt>'+esc(label)+'</dt><dd>'+clickableText(value)+'</dd></div>').join("");
+}
 function select(k,f,ll){
-  let p=f.properties||{};
-  let planning=S[k].type==="planning";
-  let title=planning?(p.ApplicationNumber||"Planning application"):
-    (S[k].type==="acp"?(p.ABPCASEID||"ACP case"):(p.SP_ID||"Freehold parcel"));
-  let fields=planning?[
-    ["Address",p.DevelopmentAddress],
-    ["Description",p.DevelopmentDescription],
-    ["Authority",p.PlanningAuthority],
-    ["Decision flag",FLAG_LABELS[decisionFlag(p,planning?"planning":"acp")]],
-    ["Decision",p.Decision],
-    ["Received",date(p.ReceivedDate)],
-    ["Residential units",p.NumResidentialUnits],
-    ["Floor area",p.FloorArea],
-    ["Site area",p.AreaofSite]
-  ]:S[k].type==="acp"?[
-    ["Address",p.DEVADDRESS],
-    ["Description",p.DEVDESC],
-    ["Authority",p.PLANINGATY],
-    ["Decision flag",FLAG_LABELS[decisionFlag(p,"acp")]],
-    ["Decision",p.DECISION],
-    ["Lodged",date(p.LODGEDON)],
-    ["Category",p.CATEGORY]
-  ]:[
-    ["Parcel ID",p.SP_ID],
-    ["Area",p.SHAPE_Area]
-  ];
-  selected={title,fields};
-  let html=`<strong>${esc(title)}</strong><dl>${fields.filter(x=>x[1]!=null&&x[1]!=="").map(x=>`<div><dt>${esc(x[0])}</dt><dd>${esc(x[1])}</dd></div>`).join("")}</dl>`;
-  $("#selectedRecord").className="record-card";
-  $("#selectedRecord").innerHTML=html;
-  $("#copyBriefButton").disabled=false;
-  L.popup().setLatLng(ll).setContent(`<b>${esc(title)}</b><br>${esc(fields[0]?.[1]||"")}`).openOn(map);
+ const p=f.properties||{},kind=S[k].type;
+ const planning=kind==="planning",acp=kind==="acp";
+ const title=planning?(p.ApplicationNumber||"Planning application"):
+  (acp?(p.ABPCASEID||"ACP case"):(p.SP_ID||"Freehold parcel"));
+ const applicant=applicantName(p);
+ const description=planning?p.DevelopmentDescription:acp?p.DEVDESC:"";
+ const links=recordWebLinks(p,kind);
+ const fields=planning?[
+  ["Applicant",applicant||"Not provided in source"],
+  ["Address",p.DevelopmentAddress],
+  ["Description",description],
+  ["Authority",p.PlanningAuthority],
+  ["Decision flag",FLAG_LABELS[decisionFlag(p,"planning")]],
+  ["Decision",p.Decision],
+  ["Received",date(p.ReceivedDate)],
+  ["Residential units",p.NumResidentialUnits],
+  ["Floor area (m²)",p.FloorArea],
+  ["Site area (ha)",p.AreaofSite]
+ ]:acp?[
+  ["Applicant",applicant||"Not provided in ACP dataset"],
+  ["Address",p.DEVADDRESS],
+  ["Description",description],
+  ["Authority",p.PLANINGATY],
+  ["Decision flag",FLAG_LABELS[decisionFlag(p,"acp")]],
+  ["Decision",p.DECISION],
+  ["Lodged",date(p.LODGEDON)],
+  ["Category",p.CATEGORY]
+ ]:[
+  ["Parcel ID",p.SP_ID],["Area",p.SHAPE_Area]
+ ];
+ selected={title,fields:[...fields,...links.map(l=>[l.label,l.url])]};
+ const linksBlock='<section class="record-links"><strong>Application & website links</strong><div>'+recordLinksMarkup(links)+'</div></section>';
+ const card='<strong>'+esc(title)+'</strong><dl>'+recordRowsMarkup(fields)+'</dl>'+linksBlock;
+ $("#selectedRecord").className="record-card";
+ $("#selectedRecord").innerHTML=card;
+ $("#copyBriefButton").disabled=false;
+ const popupFields=[
+  ["Applicant",applicant||"Not provided in source"],
+  ["Decision",planning?p.Decision:acp?p.DECISION:""],
+  ["Address",planning?p.DevelopmentAddress:acp?p.DEVADDRESS:""],
+  ["Description",description?String(description).slice(0,480)+(String(description).length>480?"…":""):""]
+ ];
+ const popup='<div class="planning-map-popup"><strong>'+esc(title)+'</strong><dl>'+
+  recordRowsMarkup(popupFields)+'</dl>'+linksBlock+'</div>';
+ L.popup({maxWidth:340,minWidth:220,autoPanPadding:[16,16]}).setLatLng(ll).setContent(popup).openOn(map);
 }
 
 function date(v){
