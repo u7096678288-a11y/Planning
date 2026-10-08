@@ -1,3 +1,7 @@
+async function fetchCatalogueFile(name){
+ try{const r=await fetch("../preview-r10/data/"+name+"?ts="+Date.now(),{cache:"no-store"});if(r.ok)return r;}catch(error){console.warn("Latest catalogue temporarily unavailable",error);}
+ return fetch("data/"+name+"?ts="+Date.now(),{cache:"no-store"});
+}
 "use strict";
 const S={
   planningPoints:{label:"Planning application points",url:"https://services.arcgis.com/NzlPQPKn5QF9v2US/arcgis/rest/services/IrishPlanningApplications/FeatureServer/0",color:"#1677a5",on:true,type:"planning"},
@@ -123,12 +127,12 @@ function renderApplicantIntelligence(){
 }
 async function loadMajorSchemes(){
  try{
-  const response=await fetch("data/major-schemes.json?ts="+Date.now(),{cache:"no-store"});
+  const response=await fetchCatalogueFile("major-schemes.json");
   if(!response.ok)throw Error("HTTP "+response.status);
   const data=await response.json();
   if(data?.schemaVersion!==1||!Array.isArray(data.projects))throw Error("Invalid catalogue");
   try{
-   const evidenceResponse=await fetch("data/verified-major-cases.json?ts="+Date.now(),{cache:"no-store"});
+   const evidenceResponse=await fetchCatalogueFile("verified-major-cases.json");
    if(evidenceResponse.ok){
     const verified=await evidenceResponse.json();
     if(verified?.schemaVersion===1&&verified.cases){
@@ -178,7 +182,7 @@ async function loadMajorSchemes(){
 
 async function loadApplicantEnrichment(){
  try{
-  const response=await fetch("data/applicant-enrichment.json?ts="+Date.now(),{cache:"no-store"});
+  const response=await fetchCatalogueFile("applicant-enrichment.json");
   if(!response.ok)throw Error("HTTP "+response.status);
   const data=await response.json();
   if(data?.schemaVersion!==1||!data.records||typeof data.records!=="object")throw Error("Invalid enrichment data");
