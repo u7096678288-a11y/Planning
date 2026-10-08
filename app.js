@@ -54,7 +54,7 @@ function groupProjects(){
 function majorProjectMatches(p,term){
  if(!term)return true;
  return [p.siteName,p.address,p.description,p.reference,p.planningReference,p.authority,
-         p.applicant,p.developer,p.brand,p.type,p.category,p.caseId].some(v=>String(v||"").toLowerCase().includes(term));
+         p.applicant,p.developer,p.brand,p.type,p.category,p.caseId].some(v=>String(v||"").toLowerCase().includes(term)||cleanKey(v).includes(cleanKey(term)));
 }
 function majorProjectMarkup(p){
  const source=validWebAddress(p.source);
@@ -92,7 +92,7 @@ function renderApplicantIntelligence(){
  if(updated)updated.textContent=majorSchemes.updatedAt?"Catalogue updated "+new Date(majorSchemes.updatedAt).toLocaleDateString("en-IE"):"";
  const term=($("#applicantIntelligenceSearch")?.value||"").toLowerCase().trim();
  const filtered=allGroups.map(g=>{
-  const matchesName=g.name.toLowerCase().includes(term);
+  const matchesName=g.name.toLowerCase().includes(term)||cleanKey(g.name).includes(cleanKey(term));
   const matches=term&&!matchesName?g.projects.filter(p=>majorProjectMatches(p,term)):g.projects;
   return {...g,projects:matches};
  }).filter(g=>g.projects.length);
