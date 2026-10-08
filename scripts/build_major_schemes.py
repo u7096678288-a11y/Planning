@@ -227,6 +227,9 @@ def classify_and_match(found, evidence):
         item["type"] = logic.scheme_type(desc, item.get("reference", ""), item.get("category", ""))
         item["siteName"] = logic.site_name(item.get("address", ""), desc)
         item["source"] = logic.project_url(item.get("source", ""), item.get("kind"), item.get("caseId"))
+        if not item["source"] and item.get("authority") == "Dublin City Council":
+            item["source"] = "https://planning.agileapplications.ie/dublincity"
+            item["sourceLinkType"] = "Council search — enter reference"
         item["unitsSource"] = item.get("unitsSource") or "National planning feed"
     for item in found.values():
         if item.get("kind") != "acp" or item.get("possibleDuplicateOf"):
