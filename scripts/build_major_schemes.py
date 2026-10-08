@@ -87,7 +87,7 @@ def scan(previous):
                 "authority": authority,
                 "units": units,
                 "address": clean(row.get("DevelopmentAddress"), 180),
-                "description": clean(row.get("DevelopmentDescription"), 200),
+                "description": clean(row.get("DevelopmentDescription"), 700),
                 "decision": clean(row.get("Decision"), 90),
                 "received": date_value(row.get("ReceivedDate")),
                 "applicant": native or previous_record.get("applicant", ""),
@@ -281,14 +281,40 @@ def main():
                 pass
         checked[item["key"]] = base.TODAY
         visited += 1
-        name = base.official_name(item["source"])
+        name = ""
+        applicant_source = item["source"]
+        evidence_text = "Explicit applicant name on linked official council application"
+        if item.get("kind") == "acp":
+            try:
+                markup = base.get(item["source"])
+                name = base.extract_applicant(markup)
+                text = base.TextToPlain(markup)
+                match = re.search(r"Planning Authority Case Reference:\s*([A-Za-z0-9/.-]+)", text, re.I)
+                if match and item.get("authority"):
+                    council_ref = match.group(1)
+                    item["planningReference"] = council_ref
+                    target = key(item["authority"], council_ref)
+                    if target in found and found[target].get("kind") == "planning":
+                        item["possibleDuplicateOf"] = target
+                        item["duplicateReason"] = "Exact planning authority and reference from official ACP case"
+                        council = found[target]
+                        if not name and council.get("applicant"):
+                            name = council["applicant"]
+                            applicant_source = council.get("source") or applicant_source
+                            evidence_text = "ACP case matched to the exact council application reference"
+            except Exception as error:
+                print("ACP case inspection skipped:", item.get("caseId"), str(error)[:110])
+        else:
+            name = base.official_name(item["source"])
         if not name:
             continue
         item["applicant"] = name
-        item["applicantSourceType"] = "Official council application"
+        item["applicantSourceType"] = "Official linked planning source"
         records.setdefault(item["key"], {}).update({
-            "applicant": name, "applicantSource": item["source"],
-            "applicantEvidence": "Explicit applicant name on linked official council application",
+            "applicant": name, "applicantSource": applicant_source,
+            "applicantEvidence": evidence_text,
+            "planningReference": item.get("planningReference", ""),
+            "planningAuthority": item.get("authority", ""),
             "verifiedAt": base.TODAY,
         })
         added += 1
