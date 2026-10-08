@@ -154,7 +154,7 @@ def main():
         planning = query(PLANNING, where,
             "PlanningAuthority,ApplicationNumber,ApplicantForename,ApplicantSurname,LinkAppDetails,NumResidentialUnits",
             450, "ReceivedDate DESC", cursor.get("planning", 0))
-        cursor["planning"] = 0 if len(planning) < 450 or cursor.get("planning", 0) >= 4500 else cursor.get("planning", 0) + 450
+        # Advance only after every candidate in this batch has been checked.
     except Exception as error:
         print("Planning feed unavailable:", error)
         planning = []
@@ -177,12 +177,14 @@ def main():
                 "verifiedAt": TODAY})
             stats["newApplicants"] += 1
             print("Verified", key, "from", url[:85])
+    if planning and all(records.get(key_for(r.get("PlanningAuthority"), r.get("ApplicationNumber")), {}).get("applicant") or check_recent(checked, key_for(r.get("PlanningAuthority"), r.get("ApplicationNumber"))) or not r.get("LinkAppDetails") for r in planning):
+        cursor["planning"] = 0 if len(planning) < 450 or cursor.get("planning", 0) >= 4500 else cursor.get("planning", 0) + 450
     # ACP LRD/SHD cases are joined to the originating local authority application
     # by exact authority + planning reference, never by site description alone.
     try:
         acp = query(ACP, "(CATEGORY LIKE '%LRD%' OR CATEGORY LIKE '%SHD%' OR CATEGORY LIKE '%Strategic Housing%')",
                     "ABPCASEID,LINKABPWEB,PLANINGATY,CATEGORY", 160, "LODGEDON DESC", cursor.get("acp", 0))
-        cursor["acp"] = 0 if len(acp) < 160 or cursor.get("acp", 0) >= 3200 else cursor.get("acp", 0) + 160
+        # Advance only after this batch has been examined.
     except Exception as error:
         print("ACP feed unavailable:", error)
         acp = []
@@ -232,6 +234,8 @@ def main():
                 stats["newApplicants"] += 1
         except Exception as error:
             print("ACP match skipped:", caseid, str(error)[:100])
+    if acp and all(not re.search(r"\d{6}", str(r.get("ABPCASEID") or "")) or check_recent(checked, "acp|" + re.search(r"\d{6}", str(r.get("ABPCASEID") or "")).group()) or records.get("acp|" + re.search(r"\d{6}", str(r.get("ABPCASEID") or "")).group(), {}).get("applicant") for r in acp):
+        cursor["acp"] = 0 if len(acp) < 160 or cursor.get("acp", 0) >= 3200 else cursor.get("acp", 0) + 160
     stats["sourcePagesInspected"] = site_visits
     stats["acpCasesInspected"] = acp_checks
     data["updatedAt"] = dt.datetime.now(dt.timezone.utc).isoformat()
