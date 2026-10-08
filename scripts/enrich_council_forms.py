@@ -75,7 +75,7 @@ def valid_document_url(href,parent):
         # Do not fetch documents from a different host via arbitrary page links.
         host=(parsed.hostname or "").lower()
         original=(urlsplit(parent).hostname or "").lower()
-        if host!=original:
+        if host.removeprefix("www.")!=original.removeprefix("www."):
             return ""
         return u
     except Exception:
