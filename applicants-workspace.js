@@ -184,13 +184,13 @@ async function importJson(file){
 async function init(){
  edits=loadEdits();
  try{
-  let r=await fetch("data/major-schemes.json?ts="+Date.now(),{cache:"no-store"});
+  let r=await fetch("../preview-r9/data/major-schemes.json?ts="+Date.now(),{cache:"no-store"});
   if(!r.ok)throw Error("HTTP "+r.status);
   let d=await r.json();
   if(!Array.isArray(d.projects)||d.schemaVersion!==1)throw Error("Invalid catalogue");
   source=d.projects;
   try{
-   const vr=await fetch("data/verified-major-cases.json?ts="+Date.now(),{cache:"no-store"});
+   const vr=await fetch("../preview-r9/data/verified-major-cases.json?ts="+Date.now(),{cache:"no-store"});
    if(vr.ok){const vd=await vr.json();for(const p of source){const proof=vd.cases?.[p.key];if(proof?.applicant&&!p.applicant){p.applicant=proof.applicant;p.applicantSource=proof.applicantSource||"";}if(proof?.planningReference&&!p.planningReference)p.planningReference=proof.planningReference;}}
   }catch{}
   $("notice").textContent="Catalogue loaded · "+source.length+" records";
@@ -200,7 +200,7 @@ async function init(){
  for(const id of ["query","minUnits","authority","nameStatus","route"])$(id).addEventListener(id==="query"||id==="minUnits"?"input":"change",()=>{visible=60;render()});
  $("showMore").onclick=()=>{visible+=60;render()};
  $("addRecord").onclick=addRecord;
- $("cancelEdit").onclick=()=>$("editDialog").close();
+ $("cancelEdit").onclick=()=>{if(currentKey.startsWith("manual|")&&!edits[currentKey]?.editedAt)delete edits[currentKey];$("editDialog").close()};
  $("editForm").addEventListener("submit",e=>{e.preventDefault();if(saveRecord())$("editDialog").close()});
  $("resetEdit").onclick=()=>{if(!confirm("Clear your local changes for this record?"))return;delete edits[currentKey];saveEdits();$("editDialog").close();render()};
  $("exportCsv").onclick=exportCsv;$("exportJson").onclick=exportJson;
