@@ -59,7 +59,7 @@ function majorProjectMatches(p,term){
 function majorProjectMarkup(p){
  const source=validWebAddress(p.source);
  const ref=esc(p.reference||p.caseId||"Unknown");
- const refHtml=source?'<a class="major-record-link" href="'+esc(source)+'" target="_blank" rel="noopener noreferrer" title="Open official application">Ref '+ref+' ↗</a>':'Ref '+ref+' · Link unavailable';
+ const refHtml=source?'<a class="major-record-link" href="'+esc(source)+'" target="_blank" rel="noopener noreferrer" title="'+esc(p.sourceLinkType||"Open official application")+'">'+(p.sourceLinkType?"Search ref ":"Ref ")+ref+' ↗</a>':'Ref '+ref+' · Link unavailable';
  const other=majorSchemesByKey.get(p.possibleDuplicateOf);
  const otherUrl=other&&validWebAddress(other.source);
  const duplicate=p.possibleDuplicateOf?'<span class="major-duplicate">Linked ACP / council record'+(otherUrl?' · <a href="'+esc(otherUrl)+'" target="_blank" rel="noopener noreferrer">Matching application ↗</a>':'')+'</span>':'';
