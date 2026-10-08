@@ -65,7 +65,10 @@ function normalized(p){
  x.kind=x.kind||"planning";
  x.units=Number(x.units)||0;
  x.received=date(x.received);
- for(const f of ["decisionDate","finalGrantDate","fiDate","appealDate","appealDecisionDate","dueDate","startedDate"])x[f]=date(x[f]);
+ x.decisionDate=date(x.decisionDate||(/grant|approv|conditional/i.test(x.decision||"")?x.councilGrantDate:""));
+ x.appealDecisionDate=date(x.appealDecisionDate||x.acpDecisionDate);
+ x.appealDate=date(x.appealDate||x.acpLodgedDate);
+ for(const f of ["finalGrantDate","fiDate","dueDate","startedDate"])x[f]=date(x[f]);
  x.siteName=siteOf(x);
  x.type=x.type||typeOf(x);
  x.applicant=text(x.applicant);
@@ -80,7 +83,8 @@ function recordKey(p){
 }
 function combine(){
  const by=new Map();
- for(const item of [...catalogue,...live]){
+ const manuallyAdded=Object.entries(overrides).filter(([k,v])=>k.startsWith("manual|")&&v&&Number(v.units)>100).map(([key,v])=>({...v,key,kind:"manual"}));
+ for(const item of [...catalogue,...live,...manuallyAdded]){
   const p={...item,key:item.key||recordKey(item)};
   if(!p.key)continue;
   const old=by.get(p.key);
@@ -143,7 +147,7 @@ function download(filename,content,type){
 function csvEscape(x){const s=String(x??"");return '"'+s.replace(/"/g,'""')+'"'}
 function exportRows(kind){
  const records=filterRecords(combine());
- if(kind==="json"){download("radharc-movements-"+iso(today)+".json",JSON.stringify({schemaVersion:1,exportedAt:new Date().toISOString(),records,manualEdits:overrides},null,2),"application/json");return}
+ if(kind==="json"){download("radharc-movements-"+iso(today)+".json",JSON.stringify({schemaVersion:1,format:"radharc-major-scheme-edits",exportedAt:new Date().toISOString(),edits:overrides,records},null,2),"application/json");return}
  const keys=["siteName","applicant","type","tags","authority","reference","caseId","units","received","fiDate","decision","decisionDate","finalGrantDate","appealDate","appealDecisionDate","dueDate","startedDate","address","website","source","evidence","possibleDuplicateOf"];
  const csv=[keys.map(csvEscape).join(","),...records.map(p=>keys.map(k=>csvEscape(p[k])).join(","))].join("\r\n");
  download("radharc-movements-"+iso(today)+".csv","\ufeff"+csv,"text/csv;charset=utf-8");
@@ -205,6 +209,9 @@ function saveEdit(){
  const update={};
  for(const name of ["applicant","siteName","website","type","tags","received","fiDate","decisionDate","finalGrantDate","appealDate","appealDecisionDate","dueDate","startedDate","decision","caseId","evidence"])update[name]=text(f.elements[name].value);
  if(update.website&&!safeUrl(update.website)){alert("Please enter a valid http(s) website URL.");return}
+ if(update.decisionDate&&/grant|approv|conditional/i.test(update.decision))update.councilGrantDate=update.decisionDate;
+ if(update.appealDecisionDate)update.acpDecisionDate=update.appealDecisionDate;
+ if(update.appealDate)update.acpLodgedDate=update.appealDate;
  overrides[key]={...(overrides[key]||{}),...update,updatedAt:new Date().toISOString()};
  try{localStorage.setItem(storageKey,JSON.stringify(overrides))}catch{alert("Local storage is unavailable. Export your edits to JSON to preserve them.")}
  $("#editDialog").close();render();
@@ -280,7 +287,7 @@ function init(){
  $("#importFile").addEventListener("change",async e=>{
   const f=e.target.files?.[0];if(!f)return;
   try{
-   const d=JSON.parse(await f.text()),edits=d.manualEdits||d;
+   const d=JSON.parse(await f.text()),edits=d.edits||d.manualEdits||d;
    if(!edits||Array.isArray(edits)||typeof edits!=="object")throw Error("Not an edit backup");
    if(!confirm("Import "+Object.keys(edits).length+" manual record edits into this browser? Existing edits with the same key will be replaced."))return;
    overrides={...overrides,...edits};localStorage.setItem(storageKey,JSON.stringify(overrides));render();
