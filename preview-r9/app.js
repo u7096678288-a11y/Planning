@@ -27,7 +27,8 @@ function enrichmentFor(p={},kind="planning"){
 function applicantGroup(name){
  const raw=String(name||"").trim();
  const clean=raw.replace(/[.,]+/g," ").replace(/\s+/g," ").trim();
- return clean.replace(/\s+(?:limited|ltd|dac|designated activity company)$/i,"").trim()||clean;
+ const alias=clean.replace(/\bCo(?=\s+(?:Ltd|Limited|DAC)\b|$)/gi,"Company");
+ return alias.replace(/\s+(?:limited|ltd|dac|designated activity company)$/i,"").trim()||alias;
 }
 let majorSchemes={projects:[],stats:{}};
 let majorSchemesByKey=new Map();
@@ -36,7 +37,7 @@ function majorGroupId(name){return cleanKey(applicantGroup(name));}
 function groupProjects(){
  const grouped=new Map();
  for(const p of majorSchemes.projects||[]){
-  const name=majorMode==="promoters"?(p.developer||p.brand):majorMode==="sites"?p.siteName:p.applicant;
+  const name=majorMode==="promoters"?(p.developer||p.brand||(/marshall\s+yards/i.test(p.applicant||"")?"Marshall Yards":"")):majorMode==="sites"?p.siteName:p.applicant;
   if(!name)continue;
   const id=majorGroupId(name);
   if(!id)continue;

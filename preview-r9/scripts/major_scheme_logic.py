@@ -87,6 +87,7 @@ def group_name(name):
 # that brand. Never infer ownership of differently named SPVs.
 KNOWN_BRANDS = (
     ("Glenveagh", r"\bglenveagh\b"),
+    ("Marshall Yards", r"\bmarshall\s+yards\b"),
     ("Marshall Yards", r"\bmarshall?\s*yards\b"),
     ("Cairn", r"\bcairn\b"),
     ("Land Development Agency", r"\bland development agency\b|\blda\b"),
