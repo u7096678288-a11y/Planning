@@ -1,6 +1,36 @@
 {
   "checked": {
+    "acp|324019": "2026-10-08",
+    "acp|324024": "2026-10-08",
+    "acp|324025": "2026-10-08",
+    "acp|324029": "2026-10-08",
+    "acp|324030": "2026-10-08",
+    "acp|324032": "2026-10-08",
+    "acp|324034": "2026-10-08",
+    "acp|324035": "2026-10-08",
+    "acp|324038": "2026-10-08",
+    "acp|324042": "2026-10-08",
+    "acp|324043": "2026-10-08",
+    "acp|324054": "2026-10-08",
+    "acp|324056": "2026-10-08",
+    "acp|324062": "2026-10-08",
+    "acp|324071": "2026-10-08",
+    "acp|324074": "2026-10-08",
+    "acp|324080": "2026-10-08",
+    "acp|324107": "2026-10-08",
+    "acp|324123": "2026-10-08",
+    "acp|324127": "2026-10-08",
+    "acp|324140": "2026-10-08",
+    "acp|324144": "2026-10-08",
+    "acp|324147": "2026-10-08",
+    "acp|324153": "2026-10-08",
+    "acp|324173": "2026-10-08",
+    "acp|324182": "2026-10-08",
+    "acp|324204": "2026-10-08",
+    "acp|324205": "2026-10-08",
+    "acp|324206": "2026-10-08",
     "acp|324237": "2026-10-08",
+    "acp|324245": "2026-10-08",
     "acp|324262": "2026-10-08",
     "acp|324263": "2026-10-08",
     "acp|324275": "2026-10-08",
@@ -30,19 +60,24 @@
     "acp|324588": "2026-10-08",
     "acp|324591": "2026-10-08",
     "acp|324603": "2026-10-08",
+    "planning|cavancountycouncil|2660132": "2026-10-08",
+    "planning|cavancountycouncil|2660144": "2026-10-08",
     "planning|cavancountycouncil|2660204": "2026-10-08",
     "planning|cavancountycouncil|2660435": "2026-10-08",
     "planning|clarecountycouncil|26131": "2026-10-08",
+    "planning|clarecountycouncil|2660148": "2026-10-08",
     "planning|clarecountycouncil|2660433": "2026-10-08",
     "planning|clarecountycouncil|2660449": "2026-10-08",
     "planning|clarecountycouncil|2660511": "2026-10-08",
     "planning|clarecountycouncil|2660594": "2026-10-08",
     "planning|clarecountycouncil|2660617": "2026-10-08",
+    "planning|donegalcountycouncil|2660444": "2026-10-08",
     "planning|donegalcountycouncil|2660670": "2026-10-08",
     "planning|donegalcountycouncil|2661208": "2026-10-08",
     "planning|donegalcountycouncil|2661346": "2026-10-08",
     "planning|donegalcountycouncil|2661462": "2026-10-08",
     "planning|donegalcountycouncil|2661512": "2026-10-08",
+    "planning|dublincitycouncil|web159426": "2026-10-08",
     "planning|dublincitycouncil|web183626": "2026-10-08",
     "planning|dublincitycouncil|web195126": "2026-10-08",
     "planning|dublincitycouncil|web198826": "2026-10-08",
@@ -51,6 +86,7 @@
     "planning|galwaycitycouncil|2660282": "2026-10-08",
     "planning|galwaycitycouncil|2660301": "2026-10-08",
     "planning|kerrycountycouncil|2660536": "2026-10-08",
+    "planning|kildarecountycouncil|2660248": "2026-10-08",
     "planning|kildarecountycouncil|2660381": "2026-10-08",
     "planning|kildarecountycouncil|2660456": "2026-10-08",
     "planning|kildarecountycouncil|2660468": "2026-10-08",
@@ -60,6 +96,7 @@
     "planning|kildarecountycouncil|2660621": "2026-10-08",
     "planning|kildarecountycouncil|2660627": "2026-10-08",
     "planning|kildarecountycouncil|2660643": "2026-10-08",
+    "planning|kilkennycountycouncil|2660143": "2026-10-08",
     "planning|kilkennycountycouncil|2660241": "2026-10-08",
     "planning|kilkennycountycouncil|2660277": "2026-10-08",
     "planning|kilkennycountycouncil|2660312": "2026-10-08",
@@ -68,11 +105,20 @@
     "planning|kilkennycountycouncil|2660523": "2026-10-08",
     "planning|kilkennycountycouncil|2660543": "2026-10-08",
     "planning|kilkennycountycouncil|2660625": "2026-10-08",
+    "planning|laoiscountycouncil|2660112": "2026-10-08",
     "planning|laoiscountycouncil|2660255": "2026-10-08",
     "planning|laoiscountycouncil|2660304": "2026-10-08",
     "planning|laoiscountycouncil|2660387": "2026-10-08",
     "planning|leitrimcountycouncil|2660191": "2026-10-08",
     "planning|leitrimcountycouncil|2660222": "2026-10-08",
+    "planning|limerickcountycouncil|2660241": "2026-10-08",
+    "planning|limerickcountycouncil|2660275": "2026-10-08",
+    "planning|limerickcountycouncil|2660396": "2026-10-08",
+    "planning|limerickcountycouncil|2660675": "2026-10-08",
+    "planning|limerickcountycouncil|2660855": "2026-10-08",
+    "planning|limerickcountycouncil|2660886": "2026-10-08",
+    "planning|limerickcountycouncil|2661011": "2026-10-08",
+    "planning|longfordcountycouncil|2660078": "2026-10-08",
     "planning|louthcountycouncil|2660181": "2026-10-08",
     "planning|louthcountycouncil|2660189": "2026-10-08",
     "planning|louthcountycouncil|2660204": "2026-10-08",
@@ -85,16 +131,20 @@
     "planning|louthcountycouncil|2660355": "2026-10-08",
     "planning|louthcountycouncil|2660444": "2026-10-08",
     "planning|louthcountycouncil|2660456": "2026-10-08",
+    "planning|meathcountycouncil|2660256": "2026-10-08",
+    "planning|meathcountycouncil|2660278": "2026-10-08",
     "planning|meathcountycouncil|2660470": "2026-10-08",
     "planning|meathcountycouncil|2660481": "2026-10-08",
     "planning|meathcountycouncil|2660788": "2026-10-08",
     "planning|meathcountycouncil|2661080": "2026-10-08",
+    "planning|meathcountycouncil|2697": "2026-10-08",
     "planning|offalycountycouncil|2660323": "2026-10-08",
     "planning|offalycountycouncil|2660361": "2026-10-08",
     "planning|roscommoncountycouncil|2660509": "2026-10-08",
     "planning|southdublincountycouncil|lrd25a0014w": "2026-10-08",
     "planning|southdublincountycouncil|lrd26a0002w": "2026-10-08",
     "planning|southdublincountycouncil|lrd26a0005w": "2026-10-08",
+    "planning|southdublincountycouncil|pt8sd359": "2026-10-08",
     "planning|southdublincountycouncil|sd16a0210fep": "2026-10-08",
     "planning|southdublincountycouncil|sd16a0210fep1": "2026-10-08",
     "planning|southdublincountycouncil|sdz25a0044w": "2026-10-08",
@@ -104,10 +154,13 @@
     "planning|tipperarycountycouncil|2660724": "2026-10-08",
     "planning|tipperarycountycouncil|2660728": "2026-10-08",
     "planning|tipperarycountycouncil|2660760": "2026-10-08",
+    "planning|westmeathcountycouncil|2660134": "2026-10-08",
     "planning|westmeathcountycouncil|2660165": "2026-10-08",
     "planning|westmeathcountycouncil|2660199": "2026-10-08",
     "planning|westmeathcountycouncil|2660222": "2026-10-08",
     "planning|westmeathcountycouncil|2660344": "2026-10-08",
+    "planning|wexfordcountycouncil|20260262": "2026-10-08",
+    "planning|wexfordcountycouncil|20260326": "2026-10-08",
     "planning|wexfordcountycouncil|20260417": "2026-10-08",
     "planning|wexfordcountycouncil|20260592": "2026-10-08",
     "planning|wexfordcountycouncil|20260625": "2026-10-08",
@@ -139,6 +192,38 @@
   },
   "description": "Source-backed applicant/developer enrichment; never infer a legal applicant from a generic page label.",
   "records": {
+    "acp|324062": {
+      "applicant": "Glenveagh Homes Ltd.",
+      "applicantEvidence": "Matched ACP case to exact council application reference; applicant named in linked official record",
+      "applicantSource": "http://www.eplanning.ie/ClareCC/AppFileRefDetails/2560393/0",
+      "planningAuthority": "Clare County Council",
+      "planningReference": "2560393",
+      "verifiedAt": "2026-10-08"
+    },
+    "acp|324107": {
+      "applicant": "Glenveagh Homes Ltd.",
+      "applicantEvidence": "Matched ACP case to exact council application reference; applicant named in linked official record",
+      "applicantSource": "http://www.eplanning.ie/KildareCC/AppFileRefDetails/2560877/0",
+      "planningAuthority": "Kildare County Council",
+      "planningReference": "2560877",
+      "verifiedAt": "2026-10-08"
+    },
+    "acp|324204": {
+      "applicant": "Earlsfort Developments Drogheda Limited",
+      "applicantEvidence": "Matched ACP case to exact council application reference; applicant named in linked official record",
+      "applicantSource": "http://www.eplanning.ie/MeathCC/AppFileRefDetails/2560940/0",
+      "planningAuthority": "Meath County Council",
+      "planningReference": "2560940",
+      "verifiedAt": "2026-10-08"
+    },
+    "acp|324205": {
+      "applicant": "Corestone 16 Ltd",
+      "applicantEvidence": "Matched ACP case to exact council application reference; applicant named in linked official record",
+      "applicantSource": "http://www.eplanning.ie/GalwayCC/AppFileRefDetails/2660056/0",
+      "planningAuthority": "Galway County Council",
+      "planningReference": "2660056",
+      "verifiedAt": "2026-10-08"
+    },
     "acp|324442": {
       "developer": "Land Development Agency",
       "developerEvidence": "The project website states that the Land Development Agency intends to apply for this Galway Port LRD; this is promoter evidence, not a verified legal applicant.",
@@ -147,21 +232,134 @@
       "planningReference": "2560296",
       "reviewedAt": "2026-10-08"
     },
+    "planning|cavancountycouncil|2660132": {
+      "applicant": "South of Ireland Crushing Ltd",
+      "applicantEvidence": "Applicant explicitly labelled on the linked planning-authority page",
+      "applicantSource": "http://www.eplanning.ie/CavanCC/AppFileRefDetails/2660132/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|cavancountycouncil|2660144": {
+      "applicant": "L&M McCabe Developments Limited",
+      "applicantEvidence": "Applicant explicitly labelled on the linked planning-authority page",
+      "applicantSource": "http://www.eplanning.ie/CavanCC/AppFileRefDetails/2660144/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|clarecountycouncil|2660148": {
+      "applicant": "Michael Pearl",
+      "applicantEvidence": "Applicant explicitly labelled on the linked planning-authority page",
+      "applicantSource": "http://www.eplanning.ie/ClareCC/AppFileRefDetails/2660148/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|donegalcountycouncil|2660444": {
+      "applicant": "CILLANOIR DEVELOPMENTS LIMITED",
+      "applicantEvidence": "Applicant explicitly labelled on the linked planning-authority page",
+      "applicantSource": "http://www.eplanning.ie/DonegalCC/AppFileRefDetails/2660444/0",
+      "verifiedAt": "2026-10-08"
+    },
     "planning|galwaycitycouncil|2560296": {
       "developer": "Land Development Agency",
       "developerEvidence": "Project website identifies the Land Development Agency as the intended applicant/promoter.",
       "developerSource": "https://galwayportlrd.ie/",
       "reviewedAt": "2026-10-08"
+    },
+    "planning|kildarecountycouncil|2660248": {
+      "applicant": "Pousterle Limited",
+      "applicantEvidence": "Applicant explicitly labelled on the linked planning-authority page",
+      "applicantSource": "http://www.eplanning.ie/KildareCC/AppFileRefDetails/2660248/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|kilkennycountycouncil|2660143": {
+      "applicant": "BPBJ LAND DEVELOPERS LTD.",
+      "applicantEvidence": "Applicant explicitly labelled on the linked planning-authority page",
+      "applicantSource": "http://www.eplanning.ie/KilkennyCC/AppFileRefDetails/2660143/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|laoiscountycouncil|2660112": {
+      "applicant": "Dargan Woods Devco Ltd",
+      "applicantEvidence": "Applicant explicitly labelled on the linked planning-authority page",
+      "applicantSource": "http://www.eplanning.ie/LaoisCC/AppFileRefDetails/2660112/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|limerickcountycouncil|2660241": {
+      "applicant": "Columbia Estates Management (IE) Limited",
+      "applicantEvidence": "Applicant explicitly labelled on the linked planning-authority page",
+      "applicantSource": "https://eplanning.ie/LimerickCCC/AppFileRefDetails/2660241/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|limerickcountycouncil|2660275": {
+      "applicant": "Clonshire Construction Limited",
+      "applicantEvidence": "Applicant explicitly labelled on the linked planning-authority page",
+      "applicantSource": "https://eplanning.ie/LimerickCCC/AppFileRefDetails/2660275/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|limerickcountycouncil|2660396": {
+      "applicant": "Homeland Projects Ltd.",
+      "applicantEvidence": "Applicant explicitly labelled on the linked planning-authority page",
+      "applicantSource": "https://eplanning.ie/LimerickCCC/AppFileRefDetails/2660396/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|limerickcountycouncil|2660675": {
+      "applicant": "GLR Property Ltd.",
+      "applicantEvidence": "Applicant explicitly labelled on the linked planning-authority page",
+      "applicantSource": "https://eplanning.ie/LimerickCCC/AppFileRefDetails/2660675/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|limerickcountycouncil|2660855": {
+      "applicant": "Homely Technologies Ltd.",
+      "applicantEvidence": "Applicant explicitly labelled on the linked planning-authority page",
+      "applicantSource": "https://eplanning.ie/LimerickCCC/AppFileRefDetails/2660855/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|limerickcountycouncil|2660886": {
+      "applicant": "Vales Ventures Limited",
+      "applicantEvidence": "Applicant explicitly labelled on the linked planning-authority page",
+      "applicantSource": "https://eplanning.ie/LimerickCCC/AppFileRefDetails/2660886/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|limerickcountycouncil|2661011": {
+      "applicant": "Homeland Projects Ltd.",
+      "applicantEvidence": "Applicant explicitly labelled on the linked planning-authority page",
+      "applicantSource": "https://eplanning.ie/LimerickCCC/AppFileRefDetails/2661011/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|longfordcountycouncil|2660078": {
+      "applicant": "Martina Smyth",
+      "applicantEvidence": "Applicant explicitly labelled on the linked planning-authority page",
+      "applicantSource": "http://www.eplanning.ie/LongfordCC/AppFileRefDetails/2660078/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|meathcountycouncil|2660256": {
+      "applicant": "Andrews Construction Ltd.",
+      "applicantEvidence": "Applicant explicitly labelled on the linked planning-authority page",
+      "applicantSource": "http://www.eplanning.ie/MeathCC/AppFileRefDetails/2660256/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|meathcountycouncil|2660278": {
+      "applicant": "Leinster Land Developments Limited",
+      "applicantEvidence": "Applicant explicitly labelled on the linked planning-authority page",
+      "applicantSource": "http://www.eplanning.ie/MeathCC/AppFileRefDetails/2660278/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|meathcountycouncil|2697": {
+      "applicant": "Glenveagh Homes Limited",
+      "applicantEvidence": "Applicant explicitly labelled on the linked planning-authority page",
+      "applicantSource": "http://www.eplanning.ie/MeathCC/AppFileRefDetails/2697/0",
+      "verifiedAt": "2026-10-08"
+    },
+    "planning|westmeathcountycouncil|2660134": {
+      "applicant": "Garrycastle Homes Ltd trading as Alanna Homes",
+      "applicantEvidence": "Applicant explicitly labelled on the linked planning-authority page",
+      "applicantSource": "http://www.eplanning.ie/WestmeathCC/AppFileRefDetails/2660134/0",
+      "verifiedAt": "2026-10-08"
     }
   },
   "schemaVersion": 1,
   "stats": {
     "acpCasesInspected": 30,
-    "candidates": 107,
+    "candidates": 125,
     "date": "2026-10-08",
-    "newApplicants": 0,
-    "sourcePagesInspected": 26,
-    "falsePositivesRemoved": 5
+    "newApplicants": 23,
+    "sourcePagesInspected": 33
   },
-  "updatedAt": "2026-10-08T00:23:29.610869+00:00"
+  "updatedAt": "2026-10-08T00:25:43.691320+00:00"
 }
