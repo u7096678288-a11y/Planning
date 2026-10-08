@@ -1,4 +1,8 @@
 "use strict";
+async function fetchCatalogueFile(name){
+ try{const r=await fetch("../preview-r10/data/"+name+"?ts="+Date.now(),{cache:"no-store"});if(r.ok)return r;}catch(error){console.warn("Latest catalogue temporarily unavailable",error);}
+ return fetch("data/"+name+"?ts="+Date.now(),{cache:"no-store"});
+}
 (() => {
 const STORAGE="radharc.major-schemes.edits.v1";
 const $=id=>document.getElementById(id);
@@ -184,13 +188,13 @@ async function importJson(file){
 async function init(){
  edits=loadEdits();
  try{
-  let r=await fetch("data/major-schemes.json?ts="+Date.now(),{cache:"no-store"});
+  let r=await fetchCatalogueFile("major-schemes.json");
   if(!r.ok)throw Error("HTTP "+r.status);
   let d=await r.json();
   if(!Array.isArray(d.projects)||d.schemaVersion!==1)throw Error("Invalid catalogue");
   source=d.projects;
   try{
-   const vr=await fetch("data/verified-major-cases.json?ts="+Date.now(),{cache:"no-store"});
+   const vr=await fetchCatalogueFile("verified-major-cases.json");
    if(vr.ok){const vd=await vr.json();for(const p of source){const proof=vd.cases?.[p.key];if(proof?.applicant&&!p.applicant){p.applicant=proof.applicant;p.applicantSource=proof.applicantSource||"";}if(proof?.planningReference&&!p.planningReference)p.planningReference=proof.planningReference;}}
   }catch{}
   $("notice").textContent="Catalogue loaded · "+source.length+" records";
