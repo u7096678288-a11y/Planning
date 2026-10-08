@@ -104,3 +104,13 @@ def brand_from_applicant(name):
         if re.search(pattern, str(name or ""), re.I):
             return brand
     return ""
+
+def planning_route(description="", category=""):
+    text=(str(description or "")+" "+str(category or "")).lower()
+    if re.search(r"\blrd\b|large[\s-]?scale residential development",text):
+        return "LRD"
+    if re.search(r"\bshd\b|strategic housing development",text):
+        return "SHD"
+    if re.search(r"\bsdz\b|strategic development zone",text):
+        return "SDZ"
+    return ""

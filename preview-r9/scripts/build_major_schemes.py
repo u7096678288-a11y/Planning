@@ -307,6 +307,7 @@ def classify_and_match(found, evidence):
         item["brand"] = logic.brand_from_applicant(item.get("applicant"))
         desc = item.get("description", "")
         item["type"] = logic.scheme_type(desc, item.get("reference", ""), item.get("category", ""))
+        item["route"] = logic.planning_route(desc, item.get("category", ""))
         site_web = item.get("siteWebsiteName", "")
         verified_url = item.get("developerSource", "")
         project_host = (urlsplit(verified_url).hostname or "") if verified_url else ""
