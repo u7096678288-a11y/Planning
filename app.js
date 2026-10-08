@@ -123,12 +123,12 @@ function renderApplicantIntelligence(){
 }
 async function loadMajorSchemes(){
  try{
-  const response=await fetch("data/major-schemes.json?ts="+Date.now(),{cache:"no-store"});
+  const response=await fetch("../preview-r9/data/major-schemes.json?ts="+Date.now(),{cache:"no-store"});
   if(!response.ok)throw Error("HTTP "+response.status);
   const data=await response.json();
   if(data?.schemaVersion!==1||!Array.isArray(data.projects))throw Error("Invalid catalogue");
   try{
-   const evidenceResponse=await fetch("data/verified-major-cases.json?ts="+Date.now(),{cache:"no-store"});
+   const evidenceResponse=await fetch("../preview-r9/data/verified-major-cases.json?ts="+Date.now(),{cache:"no-store"});
    if(evidenceResponse.ok){
     const verified=await evidenceResponse.json();
     if(verified?.schemaVersion===1&&verified.cases){
