@@ -54,7 +54,7 @@ function groupProjects(){
 function majorProjectMatches(p,term){
  if(!term)return true;
  return [p.siteName,p.address,p.description,p.reference,p.planningReference,p.authority,
-         p.applicant,p.developer,p.type,p.category,p.caseId].some(v=>String(v||"").toLowerCase().includes(term));
+         p.applicant,p.developer,p.brand,p.type,p.category,p.caseId].some(v=>String(v||"").toLowerCase().includes(term)||cleanKey(v).includes(cleanKey(term)));
 }
 function majorProjectMarkup(p){
  const source=validWebAddress(p.source);
@@ -64,13 +64,15 @@ function majorProjectMarkup(p){
  const otherUrl=other&&validWebAddress(other.source);
  const duplicate=p.possibleDuplicateOf?'<span class="major-duplicate">'+esc(p.duplicateReason||"Potential related application")+(otherUrl?' · <a href="'+esc(otherUrl)+'" target="_blank" rel="noopener noreferrer">Related record ↗</a>':'')+'</span>':'';
  const kind=p.kind==="acp"?"ACP case":"Council application";
+ const siteSource=validWebAddress(p.siteWebsiteSource);
+ const siteEvidence=siteSource?'<span>Site name: <a class="major-record-link" href="'+esc(siteSource)+'" target="_blank" rel="noopener noreferrer">Project website ↗</a></span>':'';
  const place=p.address&&p.address!==p.siteName?'<span class="major-project-address">'+esc(p.address)+'</span>':'';
  const promoter=p.developer?'<span>Developer / promoter (source-backed): '+esc(p.developer)+'</span>':p.brand?'<span>Brand in applicant name: '+esc(p.brand)+' (ownership not independently verified)</span>':'';
  const applicant=p.applicant?'<span>Applicant: '+esc(p.applicant)+'</span>':'<span>Applicant: awaiting verification</span>';
  return '<article class="major-project">'+
   '<strong>'+esc(p.siteName||p.address||"Residential scheme")+'</strong>'+
   '<span class="major-project-type">'+esc(p.type||"Residential development")+' · '+kind+'</span>'+
-  place+'<span>'+esc(p.authority||"")+' · '+refHtml+' · '+fmt(p.units)+' homes</span>'+
+  place+siteEvidence+'<span>'+esc(p.authority||"")+' · '+refHtml+' · '+fmt(p.units)+' homes</span>'+
   applicant+promoter+
   (p.decision&&p.decision!=="N/A"?'<span>Decision: '+esc(p.decision)+'</span>':'')+
   (p.received?'<span>Received: '+esc(p.received)+'</span>':'')+
@@ -90,7 +92,7 @@ function renderApplicantIntelligence(){
  if(updated)updated.textContent=majorSchemes.updatedAt?"Catalogue updated "+new Date(majorSchemes.updatedAt).toLocaleDateString("en-IE"):"";
  const term=($("#applicantIntelligenceSearch")?.value||"").toLowerCase().trim();
  const filtered=allGroups.map(g=>{
-  const matchesName=g.name.toLowerCase().includes(term);
+  const matchesName=g.name.toLowerCase().includes(term)||cleanKey(g.name).includes(cleanKey(term));
   const matches=term&&!matchesName?g.projects.filter(p=>majorProjectMatches(p,term)):g.projects;
   return {...g,projects:matches};
  }).filter(g=>g.projects.length);
@@ -630,9 +632,27 @@ function select(k,f,ll){
  ];
  selected={title,fields:[...fields,...links.map(l=>[l.label,l.url])]};
  const linksBlock='<section class="record-links"><strong>Application & website links</strong><div>'+recordLinksMarkup(links)+'</div></section>';
- const card='<strong>'+esc(title)+'</strong><dl>'+recordRowsMarkup(fields)+'</dl>'+linksBlock;
+ const majorKey=planning?"planning|"+cleanKey(p.PlanningAuthority)+"|"+cleanKey(p.ApplicationNumber):
+  acp?"acp|"+(String(p.ABPCASEID||"").match(/\d{6}/)?.[0]||""):"";
+ const major=majorSchemesByKey.get(majorKey);
+ const applicantJump=major?.applicant?'<button class="major-jump-link" type="button" id="majorApplicantJump">View applicant\'s 100+ home projects ↓</button>':"";
+
+ const card='<strong>'+esc(title)+'</strong><dl>'+recordRowsMarkup(fields)+'</dl>'+linksBlock+applicantJump;
  $("#selectedRecord").className="record-card";
  $("#selectedRecord").innerHTML=card;
+ $("#majorApplicantJump")?.addEventListener("click",()=>{
+  const panel=document.querySelector("details.applicant-intelligence");
+  if(panel)panel.open=true;
+  majorMode="applicants";
+  majorActiveGroup=majorGroupId(major.applicant);
+  majorShown=30;
+  const input=$("#applicantIntelligenceSearch");
+  if(input)input.value=major.applicant;
+  document.querySelectorAll("[data-major-mode]").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.majorMode==="applicants")));
+  renderApplicantIntelligence();
+  panel?.scrollIntoView({behavior:"smooth",block:"start"});
+ });
+
  $("#copyBriefButton").disabled=false;
  const popupFields=[
   ["Applicant",applicant||"Not yet verified"],
