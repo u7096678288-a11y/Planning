@@ -35,6 +35,7 @@ let majorSchemesByKey=new Map();
 let majorGroups=[];
 let majorShown=35;
 let majorActiveGroup="";
+let majorActiveProjectLimit=80;
 function groupProjects(){
  const groups=new Map();
  for(const project of majorSchemes.projects||[]){
@@ -46,7 +47,9 @@ function groupProjects(){
   group.projects.push(project);
   groups.set(id,group);
  }
+ const pending=(majorSchemes.projects||[]).filter(p=>!p.applicant);
  majorGroups=[...groups.values()].sort((a,b)=>b.projects.length-a.projects.length||a.name.localeCompare(b.name));
+ if(pending.length)majorGroups.push({id:"__pending__",name:"Applicant not yet verified",projects:pending,pending:true});
 }
 function renderApplicantIntelligence(){
  const el=$("#applicantIntelligence"),statsEl=$("#applicantIntelligenceStats");
@@ -54,7 +57,7 @@ function renderApplicantIntelligence(){
  const stats=majorSchemes.stats||{};
  const total=(majorSchemes.projects||[]).length;
  const named=(majorSchemes.projects||[]).filter(p=>p.applicant).length;
- const count=majorGroups.length;
+ const count=majorGroups.filter(g=>!g.pending).length;
  if(statsEl)statsEl.textContent=fmt(total)+" applications over 100 homes indexed · "+fmt(named)+" with applicant names · "+fmt(count)+" applicant groups"+(stats.scanComplete?"":" · Scan in progress");
  const updated=$("#applicantIntelligenceUpdated");
  if(updated)updated.textContent=majorSchemes.updatedAt?"Catalogue updated "+new Date(majorSchemes.updatedAt).toLocaleDateString("en-IE"):"";
@@ -65,20 +68,22 @@ function renderApplicantIntelligence(){
  el.innerHTML=visible.map(g=>{
   const open=majorActiveGroup===g.id;
   return '<li class="major-applicant-group"><button type="button" class="major-group-button" data-applicant-group="'+esc(g.id)+'" aria-expanded="'+open+'"><span>'+esc(g.name)+'</span><span>'+fmt(g.projects.length)+' applications '+(open?'▴':'▾')+'</span></button>'+
-  (open?'<div class="major-group-projects">'+g.projects.slice(0,250).map(p=>
+  (open?'<div class="major-group-projects">'+g.projects.slice(0,majorActiveProjectLimit).map(p=>
     '<article class="major-project"><strong>'+esc(p.address||p.description||"Residential scheme")+'</strong>'+
     '<span>'+esc(p.authority||"")+' · Ref '+esc(p.reference||"")+' · '+fmt(p.units)+' homes</span>'+
     (p.decision?'<span>Decision: '+esc(p.decision)+'</span>':'')+
     (p.received?'<span>Received: '+esc(p.received)+'</span>':'')+
-    '</article>').join("")+(g.projects.length>250?'<p>Showing 250 of '+fmt(g.projects.length)+' records in this group.</p>':'')+'</div>':'')+'</li>';
+    '</article>').join("")+(g.projects.length>majorActiveProjectLimit?'<button type="button" class="major-show-more" data-more-projects="'+esc(g.id)+'">Show more projects ('+fmt(g.projects.length-majorActiveProjectLimit)+' remaining)</button>':'')+'</div>':'')+'</li>';
  }).join("")||'<li class="data-quality-note">No matching applicant groups. Projects without a verified applicant remain in the indexed total.</li>';
  const more=$("#applicantIntelligenceMore");
  if(more){more.hidden=filtered.length<=majorShown;more.textContent="Show more applicants ("+fmt(filtered.length-majorShown)+" remaining)";}
  el.querySelectorAll("[data-applicant-group]").forEach(button=>button.addEventListener("click",()=>{
   const id=button.getAttribute("data-applicant-group");
   majorActiveGroup=majorActiveGroup===id?"":id;
+  majorActiveProjectLimit=80;
   renderApplicantIntelligence();
  }));
+ el.querySelectorAll("[data-more-projects]").forEach(button=>button.addEventListener("click",()=>{majorActiveProjectLimit+=80;renderApplicantIntelligence();}));
 }
 async function loadMajorSchemes(){
  try{
