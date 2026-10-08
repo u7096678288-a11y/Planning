@@ -19,6 +19,40 @@ function enrichmentFor(p={},kind="planning"){
  const key=kind==="acp"?"acp|"+(ref||""):"planning|"+cleanKey(p.PlanningAuthority)+"|"+(ref||"");
  return applicantEnrichment.records?.[key]||null;
 }
+function applicantGroup(name){
+ const raw=String(name||"").trim();
+ if(!raw)return "";
+ const clean=raw.replace(/[.,]+/g," ").replace(/\s+/g," ").trim();
+ return clean.replace(/\s+(?:limited|ltd|ltd\.|dac|designated activity company)$/i,"").trim()||clean;
+}
+function renderApplicantIntelligence(){
+ const el=$("#applicantIntelligence");
+ if(!el)return;
+ const records=Object.entries(applicantEnrichment.records||{});
+ const verified=records.filter(([key,r])=>r.applicant&&r.applicantSource);
+ const promoted=records.filter(([key,r])=>r.developer&&!r.applicant);
+ const grouped=new Map();
+ for(const [key,r] of verified){
+  const name=applicantGroup(r.applicant),id=cleanKey(name);
+  if(!id)continue;
+  const row=grouped.get(id)||{name,count:0,links:[]};
+  row.count++;
+  if(validWebAddress(r.applicantSource)&&!row.links.some(l=>l.url===r.applicantSource))
+   row.links.push({url:r.applicantSource,key});
+  grouped.set(id,row);
+ }
+ const groups=[...grouped.values()].sort((a,b)=>b.count-a.count||a.name.localeCompare(b.name));
+ const stats=$("#applicantIntelligenceStats");
+ if(stats)stats.textContent=verified.length+" verified applicant records · "+groups.length+" applicant groups · "+promoted.length+" promoter-only records";
+ const updated=$("#applicantIntelligenceUpdated");
+ if(updated)updated.textContent=applicantEnrichment.updatedAt?"Last checked "+new Date(applicantEnrichment.updatedAt).toLocaleDateString("en-IE"):"";
+ el.innerHTML=groups.slice(0,12).map(row=>{
+  const source=row.links[0];
+  return '<li><span>'+esc(row.name)+'</span><span class="applicant-intel-count">'+row.count+' record'+(row.count===1?'':'s')+
+    (source?' · <a href="'+esc(source.url)+'" target="_blank" rel="noopener noreferrer">Source ↗</a>':'')+'</span></li>';
+ }).join("")||'<li>No verified applicants loaded yet.</li>';
+}
+
 async function loadApplicantEnrichment(){
  try{
   const response=await fetch("data/applicant-enrichment.json?ts="+Date.now(),{cache:"no-store"});
@@ -26,6 +60,7 @@ async function loadApplicantEnrichment(){
   const data=await response.json();
   if(data?.schemaVersion!==1||!data.records||typeof data.records!=="object")throw Error("Invalid enrichment data");
   applicantEnrichment=data;
+  renderApplicantIntelligence();
   if(lastSelectedFeature){const [k,f,ll]=lastSelectedFeature;select(k,f,ll);}
  }catch(error){console.warn("Scheme applicant enrichment unavailable",error);}
 }
