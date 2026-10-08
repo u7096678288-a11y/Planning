@@ -632,9 +632,27 @@ function select(k,f,ll){
  ];
  selected={title,fields:[...fields,...links.map(l=>[l.label,l.url])]};
  const linksBlock='<section class="record-links"><strong>Application & website links</strong><div>'+recordLinksMarkup(links)+'</div></section>';
- const card='<strong>'+esc(title)+'</strong><dl>'+recordRowsMarkup(fields)+'</dl>'+linksBlock;
+ const majorKey=planning?"planning|"+cleanKey(p.PlanningAuthority)+"|"+cleanKey(p.ApplicationNumber):
+  acp?"acp|"+(String(p.ABPCASEID||"").match(/\d{6}/)?.[0]||""):"";
+ const major=majorSchemesByKey.get(majorKey);
+ const applicantJump=major?.applicant?'<button class="major-jump-link" type="button" id="majorApplicantJump">View applicant\'s 100+ home projects ↓</button>':"";
+
+ const card='<strong>'+esc(title)+'</strong><dl>'+recordRowsMarkup(fields)+'</dl>'+linksBlock+applicantJump;
  $("#selectedRecord").className="record-card";
  $("#selectedRecord").innerHTML=card;
+ $("#majorApplicantJump")?.addEventListener("click",()=>{
+  const panel=document.querySelector("details.applicant-intelligence");
+  if(panel)panel.open=true;
+  majorMode="applicants";
+  majorActiveGroup=majorGroupId(major.applicant);
+  majorShown=30;
+  const input=$("#applicantIntelligenceSearch");
+  if(input)input.value=major.applicant;
+  document.querySelectorAll("[data-major-mode]").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.majorMode==="applicants")));
+  renderApplicantIntelligence();
+  panel?.scrollIntoView({behavior:"smooth",block:"start"});
+ });
+
  $("#copyBriefButton").disabled=false;
  const popupFields=[
   ["Applicant",applicant||"Not yet verified"],
