@@ -11,6 +11,8 @@ on:
       - 'preview-r9/scripts/test_major_scheme_logic.py'
       - 'preview-r9/scripts/enrich_acp_reports.py'
       - 'preview-r9/scripts/test_enrich_acp_reports.py'
+      - 'preview-r9/scripts/enrich_council_forms.py'
+      - 'preview-r9/scripts/test_enrich_council_forms.py'
       - 'preview-r9/data/verified-major-cases.json'
   schedule:
     - cron: '21 4 * * *'
@@ -37,6 +39,10 @@ jobs:
         run: python preview-r9/scripts/test_enrich_acp_reports.py
       - name: Inspect ACP reports for verified applicants
         run: python preview-r9/scripts/enrich_acp_reports.py
+      - name: Test official council application-form extraction
+        run: python preview-r9/scripts/test_enrich_council_forms.py
+      - name: Inspect linked council application forms and Part B PDFs
+        run: python preview-r9/scripts/enrich_council_forms.py
       - name: Test applicant extraction and provenance safeguards
         run: python preview-r9/scripts/test_enrich_applicants.py
       - name: Test scheme names, unit parsing and deduplication
