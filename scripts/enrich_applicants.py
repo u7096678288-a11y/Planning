@@ -102,6 +102,16 @@ def query(endpoint, where, fields, limit=250, order="", offset=0):
     return [f.get("attributes", {}) for f in data.get("features", [])]
 
 def extract_applicant(markup):
+    # Structural Applicant -> value pairs are safe even when the label is
+    # simply "Applicant"; a navigation tab with that text is not evidence.
+    structural = re.search(
+        r"<(?:dt|th)\b[^>]*>\s*(?:Applicant|Applicant\s+Name)\s*:?\s*</(?:dt|th)>\s*"
+        r"<(?:dd|td)\b[^>]*>(.*?)</(?:dd|td)>", markup, re.I | re.S)
+    if structural:
+        value = html.unescape(re.sub(r"<[^>]*>", " ", structural.group(1)))
+        name = valid_name(value)
+        if name:
+            return name
     parser = Text()
     parser.feed(markup)
     parser.flush()
