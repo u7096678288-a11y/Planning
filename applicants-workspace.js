@@ -15,7 +15,7 @@ function loadEdits(){try{const obj=JSON.parse(localStorage.getItem(STORAGE)||"{}
 function saveEdits(){try{localStorage.setItem(STORAGE,JSON.stringify(edits));$("notice").textContent="Saved in this browser";return true}catch(e){$("notice").textContent="Save failed: browser storage unavailable. Export your edits.";return false}}
 function routeOf(p){const raw=[p.route,p.type,p.description,p.reference,p.tags].join(" ").toLowerCase();if(p.route)return p.route;if(/\b(?:extension of duration|fep\d+)\b/i.test(raw))return "Extension of duration";if(/\b(?:amendment|modification|alteration)\b/i.test(raw))return "Amendment";if(/\bmixed[\s-]?use\b/i.test(raw))return "Mixed-use";if(/\bshd\b|strategic housing development/i.test(raw))return "SHD";if(/\blrd\b|large.scale residential development/i.test(raw))return "LRD";return "Other"}
 function getAll(){
- const all=source.map(p=>({...p,...(Object.prototype.hasOwnProperty.call(edits,p.key)?edits[p.key]:{}),_edited:Object.prototype.hasOwnProperty.call(edits,p.key)}));
+ const all=source.map(p=>{const edited=Object.prototype.hasOwnProperty.call(edits,p.key);const item={...p,...(edited?edits[p.key]:{}),_edited:edited};if(p.kind==="acp"){item.acpLodgedDate=item.acpLodgedDate||p.received||"";item.received=edited?(edits[p.key].received||""):(p.councilLodgedDate||"");}return item;});
  for(const [id,v] of Object.entries(edits))if(id.startsWith("manual|")&&!source.some(p=>p.key===id))all.push({...v,key:id,kind:"manual",_edited:true});
  return all.filter(p=>number(p.units)>100);
 }
@@ -72,9 +72,9 @@ function render(){
   return '<tr><td class="scheme"><strong>'+safe(p.siteName||p.address||"Unnamed scheme")+'</strong><small>'+safe(p.address||"")+'</small></td>'+
    '<td class="name">'+applicant+' '+group+'</td><td>'+safe(p.authority||"—")+'</td><td>'+fmt(p.units)+'</td>'+
    '<td>'+safe(routeOf(p))+'<div>'+tags.map(t=>'<span class="tag">'+safe(t)+'</span>').join("")+linked+'</div></td>'+
-   '<td>'+safe(p.received||"—")+'</td><td>'+safe(p.councilGrantDate||"—")+'</td><td>'+safe(final||"—")+'</td>'+
+   '<td>'+safe(p.received||"—")+'</td><td>'+safe(p.councilGrantDate||"—")+'</td><td>'+safe(p.acpLodgedDate||"—")+'</td><td>'+safe(p.acpDecisionDate||"—")+'</td><td>'+safe(final||"—")+'</td>'+
    '<td>'+recordLink(p)+'</td><td><button class="btn" data-edit="'+safe(p.key)+'">Edit</button></td></tr>';
- }).join("")||'<tr><td colspan="10">No records match these filters.</td></tr>';
+ }).join("")||'<tr><td colspan="12">No records match these filters.</td></tr>';
  $("showMore").hidden=filtered.length<=visible;
  $("shownCount").textContent="Showing "+fmt(rows.length)+" of "+fmt(filtered.length);
  $("records").querySelectorAll("[data-edit]").forEach(b=>b.onclick=()=>openEdit(b.dataset.edit));
@@ -101,9 +101,10 @@ function renderTimeline(all,byKey){
  const councils=new Map(),months=new Map();
  for(const p of all){
   const council=p.authority||"Unspecified";
-  if(!councils.has(council))councils.set(council,{name:council,total:0,lodged:0,grant:0,acp:0,final:0});
+  if(!councils.has(council))councils.set(council,{name:council,total:0,lodged:0,grant:0,acpLodged:0,acp:0,final:0});
   const c=councils.get(council);c.total++;
   if(date(p.received)){c.lodged++;const m=p.received.slice(0,7);if(!months.has(m))months.set(m,{lodged:0,final:0});months.get(m).lodged++;}
+  if(date(p.acpLodgedDate))c.acpLodged++;
   if(date(p.councilGrantDate))c.grant++;
   if(date(p.acpDecisionDate))c.acp++;
   const f=finalDate(p,byKey);
