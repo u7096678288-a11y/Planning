@@ -71,7 +71,7 @@ function majorProjectMarkup(p){
  const applicant=p.applicant?'<span>Applicant: '+esc(p.applicant)+'</span>':'<span>Applicant: awaiting verification</span>';
  return '<article class="major-project">'+
   '<strong>'+esc(p.siteName||p.address||"Residential scheme")+'</strong>'+
-  '<span class="major-project-type">'+esc(p.type||"Residential development")+' · '+kind+'</span>'+
+  '<span class="major-project-type">'+esc(p.type||"Residential development")+(p.route&&!((p.route==="LRD"&&p.type==="Large-scale Residential Development")||(p.route==="SHD"&&p.type==="Strategic Housing Development"))?" · "+esc(p.route):"")+' · '+kind+'</span>'+
   place+siteEvidence+'<span>'+esc(p.authority||"")+' · '+refHtml+' · '+fmt(p.units)+' homes</span>'+
   applicant+promoter+
   (p.decision&&p.decision!=="N/A"?'<span>Decision: '+esc(p.decision)+'</span>':'')+
