@@ -234,7 +234,8 @@ function livePlanning(p){
  if(!reference)return null;
  return {key:"planning|"+clean(authority)+"|"+clean(reference),kind:"planning",authority,reference,units:Number(p.NumResidentialUnits)||0,
  address:text(p.DevelopmentAddress),description:text(p.DevelopmentDescription),decision:text(p.AppealDecision||p.Decision),received:date(p.ReceivedDate),
- decisionDate:date(p.DecisionDate||p.DecidedDate),finalGrantDate:date(p.FinalGrantDate),dueDate:date(p.DecisionDueDate||p.DueDate),
+ decisionDate:date(p.DecisionDate||p.DecidedDate||p.DateDecision),finalGrantDate:date(p.FinalGrantDate||p.FinalGrantDateIssued),dueDate:date(p.DecisionDueDate||p.DueDate||p.DecisionDue),
+ fiDate:date(p.FurtherInformationDate||p.FIRequestDate||p.FurtherInformationRequestedDate),appealDate:date(p.AppealDate),appealDecisionDate:date(p.AppealDecisionDate),
  applicant:text(p.ApplicantName||p.Applicant),source:text(p.LinkAppDetails)};
 }
 function liveAcp(p){
@@ -247,7 +248,7 @@ function liveAcp(p){
  if(units<=100&&!special)return null;
  return {key:"acp|"+ref,kind:"acp",caseId:ref,reference:ref,authority:text(p.PLANINGATY)||"An Coimisiún Pleanála",
  units,address:text(p.DEVADDRESS),description:desc.slice(0,600),category,type,received:date(p.LODGEDON),decision:text(p.DECISION),
- decisionDate:date(p.DECISIONDATE||p.DECIDEDON),applicant:text(p.APPLICANTNAME||p.APPLICANT),source:safeUrl(p.LINKABPWEB)||"https://www.pleanala.ie/en-ie/case/"+ref};
+ decisionDate:date(p.DECISIONDATE||p.DECIDEDON),appealDecisionDate:date(p.DECISIONDATE||p.DECIDEDON),applicant:text(p.APPLICANTNAME||p.APPLICANT),source:safeUrl(p.LINKABPWEB)||"https://www.pleanala.ie/en-ie/case/"+ref};
 }
 async function loadData(){
  $("#freshness").textContent="Refreshing indexed projects and checking live 28-day sources…";
@@ -268,9 +269,15 @@ async function loadData(){
   const values=rows.map(livePlanning).filter(Boolean);live.push(...values);sourceState.push("Live council lodgements: "+values.length);fillFilters();render();
  }).catch(e=>sourceState.push("Live council query unavailable: "+e.message));
  const q2=queryArcgis(ACP,"LODGEDON >= DATE '"+since+"'",1000).then(rows=>{
-  const values=rows.map(liveAcp).filter(Boolean);live.push(...values);sourceState.push("Live ACP cases: "+values.length);fillFilters();render();
- }).catch(e=>sourceState.push("Live ACP query unavailable: "+e.message));
- await Promise.allSettled([q1,q2]);
+  const values=rows.map(liveAcp).filter(Boolean);live.push(...values);sourceState.push("Live ACP lodgements: "+values.length);fillFilters();render();
+ }).catch(e=>sourceState.push("Live ACP lodgements unavailable: "+e.message));
+ const q3=queryArcgis(PLANNING,"DecisionDate >= DATE '"+since+"' AND NumResidentialUnits > 100",1000).then(rows=>{
+  const values=rows.map(livePlanning).filter(Boolean);live.push(...values);sourceState.push("Live council decisions: "+values.length);fillFilters();render();
+ }).catch(e=>sourceState.push("Live council decision-date query unavailable: "+e.message));
+ const q4=queryArcgis(ACP,"DECISIONDATE >= DATE '"+since+"'",1000).then(rows=>{
+  const values=rows.map(liveAcp).filter(Boolean);live.push(...values);sourceState.push("Live ACP decisions: "+values.length);fillFilters();render();
+ }).catch(e=>sourceState.push("Live ACP decision-date query unavailable: "+e.message));
+ await Promise.allSettled([q1,q2,q3,q4]);
  $("#freshness").textContent=fmt(combine().length)+" indexed/live records · 28-day window "+since+" to "+iso(today);
  $("#sourceNote").textContent=sourceState.join(" · ")+". FI, final grants, appeals and commencements are counted only when dated source evidence is available. BCMS is not connected as a verified live source. Records without a date do not appear in the corresponding 28-day movement.";
 }
