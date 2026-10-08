@@ -15,7 +15,7 @@ import re
 import time
 from html.parser import HTMLParser
 from pathlib import Path
-from urllib.parse import urljoin, urlsplit
+from urllib.parse import urljoin, urlsplit, unquote
 from urllib.request import Request, urlopen
 
 from pypdf import PdfReader
@@ -35,7 +35,8 @@ MAX_PDF_BYTES=8_000_000
 FORM_LABEL=re.compile(r"^(?:name\s+of\s+(?:the\s+)?applicant(?:\(s\))?|"
                       r"applicant(?:\(s\))?(?:['’]s)?\s+name|"
                       r"applicant\s+details\s*[-:]\s*name|"
-                      r"full\s+name\s+of\s+(?:the\s+)?applicant(?:\(s\))?)\s*:?\s*(.*)$",re.I)
+                      r"full\s+name\s+of\s+(?:the\s+)?applicant(?:\(s\))?|"
+                      r"name\(s\)\s+of\s+(?:the\s+)?applicant)\s*:?\s*(.*)$",re.I)
 NOT_NAME=re.compile(r"\b(?:applicant\s+address|agent|architect|planning\s+consultant|"
                     r"landowner|owner|telephone|email|phone|signature|address|"
                     r"company\s+registration\s+number|please\s+state|please\s+print)\b",re.I)
@@ -88,7 +89,7 @@ def form_document_links(markup,parent):
         url=valid_document_url(href,parent)
         if not url:
             continue
-        label=title+" "+href
+        label=unquote(title+" "+href).replace("-"," ").replace("_"," ")
         if FORM_HINT.search(label) and (".pdf" in href.lower() or "download" in href.lower()):
             found.append(url)
     return list(dict.fromkeys(found))[:5]
