@@ -22,7 +22,7 @@ function enrichmentFor(p={},kind="planning"){
  if(!project?.applicant)return verified;
  return {...(verified||{}),applicant:verified?.applicant||project.applicant,
   applicantSource:verified?.applicantSource||project.source||"",
-  applicantEvidence:verified?.applicantEvidence||project.applicantSourceType||""};
+  applicantEvidence:project._edited?"Manually entered in applicant workspace":verified?.applicantEvidence||project.applicantSourceType||""};
 }
 function applicantGroup(name){
  const raw=String(name||"").trim();
@@ -37,7 +37,7 @@ function majorGroupId(name){return cleanKey(applicantGroup(name));}
 function groupProjects(){
  const grouped=new Map();
  for(const p of majorSchemes.projects||[]){
-  const name=majorMode==="promoters"?(p.developer||p.brand||(/marshall\s+yards/i.test(p.applicant||"")?"Marshall Yards":"")):majorMode==="sites"?p.siteName:p.applicant;
+  const name=majorMode==="applicants"?(p.companyGroup||p.applicant):majorMode==="promoters"?(p.developer||p.brand||(/marshall\s+yards/i.test(p.applicant||"")?"Marshall Yards":"")):majorMode==="sites"?p.siteName:p.applicant;
   if(!name)continue;
   const id=majorGroupId(name);
   if(!id)continue;
@@ -54,7 +54,7 @@ function groupProjects(){
 }
 function majorProjectMatches(p,term){
  if(!term)return true;
- return [p.siteName,p.address,p.description,p.reference,p.planningReference,p.authority,
+ return [p.siteName,p.address,p.description,p.reference,p.planningReference,p.authority,p.companyGroup,p.tags,
          p.applicant,p.developer,p.brand,p.type,p.category,p.caseId].some(v=>String(v||"").toLowerCase().includes(term)||cleanKey(v).includes(cleanKey(term)));
 }
 function majorProjectMarkup(p){
@@ -146,6 +146,25 @@ async function loadMajorSchemes(){
     }
    }
   }catch(error){console.warn("Verified ACP case evidence unavailable",error);}
+  // User-entered evidence and names are local to this browser; the public feed remains unchanged.
+  try{
+   const overrides=JSON.parse(localStorage.getItem("radharc.major-schemes.edits.v1")||"{}");
+   if(overrides&&typeof overrides==="object"){
+    for(const p of data.projects){
+     const edit=overrides[p.key];
+     if(edit&&typeof edit==="object"){
+      for(const field of ["applicant","companyGroup","developer","siteName","units","authority","reference","route","tags","received","councilGrantDate","acpLodgedDate","acpDecisionDate","acpOutcome","finalGrantDate","evidenceUrl","notes"]){
+       if(Object.prototype.hasOwnProperty.call(edit,field))p[field]=edit[field];
+      }
+      p._edited=true;
+      if(edit.applicant)p.applicantSourceType="Manually entered in applicant workspace";
+     }
+    }
+    for(const [key,edit] of Object.entries(overrides)){
+     if(key.startsWith("manual|")&&edit&&Number(edit.units)>100)data.projects.push({...edit,key,kind:"manual",_edited:true});
+    }
+   }
+  }catch(error){console.warn("Local applicant edits unavailable",error);}
   majorSchemes=data;
   majorSchemesByKey=new Map(data.projects.map(p=>[p.key,p]));
   renderApplicantIntelligence();
@@ -621,7 +640,7 @@ function select(k,f,ll){
  const extra=enrichmentFor(p,kind);
  const nativeApplicant=applicantName(p);
  const applicant=nativeApplicant||extra?.applicant||"";
- const applicantSource=nativeApplicant?"National planning feed":extra?.applicantSource?"Verified linked source":"Not verified";
+ const applicantSource=nativeApplicant?"National planning feed":extra?.applicantEvidence==="Manually entered in applicant workspace"?"Manual browser entry":extra?.applicantSource?"Verified linked source":"Not verified";
  const developer=extra?.developer||"";
  const description=planning?p.DevelopmentDescription:acp?p.DEVDESC:"";
  const links=recordWebLinks(p,kind);
