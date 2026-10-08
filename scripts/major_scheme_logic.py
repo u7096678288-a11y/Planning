@@ -9,7 +9,7 @@ def scheme_type(description="", reference="", category=""):
     text = " ".join(str(x or "") for x in (description, reference, category)).lower()
     if re.search(r"\b(?:extension of duration|extend(?:ing)? the duration|extension of time|ext(?:ension)?\s+of\s+duration|fep\d*)\b", text):
         return "Extension of duration"
-    if re.search(r"\b(?:amendment|modification|alteration|revisions? to (?:a )?(?:previously|existing)|change of house type|material contravention|section 146b|s\.?146b)\b", text):
+    if re.search(r"\b(?:amendments?|modifications?|alterations?|revisions? to (?:a )?(?:previously|existing)|change of house type|material contravention|section 146b|s\.?146b)\b", text):
         return "Amendment / modification"
     if re.search(r"\b(?:mixed[\s-]?use|residential[\s-]?led|commercial and residential)\b", text):
         return "Mixed-use residential"
@@ -51,6 +51,7 @@ def site_name(address="", description="", project_website_name=""):
         if town: return town.group(1)
         return "Residential scheme (location unconfirmed)"
     # Strip planning boilerplate but retain meaningful townland and road names.
+    addr=re.sub(r"^(?:site\s+of\s+(?:approximately|approx\.?|c\.?|circa)\s*[\d.]+\s*(?:ha|hectares?)\s+at)\s+", "", addr, flags=re.I)
     addr=re.sub(r"^(?:site\s+at|lands?\s+(?:at|on|in|located at|situated at)|the\s+site\s+at|site\s+of)\s+", "", addr, flags=re.I)
     addr=re.sub(r"^(?:lands?\s+)?(?:generally\s+)?bounded by\s+", "",addr,flags=re.I)
     addr=re.sub(r"^(?:the\s+)?(?:former|existing)\s+", "",addr,flags=re.I)
