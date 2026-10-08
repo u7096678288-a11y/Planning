@@ -126,6 +126,25 @@ async function loadMajorSchemes(){
   if(!response.ok)throw Error("HTTP "+response.status);
   const data=await response.json();
   if(data?.schemaVersion!==1||!Array.isArray(data.projects))throw Error("Invalid catalogue");
+  try{
+   const evidenceResponse=await fetch("data/verified-major-cases.json?ts="+Date.now(),{cache:"no-store"});
+   if(evidenceResponse.ok){
+    const verified=await evidenceResponse.json();
+    if(verified?.schemaVersion===1&&verified.cases){
+     for(const project of data.projects){
+      const proof=verified.cases[project.key];
+      if(!proof?.applicant||!validWebAddress(proof.applicantSource))continue;
+      if(!project.applicant){
+       project.applicant=proof.applicant;
+       project.applicantSource=proof.applicantSource;
+       project.applicantEvidence=proof.applicantEvidence||"Official case record";
+       project.brand=project.brand||(/marshall\s+yards/i.test(proof.applicant)?"Marshall Yards":"");
+      }
+      if(proof.planningReference&&!project.planningReference)project.planningReference=proof.planningReference;
+     }
+    }
+   }
+  }catch(error){console.warn("Verified ACP case evidence unavailable",error);}
   majorSchemes=data;
   majorSchemesByKey=new Map(data.projects.map(p=>[p.key,p]));
   renderApplicantIntelligence();
