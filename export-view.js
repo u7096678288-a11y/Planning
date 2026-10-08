@@ -46,7 +46,7 @@ function annotate(f,key){
  const project=links.filter(l=>l!==official);
  return {type:"Feature",geometry:f.geometry||null,properties:{...p,
   Applicant:(typeof applicantName==="function"?applicantName(p):"")||extra?.applicant||"",
-  ApplicantSource:extra?.applicantSource||"",Developer:extra?.developer||"",
+  ApplicantSource:extra?.applicantSource||(applicantName(p)?links.find(l=>/planning application/i.test(l.label))?.url||"":"") ,ApplicantGroup:typeof applicantGroup==="function"?applicantGroup(applicantName(p)||extra?.applicant):"",Developer:extra?.developer||"",
   DeveloperSource:extra?.developerSource||"",
   ApplicationURL:official?.url||"",ProjectWebsites:project.map(l=>l.url).join(" | "),
   ExportLayer:key,ExportSource:S[key]?.label||key,DecisionFlag:FLAG_LABELS[decisionFlag(p,S[key]?.type==="acp"?"acp":"planning")]}};
@@ -120,6 +120,7 @@ function shapeFeature(f){
  AUTHORITY:String(p.PlanningAuthority||p.PLANINGATY||"").slice(0,200),
  APPLICANT:String(p.Applicant||"").slice(0,200),
  APP_SOURCE:String(p.ApplicantSource||"").slice(0,240),
+ APP_GROUP:String(p.ApplicantGroup||"").slice(0,200),
  DEVELOPER:String(p.Developer||"").slice(0,200),
  DEV_SOURCE:String(p.DeveloperSource||"").slice(0,240),
  APP_URL:String(p.ApplicationURL||"").slice(0,240),
