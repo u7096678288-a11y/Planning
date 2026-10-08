@@ -49,6 +49,7 @@
     .record-card dl,.planning-map-popup dl{display:grid;gap:8px;margin:10px 0}.record-card dl>div,.planning-map-popup dl>div{min-width:0}.record-card dt,.planning-map-popup dt{font-size:11px;font-weight:700;color:#637586}.record-card dd,.planning-map-popup dd{margin:3px 0 0;overflow-wrap:anywhere;white-space:pre-wrap;line-height:1.4}.record-card a,.planning-map-popup a{color:#126c90;text-decoration:underline;text-underline-offset:2px;overflow-wrap:anywhere}.record-links{margin-top:12px;padding-top:10px;border-top:1px solid #e0e7e9}.record-links strong{display:block;margin-bottom:8px;font-size:12px}.record-links>div{display:flex;flex-wrap:wrap;gap:7px}.record-external-link{display:inline-flex;padding:7px 9px;border:1px solid #bdd5e1;border-radius:6px;background:#edf7fa;font-size:12px;font-weight:700;text-decoration:none!important}.record-link-empty{font-size:12px;color:#687985}.planning-map-popup{max-height:min(45vh,310px);overflow-y:auto;overflow-x:hidden;min-width:0;font-size:12px;line-height:1.4}.planning-map-popup>strong{font-size:14px}.planning-map-popup .record-links{position:sticky;bottom:0;background:#fff;padding-bottom:3px}.leaflet-popup-content{margin:12px 13px}.leaflet-popup-content-wrapper{border-radius:10px}
     .applicant-intelligence{margin:16px 0;border:1px solid #d7e2e7;border-radius:9px;padding:12px;background:#fff}.applicant-intelligence summary{cursor:pointer;font-size:14px;font-weight:750;color:#203c4d}.applicant-intelligence-label{font-size:10px;font-weight:500;color:#71818d;margin-left:5px}.applicant-intelligence-list{padding-left:22px;margin:8px 0 12px}.applicant-intelligence-list li{padding:8px 0;border-bottom:1px solid #edf1f2;line-height:1.4;font-size:12px}.applicant-intelligence-list li span{display:block}.applicant-intel-count{font-size:11px;color:#627481}.applicant-intelligence-list a{color:#0a668c;text-decoration:underline}
     .major-search-label{display:block;margin:12px 0 6px;font-size:12px;font-weight:700;color:#314756}.applicant-intelligence input[type=search]{box-sizing:border-box;width:100%;border:1px solid #cbd7dd;border-radius:7px;padding:10px;font-size:13px;background:#fff;color:#182d40}.major-applicant-group{list-style:none;padding:0!important}.applicant-intelligence-list{list-style:none;padding:0;margin:10px 0}.major-group-button{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;padding:10px 2px;text-align:left;border:0;background:transparent;color:#183b4c;cursor:pointer;font-size:13px;font-weight:650}.major-group-button span:last-child{white-space:nowrap;color:#5b7280;font-size:11px;font-weight:500}.major-group-projects{padding:4px 9px 12px;background:#f5f9fa;border-radius:8px}.major-project{padding:10px 0;border-bottom:1px solid #dce6e9;display:grid;gap:4px}.major-project strong{font-size:12px;line-height:1.4}.major-project span{font-size:11px;color:#637482}.major-show-more{padding:10px;width:100%;background:#eef6f8;border:1px solid #c5dce3;border-radius:7px;color:#155f78;font-weight:650;cursor:pointer}
+    .major-view-switch{display:flex;gap:5px;flex-wrap:wrap;margin:12px 0 6px}.major-view-switch button{border:1px solid #cbdbe1;background:#fff;color:#3d5967;border-radius:8px;padding:9px 11px;font-size:12px;font-weight:650;cursor:pointer;flex:1}.major-view-switch button[aria-pressed=true]{background:#e6f2f5;color:#075873;border-color:#73b2c4}.major-project-type{font-weight:700;color:#23657a!important}.major-record-link{font-weight:700;color:#0a6788;text-decoration:underline;text-underline-offset:2px}.major-duplicate{color:#945b11!important;font-weight:700}.major-duplicate a{color:#945b11}.major-project-address{font-style:italic}.major-group-button:focus-visible,.major-view-switch button:focus-visible,.major-record-link:focus-visible{outline:3px solid #277ac7;outline-offset:2px}
   </style>
 </head>
 <body>
@@ -174,11 +175,17 @@
         <summary>Major scheme applicants <span class="applicant-intelligence-label">Over 100 homes</span></summary>
         <p id="applicantIntelligenceStats" class="data-quality-note">Loading national scheme catalogue…</p>
         <p id="applicantIntelligenceUpdated" class="data-quality-note"></p>
-        <label class="major-search-label" for="applicantIntelligenceSearch">Find an applicant or project</label>
-        <input id="applicantIntelligenceSearch" type="search" placeholder="Applicant, council, location or reference" autocomplete="off" />
+        <div class="major-view-switch" role="group" aria-label="Group major schemes by">
+          <button type="button" data-major-mode="applicants" aria-pressed="true">Applicants</button>
+          <button type="button" data-major-mode="promoters" aria-pressed="false">Developers</button>
+          <button type="button" data-major-mode="sites" aria-pressed="false">Sites</button>
+        </div>
+        <label class="major-search-label" for="applicantIntelligenceSearch">Find an applicant, developer or project</label>
+        <input id="applicantIntelligenceSearch" type="search" placeholder="Name, council, site, type or reference" autocomplete="off" />
+        <p id="majorGroupCount" class="data-quality-note"></p>
         <ol id="applicantIntelligence" class="applicant-intelligence-list" aria-live="polite"><li>Loading applicant groups…</li></ol>
         <button id="applicantIntelligenceMore" class="major-show-more" type="button" hidden>Show more applicants</button>
-        <p class="data-quality-note">Select an applicant to view their indexed residential applications. Each application reports over 100 homes. Application counts are not deduplicated schemes; names are grouped by legal applicant, not inferred developer ownership. Unresolved applicants remain in the indexed total.</p>
+        <p class="data-quality-note">Select a group to expand its projects. Click a reference to open the official council application or ACP case. Developer/promoter groupings are shown separately from legal applicants. Exact council/ACP cross-references are flagged; other possible overlaps may remain. Projects with no verifiable applicant are retained.</p>
       </details>
       <p id="acpAvailability" class="data-quality-note" aria-live="polite">Checking ACP cases…</p>
       <p class="data-quality-note">Headline figures are calculated from the live planning feed for the visible map area. Records without reported residential-unit data are excluded from the unit total.</p>
@@ -191,7 +198,7 @@
   <script src="https://cdn.jsdelivr.net/npm/esri-leaflet@3.0.15/dist/esri-leaflet.js" onerror="this.onerror=null;this.src='https://unpkg.com/esri-leaflet@3.0.15/dist/esri-leaflet.js'"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/proj4@2.11.0/dist/proj4.js" onerror="this.onerror=null;this.src='https://unpkg.com/proj4@2.11.0/dist/proj4.js'"></script>
-  <script src="app.js?v=20261008-major1"></script>
-  <script src="export-view.js?v=20261008-major1"></script>
+  <script src="app.js?v=20261008-major2"></script>
+  <script src="export-view.js?v=20261008-major2"></script>
 </body>
 </html>
