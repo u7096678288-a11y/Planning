@@ -134,13 +134,58 @@
     "acp|305007": "2026-10-08",
     "acp|305058": "2026-10-08",
     "acp|305110": "2026-10-08",
-    "acp|305219": "2026-10-08"
+    "acp|305196": "2026-10-09",
+    "acp|305219": "2026-10-08",
+    "acp|305261": "2026-10-09",
+    "acp|305267": "2026-10-09",
+    "acp|305278": "2026-10-09",
+    "acp|305312": "2026-10-09",
+    "acp|305316": "2026-10-09",
+    "acp|305319": "2026-10-09",
+    "acp|305343": "2026-10-09",
+    "acp|305345": "2026-10-09",
+    "acp|305416": "2026-10-09",
+    "acp|305476": "2026-10-09",
+    "acp|305534": "2026-10-09",
+    "acp|305538": "2026-10-09",
+    "acp|305552": "2026-10-09",
+    "acp|305556": "2026-10-09",
+    "acp|305563": "2026-10-09",
+    "acp|305619": "2026-10-09",
+    "acp|305623": "2026-10-09",
+    "acp|305680": "2026-10-09",
+    "acp|305701": "2026-10-09",
+    "acp|305703": "2026-10-09",
+    "acp|305713": "2026-10-09",
+    "acp|305728": "2026-10-09",
+    "acp|305763": "2026-10-09",
+    "acp|305770": "2026-10-09",
+    "acp|305773": "2026-10-09",
+    "acp|305819": "2026-10-09",
+    "acp|305820": "2026-10-09",
+    "acp|305828": "2026-10-09",
+    "acp|305844": "2026-10-09",
+    "acp|305857": "2026-10-09",
+    "acp|305859": "2026-10-09",
+    "acp|305878": "2026-10-09",
+    "acp|305905": "2026-10-09",
+    "acp|305979": "2026-10-09",
+    "acp|305980": "2026-10-09",
+    "acp|305982": "2026-10-09",
+    "acp|305991": "2026-10-09",
+    "acp|306021": "2026-10-09",
+    "acp|306068": "2026-10-09",
+    "acp|306074": "2026-10-09",
+    "acp|306075": "2026-10-09",
+    "acp|306093": "2026-10-09",
+    "acp|306102": "2026-10-09",
+    "acp|306131": "2026-10-09"
   },
   "acpReportStats": {
     "attemptedThisRun": 45,
-    "namesFoundThisRun": 43,
-    "reportsCheckedTotal": 135,
-    "updatedAt": "2026-10-08T11:28:50.703765+00:00"
+    "namesFoundThisRun": 44,
+    "reportsCheckedTotal": 180,
+    "updatedAt": "2026-10-09T11:24:57.149223+00:00"
   },
   "checked": {
     "acp|324019": "2026-10-08",
@@ -330,6 +375,8 @@
     "planning|wicklowcountycouncil|2660824": "2026-10-08"
   },
   "councilFormChecked": {
+    "planning|corkcitycouncil|1737279": "2026-10-09",
+    "planning|corkcitycouncil|195095": "2026-10-09",
     "planning|corkcitycouncil|2140196": "2026-10-08",
     "planning|corkcitycouncil|2140353": "2026-10-08",
     "planning|corkcitycouncil|2241540": "2026-10-08",
@@ -376,11 +423,25 @@
     "planning|southdublincountycouncil|sd16a0210ep": "2026-10-08",
     "planning|southdublincountycouncil|sd16a0210fep": "2026-10-08",
     "planning|southdublincountycouncil|sd16a0210fep1": "2026-10-08",
+    "planning|southdublincountycouncil|sd17a0069": "2026-10-09",
+    "planning|southdublincountycouncil|sd17a0121": "2026-10-09",
+    "planning|southdublincountycouncil|sd17a0132": "2026-10-09",
+    "planning|southdublincountycouncil|sd17a0212": "2026-10-09",
+    "planning|southdublincountycouncil|sd18a0401": "2026-10-09",
     "planning|southdublincountycouncil|sd20a0259": "2026-10-08",
     "planning|southdublincountycouncil|sd21a0136": "2026-10-08",
     "planning|southdublincountycouncil|sd21a0196": "2026-10-08",
+    "planning|southdublincountycouncil|sdz16a0005": "2026-10-09",
+    "planning|southdublincountycouncil|sdz17a0001": "2026-10-09",
+    "planning|southdublincountycouncil|sdz17a0006": "2026-10-09",
+    "planning|southdublincountycouncil|sdz18a0002": "2026-10-09",
+    "planning|southdublincountycouncil|sdz18a0004": "2026-10-09",
+    "planning|southdublincountycouncil|sdz18a0011": "2026-10-09",
     "planning|southdublincountycouncil|sdz18a0011ep": "2026-10-08",
+    "planning|southdublincountycouncil|sdz19a0003": "2026-10-09",
+    "planning|southdublincountycouncil|sdz19a0004": "2026-10-09",
     "planning|southdublincountycouncil|sdz19a0004ep": "2026-10-08",
+    "planning|southdublincountycouncil|sdz19a0008": "2026-10-09",
     "planning|southdublincountycouncil|sdz19a0011": "2026-10-08",
     "planning|southdublincountycouncil|sdz20a0008": "2026-10-08",
     "planning|southdublincountycouncil|sdz20a0017": "2026-10-08",
@@ -405,7 +466,23 @@
     "planning|southdublincountycouncil|sdz24a0029w": "2026-10-08",
     "planning|southdublincountycouncil|sdz25a0013w": "2026-10-08",
     "planning|southdublincountycouncil|sdz25a0019w": "2026-10-08",
+    "planning|southdublincountycouncil|shd3abp30055518": "2026-10-09",
     "planning|southdublincountycouncil|shd3abp30055518ep": "2026-10-08",
+    "planning|southdublincountycouncil|shd3abp30239818": "2026-10-09",
+    "planning|southdublincountycouncil|shd3abp30252118": "2026-10-09",
+    "planning|southdublincountycouncil|shd3abp30330618": "2026-10-09",
+    "planning|southdublincountycouncil|shd3abp30380319": "2026-10-09",
+    "planning|southdublincountycouncil|shd3abp30391119": "2026-10-09",
+    "planning|southdublincountycouncil|shd3abp30482819": "2026-10-09",
+    "planning|southdublincountycouncil|shd3abp30526719": "2026-10-09",
+    "planning|southdublincountycouncil|shd3abp30534319": "2026-10-09",
+    "planning|southdublincountycouncil|shd3abp30555619": "2026-10-09",
+    "planning|southdublincountycouncil|shd3abp30556319": "2026-10-09",
+    "planning|southdublincountycouncil|shd3abp30572519": "2026-10-09",
+    "planning|southdublincountycouncil|shd3abp30576319": "2026-10-09",
+    "planning|southdublincountycouncil|shd3abp30585719": "2026-10-09",
+    "planning|southdublincountycouncil|shd3abp30587819": "2026-10-09",
+    "planning|southdublincountycouncil|shd3abp30660220": "2026-10-09",
     "planning|southdublincountycouncil|shd3abp30670520": "2026-10-08",
     "planning|southdublincountycouncil|shd3abp30709220": "2026-10-08",
     "planning|southdublincountycouncil|shd3abp30722220": "2026-10-08",
@@ -430,6 +507,9 @@
     "planning|southdublincountycouncil|shd3abp31359022": "2026-10-08",
     "planning|southdublincountycouncil|shd3abp31359122": "2026-10-08",
     "planning|southdublincountycouncil|shd3abp31470122": "2026-10-08",
+    "planning|southdublincountycouncil|tc06stc0013": "2026-10-09",
+    "planning|wexfordcountycouncil|20170308": "2026-10-09",
+    "planning|wexfordcountycouncil|20170382": "2026-10-09",
     "planning|wexfordcountycouncil|20221652": "2026-10-08",
     "planning|wexfordcountycouncil|20221690": "2026-10-08",
     "planning|wexfordcountycouncil|20241279": "2026-10-08",
@@ -439,10 +519,10 @@
     "applicantsVerifiedThisRun": 0,
     "note": "Only publicly linked PDF application forms; image-only documents need manual review.",
     "pagesCheckedThisRun": 35,
-    "pagesCheckedTotal": 104,
+    "pagesCheckedTotal": 139,
     "pagesWithFormLinks": 0,
     "pdfsInspectedThisRun": 0,
-    "updatedAt": "2026-10-08T11:29:19.100178+00:00"
+    "updatedAt": "2026-10-09T11:25:25.911926+00:00"
   },
   "cursor": {
     "acp": 0,
@@ -2366,11 +2446,275 @@
       "applicantSource": "https://www.pleanala.ie/en-ie/case/305110",
       "verifiedAt": "2026-10-08"
     },
+    "acp|305196": {
+      "applicant": "Sherwood Homes Ltd",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/305196",
+      "verifiedAt": "2026-10-09"
+    },
     "acp|305219": {
       "applicant": "Spencer Place Development Company Limited",
       "applicantEvidence": "Explicit Applicant party on official ACP case page",
       "applicantSource": "https://www.pleanala.ie/en-ie/case/305219",
       "verifiedAt": "2026-10-08"
+    },
+    "acp|305261": {
+      "applicant": "Dundrum Retail GP DAC",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/305261",
+      "verifiedAt": "2026-10-09"
+    },
+    "acp|305267": {
+      "applicant": "Adwood Ltd",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/305267",
+      "verifiedAt": "2026-10-09"
+    },
+    "acp|305278": {
+      "applicant": "HQ Developments",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/305278",
+      "verifiedAt": "2026-10-09"
+    },
+    "acp|305312": {
+      "applicant": "Ruirside Developments Limited",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/305312",
+      "verifiedAt": "2026-10-09"
+    },
+    "acp|305316": {
+      "applicant": "Gerard Gannon Properties",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/305316",
+      "verifiedAt": "2026-10-09"
+    },
+    "acp|305319": {
+      "applicant": "Gerard Gannon Properties",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/305319",
+      "verifiedAt": "2026-10-09"
+    },
+    "acp|305343": {
+      "applicant": "Cairn Homes Properties Limited",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/305343",
+      "verifiedAt": "2026-10-09"
+    },
+    "acp|305345": {
+      "applicant": "KW PRS ICAV",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/305345",
+      "verifiedAt": "2026-10-09"
+    },
+    "acp|305416": {
+      "applicant": "Resource Five Limited",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/305416",
+      "verifiedAt": "2026-10-09"
+    },
+    "acp|305476": {
+      "applicant": "Cairn Homes Properties Limited",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/305476",
+      "verifiedAt": "2026-10-09"
+    },
+    "acp|305534": {
+      "applicant": "The Skerries Road Partnership",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/305534",
+      "verifiedAt": "2026-10-09"
+    },
+    "acp|305538": {
+      "applicant": "Dwyer Nolan Developments Limited",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/305538",
+      "verifiedAt": "2026-10-09"
+    },
+    "acp|305552": {
+      "applicant": "Trailford Ltd",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/305552",
+      "verifiedAt": "2026-10-09"
+    },
+    "acp|305556": {
+      "applicant": "OBSF Limited",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/305556",
+      "verifiedAt": "2026-10-09"
+    },
+    "acp|305563": {
+      "applicant": "Greenacre Residential DAC",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/305563",
+      "verifiedAt": "2026-10-09"
+    },
+    "acp|305619": {
+      "applicant": "St. Marnock's II Designated Activity Company",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/305619",
+      "verifiedAt": "2026-10-09"
+    },
+    "acp|305623": {
+      "applicant": "Cairn Homes Properties Limited",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/305623",
+      "verifiedAt": "2026-10-09"
+    },
+    "acp|305680": {
+      "applicant": "Crekav Trading GP Limited",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/305680",
+      "verifiedAt": "2026-10-09"
+    },
+    "acp|305701": {
+      "applicant": "Cairn Homes Properties Limited",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/305701",
+      "verifiedAt": "2026-10-09"
+    },
+    "acp|305703": {
+      "applicant": "Shannon Homes Ltd",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/305703",
+      "verifiedAt": "2026-10-09"
+    },
+    "acp|305713": {
+      "applicant": "Dwyer Nolan Developments Limited",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/305713",
+      "verifiedAt": "2026-10-09"
+    },
+    "acp|305728": {
+      "applicant": "St Clares GP3 Ltd",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/305728",
+      "verifiedAt": "2026-10-09"
+    },
+    "acp|305763": {
+      "applicant": "Power Scaffolding Supplies Limited",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/305763",
+      "verifiedAt": "2026-10-09"
+    },
+    "acp|305770": {
+      "applicant": "Crann Ard Devlopments Limited",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/305770",
+      "verifiedAt": "2026-10-09"
+    },
+    "acp|305773": {
+      "applicant": "Cairn Homes Properties Limited",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/305773",
+      "verifiedAt": "2026-10-09"
+    },
+    "acp|305819": {
+      "applicant": "Lagan Homes Drogheda Limited",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/305819",
+      "verifiedAt": "2026-10-09"
+    },
+    "acp|305820": {
+      "applicant": "Glenbeigh Construction Limited",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/305820",
+      "verifiedAt": "2026-10-09"
+    },
+    "acp|305828": {
+      "applicant": "Crekav Trading GP Limited",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/305828",
+      "verifiedAt": "2026-10-09"
+    },
+    "acp|305844": {
+      "applicant": "Aeval Unlimited Company",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/305844",
+      "verifiedAt": "2026-10-09"
+    },
+    "acp|305857": {
+      "applicant": "St. Edmunds Phase 3 Limited",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/305857",
+      "verifiedAt": "2026-10-09"
+    },
+    "acp|305859": {
+      "applicant": "Atlas GP Limited",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/305859",
+      "verifiedAt": "2026-10-09"
+    },
+    "acp|305878": {
+      "applicant": "Ardstone Homes Ltd",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/305878",
+      "verifiedAt": "2026-10-09"
+    },
+    "acp|305905": {
+      "applicant": "Westar Investments Limited",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/305905",
+      "verifiedAt": "2026-10-09"
+    },
+    "acp|305979": {
+      "applicant": "Seven Cabra Real Estate Limited",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/305979",
+      "verifiedAt": "2026-10-09"
+    },
+    "acp|305980": {
+      "applicant": "Glenveagh Homes Limited",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/305980",
+      "verifiedAt": "2026-10-09"
+    },
+    "acp|305982": {
+      "applicant": "Glenveagh Living Limited",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/305982",
+      "verifiedAt": "2026-10-09"
+    },
+    "acp|305991": {
+      "applicant": "Ballymore Property Developments Limited",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/305991",
+      "verifiedAt": "2026-10-09"
+    },
+    "acp|306021": {
+      "applicant": "Coindale Ltd",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/306021",
+      "verifiedAt": "2026-10-09"
+    },
+    "acp|306074": {
+      "applicant": "Kimpton Vale Ltd",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/306074",
+      "verifiedAt": "2026-10-09"
+    },
+    "acp|306075": {
+      "applicant": "Cosgrave Developments",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/306075",
+      "verifiedAt": "2026-10-09"
+    },
+    "acp|306093": {
+      "applicant": "Ballymore Property Developments Limited",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/306093",
+      "verifiedAt": "2026-10-09"
+    },
+    "acp|306102": {
+      "applicant": "Atlas GP Limited",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/306102",
+      "verifiedAt": "2026-10-09"
+    },
+    "acp|306131": {
+      "applicant": "1 Ash Grove Land Limited",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/306131",
+      "verifiedAt": "2026-10-09"
     },
     "acp|307847": {
       "applicant": "Daly's Hill Limited",
@@ -3583,5 +3927,5 @@
     "newApplicants": 23,
     "sourcePagesInspected": 33
   },
-  "updatedAt": "2026-10-08T11:29:34.585577+00:00"
+  "updatedAt": "2026-10-09T11:25:50.039236+00:00"
 }
