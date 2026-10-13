@@ -314,13 +314,58 @@
     "acp|310350": "2026-10-12",
     "acp|310413": "2026-10-12",
     "acp|310418": "2026-10-12",
-    "acp|310568": "2026-10-12"
+    "acp|310568": "2026-10-12",
+    "acp|310570": "2026-10-13",
+    "acp|310575": "2026-10-13",
+    "acp|310578": "2026-10-13",
+    "acp|310609": "2026-10-13",
+    "acp|310722": "2026-10-13",
+    "acp|310782": "2026-10-13",
+    "acp|310797": "2026-10-13",
+    "acp|310865": "2026-10-13",
+    "acp|310892": "2026-10-13",
+    "acp|310910": "2026-10-13",
+    "acp|310912": "2026-10-13",
+    "acp|310944": "2026-10-13",
+    "acp|311016": "2026-10-13",
+    "acp|311028": "2026-10-13",
+    "acp|311037": "2026-10-13",
+    "acp|311040": "2026-10-13",
+    "acp|311059": "2026-10-13",
+    "acp|311181": "2026-10-13",
+    "acp|311199": "2026-10-13",
+    "acp|311287": "2026-10-13",
+    "acp|311290": "2026-10-13",
+    "acp|311329": "2026-10-13",
+    "acp|311540": "2026-10-13",
+    "acp|311568": "2026-10-13",
+    "acp|311588": "2026-10-13",
+    "acp|311606": "2026-10-13",
+    "acp|311616": "2026-10-13",
+    "acp|311678": "2026-10-13",
+    "acp|311699": "2026-10-13",
+    "acp|311741": "2026-10-13",
+    "acp|311826": "2026-10-13",
+    "acp|311933": "2026-10-13",
+    "acp|312003": "2026-10-13",
+    "acp|312020": "2026-10-13",
+    "acp|312076": "2026-10-13",
+    "acp|312112": "2026-10-13",
+    "acp|312132": "2026-10-13",
+    "acp|312191": "2026-10-13",
+    "acp|312205": "2026-10-13",
+    "acp|312214": "2026-10-13",
+    "acp|312222": "2026-10-13",
+    "acp|312255": "2026-10-13",
+    "acp|312271": "2026-10-13",
+    "acp|312275": "2026-10-13",
+    "acp|312290": "2026-10-13"
   },
   "acpReportStats": {
     "attemptedThisRun": 45,
     "namesFoundThisRun": 44,
-    "reportsCheckedTotal": 315,
-    "updatedAt": "2026-10-12T12:12:13.310845+00:00"
+    "reportsCheckedTotal": 360,
+    "updatedAt": "2026-10-13T11:57:14.830349+00:00"
   },
   "checked": {
     "acp|324019": "2026-10-08",
@@ -564,10 +609,17 @@
     "planning|southdublincountycouncil|lrd25a0014w": "2026-10-08",
     "planning|southdublincountycouncil|lrd26a0002w": "2026-10-08",
     "planning|southdublincountycouncil|lrd26a0005w": "2026-10-08",
+    "planning|southdublincountycouncil|s01a0114": "2026-10-13",
+    "planning|southdublincountycouncil|s01a0186": "2026-10-13",
     "planning|southdublincountycouncil|s01a0242": "2026-10-12",
+    "planning|southdublincountycouncil|s01a0262": "2026-10-13",
+    "planning|southdublincountycouncil|s01a0664": "2026-10-13",
+    "planning|southdublincountycouncil|s01a0706": "2026-10-13",
     "planning|southdublincountycouncil|s02a0044": "2026-10-12",
     "planning|southdublincountycouncil|sd02a0275": "2026-10-12",
     "planning|southdublincountycouncil|sd02a0288": "2026-10-12",
+    "planning|southdublincountycouncil|sd02a0296": "2026-10-13",
+    "planning|southdublincountycouncil|sd02a0394": "2026-10-13",
     "planning|southdublincountycouncil|sd02a0427": "2026-10-12",
     "planning|southdublincountycouncil|sd02a0549": "2026-10-12",
     "planning|southdublincountycouncil|sd03a0002": "2026-10-12",
@@ -758,11 +810,11 @@
   "councilFormStats": {
     "applicantsVerifiedThisRun": 0,
     "note": "Only publicly linked PDF application forms; image-only documents need manual review.",
-    "pagesCheckedThisRun": 35,
-    "pagesCheckedTotal": 244,
+    "pagesCheckedThisRun": 7,
+    "pagesCheckedTotal": 251,
     "pagesWithFormLinks": 0,
     "pdfsInspectedThisRun": 0,
-    "updatedAt": "2026-10-12T12:12:21.578592+00:00"
+    "updatedAt": "2026-10-13T11:57:17.554102+00:00"
   },
   "cursor": {
     "acp": 0,
@@ -1683,6 +1735,7 @@
     "planning|southdublincountycouncil|lrd25a0014w": "2026-10-08",
     "planning|southdublincountycouncil|lrd26a0002w": "2026-10-08",
     "planning|southdublincountycouncil|lrd26a0005w": "2026-10-08",
+    "planning|southdublincountycouncil|lrd26a0006w": "2026-10-13",
     "planning|southdublincountycouncil|s01a0114": "2026-10-08",
     "planning|southdublincountycouncil|s01a0186": "2026-10-08",
     "planning|southdublincountycouncil|s01a0242": "2026-10-08",
@@ -3756,6 +3809,270 @@
       "applicantSource": "https://www.pleanala.ie/en-ie/case/310568",
       "verifiedAt": "2026-10-12"
     },
+    "acp|310570": {
+      "applicant": "Cairn Homes Properties Ltd",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/310570",
+      "verifiedAt": "2026-10-13"
+    },
+    "acp|310575": {
+      "applicant": "Sathel Limited",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/310575",
+      "verifiedAt": "2026-10-13"
+    },
+    "acp|310578": {
+      "applicant": "Ballycullen Limited Partnership",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/310578",
+      "verifiedAt": "2026-10-13"
+    },
+    "acp|310722": {
+      "applicant": "Ruirside Developments Limited",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/310722",
+      "verifiedAt": "2026-10-13"
+    },
+    "acp|310782": {
+      "applicant": "Michael Ryan",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/310782",
+      "verifiedAt": "2026-10-13"
+    },
+    "acp|310797": {
+      "applicant": "Alber Developments Ltd.",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/310797",
+      "verifiedAt": "2026-10-13"
+    },
+    "acp|310865": {
+      "applicant": "Cairn Home Properties Limited",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/310865",
+      "verifiedAt": "2026-10-13"
+    },
+    "acp|310892": {
+      "applicant": "Debussy Properties Limited",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/310892",
+      "verifiedAt": "2026-10-13"
+    },
+    "acp|310910": {
+      "applicant": "Dwyer Nolan Developments Limited",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/310910",
+      "verifiedAt": "2026-10-13"
+    },
+    "acp|310912": {
+      "applicant": "Briargate Developments Newbridge Limited",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/310912",
+      "verifiedAt": "2026-10-13"
+    },
+    "acp|310944": {
+      "applicant": "Belwall Limited",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/310944",
+      "verifiedAt": "2026-10-13"
+    },
+    "acp|311016": {
+      "applicant": "The Shoreline Partnership",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/311016",
+      "verifiedAt": "2026-10-13"
+    },
+    "acp|311028": {
+      "applicant": "Rockmill Limited",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/311028",
+      "verifiedAt": "2026-10-13"
+    },
+    "acp|311037": {
+      "applicant": "Teresa Monaghan",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/311037",
+      "verifiedAt": "2026-10-13"
+    },
+    "acp|311040": {
+      "applicant": "Glan Developments Ltd",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/311040",
+      "verifiedAt": "2026-10-13"
+    },
+    "acp|311059": {
+      "applicant": "Aledo Donabate Limited",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/311059",
+      "verifiedAt": "2026-10-13"
+    },
+    "acp|311181": {
+      "applicant": "Shankill Property Investments Ltd",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/311181",
+      "verifiedAt": "2026-10-13"
+    },
+    "acp|311199": {
+      "applicant": "ES Corella Creek Limited",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/311199",
+      "verifiedAt": "2026-10-13"
+    },
+    "acp|311287": {
+      "applicant": "Pembroke Partnership Limited",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/311287",
+      "verifiedAt": "2026-10-13"
+    },
+    "acp|311290": {
+      "applicant": "Torca Development Limited",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/311290",
+      "verifiedAt": "2026-10-13"
+    },
+    "acp|311329": {
+      "applicant": "Clonkeen Investments DAC",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/311329",
+      "verifiedAt": "2026-10-13"
+    },
+    "acp|311540": {
+      "applicant": "Homeland Silverpines Limited",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/311540",
+      "verifiedAt": "2026-10-13"
+    },
+    "acp|311568": {
+      "applicant": "Bartra Property Cookstown Limited",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/311568",
+      "verifiedAt": "2026-10-13"
+    },
+    "acp|311588": {
+      "applicant": "Voyage Property Limited",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/311588",
+      "verifiedAt": "2026-10-13"
+    },
+    "acp|311606": {
+      "applicant": "Golden Port Estates Limited",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/311606",
+      "verifiedAt": "2026-10-13"
+    },
+    "acp|311616": {
+      "applicant": "MacCabe Durney Barnes",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/311616",
+      "verifiedAt": "2026-10-13"
+    },
+    "acp|311678": {
+      "applicant": "Loughdale Properties Limited",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/311678",
+      "verifiedAt": "2026-10-13"
+    },
+    "acp|311699": {
+      "applicant": "Torca Developments Ltd",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/311699",
+      "verifiedAt": "2026-10-13"
+    },
+    "acp|311741": {
+      "applicant": "Steinfort Investments Fund",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/311741",
+      "verifiedAt": "2026-10-13"
+    },
+    "acp|311826": {
+      "applicant": "Knockrabo Investments DAC",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/311826",
+      "verifiedAt": "2026-10-13"
+    },
+    "acp|311933": {
+      "applicant": "Cairn Homes Properties Limited",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/311933",
+      "verifiedAt": "2026-10-13"
+    },
+    "acp|312003": {
+      "applicant": "Cairn Homes Properties Limited",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/312003",
+      "verifiedAt": "2026-10-13"
+    },
+    "acp|312020": {
+      "applicant": "Denver Valley Developments Limited",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/312020",
+      "verifiedAt": "2026-10-13"
+    },
+    "acp|312076": {
+      "applicant": "O'Flynn Construction Co. Unlimited Company",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/312076",
+      "verifiedAt": "2026-10-13"
+    },
+    "acp|312112": {
+      "applicant": "Quintain Developments Ireland Limited",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/312112",
+      "verifiedAt": "2026-10-13"
+    },
+    "acp|312132": {
+      "applicant": "Cornel Living Limited",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/312132",
+      "verifiedAt": "2026-10-13"
+    },
+    "acp|312191": {
+      "applicant": "K King Construction Limited",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/312191",
+      "verifiedAt": "2026-10-13"
+    },
+    "acp|312205": {
+      "applicant": "Moffett Investments Holdings Unlimited",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/312205",
+      "verifiedAt": "2026-10-13"
+    },
+    "acp|312214": {
+      "applicant": "Heronvale Developments Ltd",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/312214",
+      "verifiedAt": "2026-10-13"
+    },
+    "acp|312222": {
+      "applicant": "Bluescape Limited",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/312222",
+      "verifiedAt": "2026-10-13"
+    },
+    "acp|312255": {
+      "applicant": "Torca Construction Limited",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/312255",
+      "verifiedAt": "2026-10-13"
+    },
+    "acp|312271": {
+      "applicant": "Glenveagh Homes Limited",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/312271",
+      "verifiedAt": "2026-10-13"
+    },
+    "acp|312275": {
+      "applicant": "Moykerr Limited",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/312275",
+      "verifiedAt": "2026-10-13"
+    },
+    "acp|312290": {
+      "applicant": "Greenseed Limited",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/312290",
+      "verifiedAt": "2026-10-13"
+    },
     "acp|314744": {
       "applicant": "Glenveagh Homes Ltd",
       "applicantEvidence": "ACP case matched to the exact council application reference",
@@ -4959,5 +5276,5 @@
     "newApplicants": 23,
     "sourcePagesInspected": 33
   },
-  "updatedAt": "2026-10-12T12:12:44.173536+00:00"
+  "updatedAt": "2026-10-13T11:57:41.854700+00:00"
 }
