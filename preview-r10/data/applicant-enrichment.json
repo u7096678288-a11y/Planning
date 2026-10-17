@@ -494,13 +494,58 @@
     "acp|316063": "2026-10-16",
     "acp|316065": "2026-10-16",
     "acp|316068": "2026-10-16",
-    "acp|316108": "2026-10-16"
+    "acp|316108": "2026-10-16",
+    "acp|317136": "2026-10-17",
+    "acp|317218": "2026-10-17",
+    "acp|317266": "2026-10-17",
+    "acp|317274": "2026-10-17",
+    "acp|317290": "2026-10-17",
+    "acp|317318": "2026-10-17",
+    "acp|317346": "2026-10-17",
+    "acp|317438": "2026-10-17",
+    "acp|317443": "2026-10-17",
+    "acp|317627": "2026-10-17",
+    "acp|317665": "2026-10-17",
+    "acp|317668": "2026-10-17",
+    "acp|317840": "2026-10-17",
+    "acp|317921": "2026-10-17",
+    "acp|317935": "2026-10-17",
+    "acp|317979": "2026-10-17",
+    "acp|317996": "2026-10-17",
+    "acp|318075": "2026-10-17",
+    "acp|318078": "2026-10-17",
+    "acp|318108": "2026-10-17",
+    "acp|318247": "2026-10-17",
+    "acp|318255": "2026-10-17",
+    "acp|318277": "2026-10-17",
+    "acp|318339": "2026-10-17",
+    "acp|318350": "2026-10-17",
+    "acp|318403": "2026-10-17",
+    "acp|318458": "2026-10-17",
+    "acp|318465": "2026-10-17",
+    "acp|318486": "2026-10-17",
+    "acp|318508": "2026-10-17",
+    "acp|318523": "2026-10-17",
+    "acp|318571": "2026-10-17",
+    "acp|318687": "2026-10-17",
+    "acp|318727": "2026-10-17",
+    "acp|318784": "2026-10-17",
+    "acp|318904": "2026-10-17",
+    "acp|318952": "2026-10-17",
+    "acp|318989": "2026-10-17",
+    "acp|319121": "2026-10-17",
+    "acp|319137": "2026-10-17",
+    "acp|319353": "2026-10-17",
+    "acp|319421": "2026-10-17",
+    "acp|319429": "2026-10-17",
+    "acp|319474": "2026-10-17",
+    "acp|319481": "2026-10-17"
   },
   "acpReportStats": {
     "attemptedThisRun": 45,
     "namesFoundThisRun": 44,
-    "reportsCheckedTotal": 495,
-    "updatedAt": "2026-10-16T09:07:40.496828+00:00"
+    "reportsCheckedTotal": 540,
+    "updatedAt": "2026-10-17T08:39:55.862448+00:00"
   },
   "checked": {
     "acp|324019": "2026-10-08",
@@ -950,7 +995,7 @@
     "pagesCheckedTotal": 252,
     "pagesWithFormLinks": 0,
     "pdfsInspectedThisRun": 0,
-    "updatedAt": "2026-10-16T09:07:40.853986+00:00"
+    "updatedAt": "2026-10-17T08:39:56.227108+00:00"
   },
   "cursor": {
     "acp": 0,
@@ -5004,6 +5049,270 @@
       "planningReference": "2364",
       "verifiedAt": "2026-10-08"
     },
+    "acp|317136": {
+      "applicant": "Malkey Limited",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/317136",
+      "verifiedAt": "2026-10-17"
+    },
+    "acp|317266": {
+      "applicant": "William Neville and Sons",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/317266",
+      "verifiedAt": "2026-10-17"
+    },
+    "acp|317274": {
+      "applicant": "Visdon Limited",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/317274",
+      "verifiedAt": "2026-10-17"
+    },
+    "acp|317290": {
+      "applicant": "Glenveagh Homes Limited",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/317290",
+      "verifiedAt": "2026-10-17"
+    },
+    "acp|317318": {
+      "applicant": "Daingean Road Residential Limited",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/317318",
+      "verifiedAt": "2026-10-17"
+    },
+    "acp|317346": {
+      "applicant": "Fingal County Council",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/317346",
+      "verifiedAt": "2026-10-17"
+    },
+    "acp|317438": {
+      "applicant": "St. Vincent's Hospital Fairview",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/317438",
+      "verifiedAt": "2026-10-17"
+    },
+    "acp|317443": {
+      "applicant": "Shannon Homes Dublin Unlimited Company",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/317443",
+      "verifiedAt": "2026-10-17"
+    },
+    "acp|317627": {
+      "applicant": "AAI Palmerstown Limited",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/317627",
+      "verifiedAt": "2026-10-17"
+    },
+    "acp|317665": {
+      "applicant": "Ladas Property Company Limited",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/317665",
+      "verifiedAt": "2026-10-17"
+    },
+    "acp|317668": {
+      "applicant": "AAI Palmerstown Limited",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/317668",
+      "verifiedAt": "2026-10-17"
+    },
+    "acp|317840": {
+      "applicant": "Bindford Limited",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/317840",
+      "verifiedAt": "2026-10-17"
+    },
+    "acp|317921": {
+      "applicant": "Sandford Living Limited",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/317921",
+      "verifiedAt": "2026-10-17"
+    },
+    "acp|317935": {
+      "applicant": "Donard Properties Limited",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/317935",
+      "verifiedAt": "2026-10-17"
+    },
+    "acp|317979": {
+      "applicant": "Seabren Developments Ltd and Circle VHA CLG",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/317979",
+      "verifiedAt": "2026-10-17"
+    },
+    "acp|317996": {
+      "applicant": "Westleton Limited",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/317996",
+      "verifiedAt": "2026-10-17"
+    },
+    "acp|318075": {
+      "applicant": "Linders of Smithfield Limited",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/318075",
+      "verifiedAt": "2026-10-17"
+    },
+    "acp|318078": {
+      "applicant": "Ardstone Homes",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/318078",
+      "verifiedAt": "2026-10-17"
+    },
+    "acp|318108": {
+      "applicant": "JOM Investments Unlimited Company",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/318108",
+      "verifiedAt": "2026-10-17"
+    },
+    "acp|318247": {
+      "applicant": "GEDV Monkstown Owner Limited",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/318247",
+      "verifiedAt": "2026-10-17"
+    },
+    "acp|318255": {
+      "applicant": "Dante Property Company Ltd",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/318255",
+      "verifiedAt": "2026-10-17"
+    },
+    "acp|318277": {
+      "applicant": "Havenfalls Limited",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/318277",
+      "verifiedAt": "2026-10-17"
+    },
+    "acp|318339": {
+      "applicant": "John Flanagan Developements Ltd",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/318339",
+      "verifiedAt": "2026-10-17"
+    },
+    "acp|318350": {
+      "applicant": "ESJ Blackparks Ltd.",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/318350",
+      "verifiedAt": "2026-10-17"
+    },
+    "acp|318403": {
+      "applicant": "Glenveagh Homes Ltd",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/318403",
+      "verifiedAt": "2026-10-17"
+    },
+    "acp|318458": {
+      "applicant": "Bartra Property Cookstown Limited",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/318458",
+      "verifiedAt": "2026-10-17"
+    },
+    "acp|318465": {
+      "applicant": "Cairn Homes Properties Limited",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/318465",
+      "verifiedAt": "2026-10-17"
+    },
+    "acp|318486": {
+      "applicant": "Marina Quarter Ltd",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/318486",
+      "verifiedAt": "2026-10-17"
+    },
+    "acp|318508": {
+      "applicant": "Marina Quarter Ltd",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/318508",
+      "verifiedAt": "2026-10-17"
+    },
+    "acp|318523": {
+      "applicant": "Marina Quarter Ltd",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/318523",
+      "verifiedAt": "2026-10-17"
+    },
+    "acp|318571": {
+      "applicant": "Tulfarris CG Ltd.",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/318571",
+      "verifiedAt": "2026-10-17"
+    },
+    "acp|318687": {
+      "applicant": "Glenveagh Living Limited",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/318687",
+      "verifiedAt": "2026-10-17"
+    },
+    "acp|318727": {
+      "applicant": "Carnarvon Limited",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/318727",
+      "verifiedAt": "2026-10-17"
+    },
+    "acp|318784": {
+      "applicant": "Carnarvon Limited",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/318784",
+      "verifiedAt": "2026-10-17"
+    },
+    "acp|318904": {
+      "applicant": "Longview Estates Ltd",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/318904",
+      "verifiedAt": "2026-10-17"
+    },
+    "acp|318952": {
+      "applicant": "Alber Developments Ltd",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/318952",
+      "verifiedAt": "2026-10-17"
+    },
+    "acp|318989": {
+      "applicant": "Emrajare Limited",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/318989",
+      "verifiedAt": "2026-10-17"
+    },
+    "acp|319121": {
+      "applicant": "Malclose Limited",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/319121",
+      "verifiedAt": "2026-10-17"
+    },
+    "acp|319137": {
+      "applicant": "Keldrum Limited",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/319137",
+      "verifiedAt": "2026-10-17"
+    },
+    "acp|319353": {
+      "applicant": "Rycroft SLR Limited",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/319353",
+      "verifiedAt": "2026-10-17"
+    },
+    "acp|319421": {
+      "applicant": "The Adroit Company Limited",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/319421",
+      "verifiedAt": "2026-10-17"
+    },
+    "acp|319429": {
+      "applicant": "Herberton Road Development Limited",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/319429",
+      "verifiedAt": "2026-10-17"
+    },
+    "acp|319474": {
+      "applicant": "Avonvard Limited",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/319474",
+      "verifiedAt": "2026-10-17"
+    },
+    "acp|319481": {
+      "applicant": "OTR Development Company Limited",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/319481",
+      "verifiedAt": "2026-10-17"
+    },
     "acp|320747": {
       "applicant": "Marshall Yards Development Company Limited",
       "applicantEvidence": "Official ACP Board Order names the first-party appellant and the exact Galway County Council reference 24/60733.",
@@ -6223,5 +6532,5 @@
     "newApplicants": 23,
     "sourcePagesInspected": 33
   },
-  "updatedAt": "2026-10-16T09:08:07.963087+00:00"
+  "updatedAt": "2026-10-17T08:40:12.977745+00:00"
 }
