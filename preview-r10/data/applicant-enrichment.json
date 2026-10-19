@@ -584,13 +584,58 @@
     "acp|321685": "2026-10-18",
     "acp|321688": "2026-10-18",
     "acp|321720": "2026-10-18",
-    "acp|321737": "2026-10-18"
+    "acp|321737": "2026-10-18",
+    "acp|321838": "2026-10-19",
+    "acp|321931": "2026-10-19",
+    "acp|321932": "2026-10-19",
+    "acp|321949": "2026-10-19",
+    "acp|322067": "2026-10-19",
+    "acp|322077": "2026-10-19",
+    "acp|322106": "2026-10-19",
+    "acp|322195": "2026-10-19",
+    "acp|322216": "2026-10-19",
+    "acp|322222": "2026-10-19",
+    "acp|322239": "2026-10-19",
+    "acp|322422": "2026-10-19",
+    "acp|322476": "2026-10-19",
+    "acp|322479": "2026-10-19",
+    "acp|322516": "2026-10-19",
+    "acp|322540": "2026-10-19",
+    "acp|322566": "2026-10-19",
+    "acp|322643": "2026-10-19",
+    "acp|322679": "2026-10-19",
+    "acp|322702": "2026-10-19",
+    "acp|322704": "2026-10-19",
+    "acp|322734": "2026-10-19",
+    "acp|322813": "2026-10-19",
+    "acp|322837": "2026-10-19",
+    "acp|322851": "2026-10-19",
+    "acp|323150": "2026-10-19",
+    "acp|323192": "2026-10-19",
+    "acp|323202": "2026-10-19",
+    "acp|323280": "2026-10-19",
+    "acp|323393": "2026-10-19",
+    "acp|323479": "2026-10-19",
+    "acp|323664": "2026-10-19",
+    "acp|323735": "2026-10-19",
+    "acp|323764": "2026-10-19",
+    "acp|323813": "2026-10-19",
+    "acp|323859": "2026-10-19",
+    "acp|323904": "2026-10-19",
+    "acp|323916": "2026-10-19",
+    "acp|323979": "2026-10-19",
+    "acp|324007": "2026-10-19",
+    "acp|324011": "2026-10-19",
+    "acp|324013": "2026-10-19",
+    "acp|324016": "2026-10-19",
+    "acp|324019": "2026-10-19",
+    "acp|324025": "2026-10-19"
   },
   "acpReportStats": {
     "attemptedThisRun": 45,
-    "namesFoundThisRun": 42,
-    "reportsCheckedTotal": 585,
-    "updatedAt": "2026-10-18T08:56:30.918616+00:00"
+    "namesFoundThisRun": 31,
+    "reportsCheckedTotal": 630,
+    "updatedAt": "2026-10-19T10:04:28.868855+00:00"
   },
   "checked": {
     "acp|324019": "2026-10-08",
@@ -1040,7 +1085,7 @@
     "pagesCheckedTotal": 252,
     "pagesWithFormLinks": 0,
     "pdfsInspectedThisRun": 0,
-    "updatedAt": "2026-10-18T08:56:31.287615+00:00"
+    "updatedAt": "2026-10-19T10:04:29.235207+00:00"
   },
   "cursor": {
     "acp": 0,
@@ -5634,6 +5679,192 @@
       "planningReference": "2460487",
       "verifiedAt": "2026-10-08"
     },
+    "acp|321838": {
+      "applicant": "Michael Ryan",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/321838",
+      "verifiedAt": "2026-10-19"
+    },
+    "acp|321931": {
+      "applicant": "The Land Development Agency in partnership with Dublin City Council",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/321931",
+      "verifiedAt": "2026-10-19"
+    },
+    "acp|321932": {
+      "applicant": "Birchwell Developments Ltd.",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/321932",
+      "verifiedAt": "2026-10-19"
+    },
+    "acp|321949": {
+      "applicant": "Dwellings Development Bishopstown Limited",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/321949",
+      "verifiedAt": "2026-10-19"
+    },
+    "acp|322067": {
+      "applicant": "Novot Holdings Ltd.",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/322067",
+      "verifiedAt": "2026-10-19"
+    },
+    "acp|322077": {
+      "applicant": "Knockrabo Investments DAC",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/322077",
+      "verifiedAt": "2026-10-19"
+    },
+    "acp|322106": {
+      "applicant": "1 Celbridge West Land Limited",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/322106",
+      "verifiedAt": "2026-10-19"
+    },
+    "acp|322195": {
+      "applicant": "Grafton Issuer DAC",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/322195",
+      "verifiedAt": "2026-10-19"
+    },
+    "acp|322216": {
+      "applicant": "Liscove Limited",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/322216",
+      "verifiedAt": "2026-10-19"
+    },
+    "acp|322222": {
+      "applicant": "Zirbac DLK Ltd",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/322222",
+      "verifiedAt": "2026-10-19"
+    },
+    "acp|322239": {
+      "applicant": "Cluid Housing Association",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/322239",
+      "verifiedAt": "2026-10-19"
+    },
+    "acp|322422": {
+      "applicant": "Thomas Bather",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/322422",
+      "verifiedAt": "2026-10-19"
+    },
+    "acp|322476": {
+      "applicant": "Keldrum Limited",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/322476",
+      "verifiedAt": "2026-10-19"
+    },
+    "acp|322479": {
+      "applicant": "Cairn Homes Properties Limited",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/322479",
+      "verifiedAt": "2026-10-19"
+    },
+    "acp|322516": {
+      "applicant": "Marshall Yards Development Company Ltd",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/322516",
+      "verifiedAt": "2026-10-19"
+    },
+    "acp|322566": {
+      "applicant": "Marshall Yards Development Company Ltd",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/322566",
+      "verifiedAt": "2026-10-19"
+    },
+    "acp|322643": {
+      "applicant": "Athenry Ventures Ltd",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/322643",
+      "verifiedAt": "2026-10-19"
+    },
+    "acp|322679": {
+      "applicant": "The Iveagh Trust",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/322679",
+      "verifiedAt": "2026-10-19"
+    },
+    "acp|322702": {
+      "applicant": "Shannon Homes Dublin Unlimited Company",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/322702",
+      "verifiedAt": "2026-10-19"
+    },
+    "acp|322704": {
+      "applicant": "KPH Construction",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/322704",
+      "verifiedAt": "2026-10-19"
+    },
+    "acp|322734": {
+      "applicant": "Bridgewater Homes Limited",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/322734",
+      "verifiedAt": "2026-10-19"
+    },
+    "acp|322813": {
+      "applicant": "Winterwood Developments Limited",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/322813",
+      "verifiedAt": "2026-10-19"
+    },
+    "acp|322837": {
+      "applicant": "Barry Field Ltd",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/322837",
+      "verifiedAt": "2026-10-19"
+    },
+    "acp|322851": {
+      "applicant": "Tergnum Properties Limited",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/322851",
+      "verifiedAt": "2026-10-19"
+    },
+    "acp|323150": {
+      "applicant": "The land Development Agency",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/323150",
+      "verifiedAt": "2026-10-19"
+    },
+    "acp|323192": {
+      "applicant": "Newmount Homes Limited",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/323192",
+      "verifiedAt": "2026-10-19"
+    },
+    "acp|323280": {
+      "applicant": "Zolbury Limited",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/323280",
+      "verifiedAt": "2026-10-19"
+    },
+    "acp|323393": {
+      "applicant": "Linders of Smithfield Limited",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/323393",
+      "verifiedAt": "2026-10-19"
+    },
+    "acp|323479": {
+      "applicant": "Watfore Limited",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/323479",
+      "verifiedAt": "2026-10-19"
+    },
+    "acp|323664": {
+      "applicant": "1 Terenure Land Limited",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/323664",
+      "verifiedAt": "2026-10-19"
+    },
+    "acp|323735": {
+      "applicant": "KPH Construction",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/323735",
+      "verifiedAt": "2026-10-19"
+    },
     "acp|324062": {
       "applicant": "Glenveagh Homes Ltd.",
       "applicantEvidence": "Matched ACP case to exact council application reference; applicant named in linked official record",
@@ -6829,5 +7060,5 @@
     "newApplicants": 23,
     "sourcePagesInspected": 33
   },
-  "updatedAt": "2026-10-18T08:56:56.717275+00:00"
+  "updatedAt": "2026-10-19T10:04:51.837595+00:00"
 }
