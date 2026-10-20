@@ -557,6 +557,7 @@
     "acp|320056": "2026-10-18",
     "acp|320062": "2026-10-18",
     "acp|320106": "2026-10-18",
+    "acp|320213": "2026-10-20",
     "acp|320249": "2026-10-18",
     "acp|320285": "2026-10-18",
     "acp|320288": "2026-10-18",
@@ -610,6 +611,7 @@
     "acp|322813": "2026-10-19",
     "acp|322837": "2026-10-19",
     "acp|322851": "2026-10-19",
+    "acp|323029": "2026-10-20",
     "acp|323150": "2026-10-19",
     "acp|323192": "2026-10-19",
     "acp|323202": "2026-10-19",
@@ -629,13 +631,56 @@
     "acp|324013": "2026-10-19",
     "acp|324016": "2026-10-19",
     "acp|324019": "2026-10-19",
-    "acp|324025": "2026-10-19"
+    "acp|324024": "2026-10-20",
+    "acp|324025": "2026-10-19",
+    "acp|324030": "2026-10-20",
+    "acp|324035": "2026-10-20",
+    "acp|324038": "2026-10-20",
+    "acp|324043": "2026-10-20",
+    "acp|324047": "2026-10-20",
+    "acp|324056": "2026-10-20",
+    "acp|324071": "2026-10-20",
+    "acp|324074": "2026-10-20",
+    "acp|324080": "2026-10-20",
+    "acp|324123": "2026-10-20",
+    "acp|324127": "2026-10-20",
+    "acp|324139": "2026-10-20",
+    "acp|324140": "2026-10-20",
+    "acp|324144": "2026-10-20",
+    "acp|324173": "2026-10-20",
+    "acp|324182": "2026-10-20",
+    "acp|324186": "2026-10-20",
+    "acp|324237": "2026-10-20",
+    "acp|324245": "2026-10-20",
+    "acp|324275": "2026-10-20",
+    "acp|324300": "2026-10-20",
+    "acp|324331": "2026-10-20",
+    "acp|324332": "2026-10-20",
+    "acp|324349": "2026-10-20",
+    "acp|324435": "2026-10-20",
+    "acp|324442": "2026-10-20",
+    "acp|324484": "2026-10-20",
+    "acp|324546": "2026-10-20",
+    "acp|324554": "2026-10-20",
+    "acp|324555": "2026-10-20",
+    "acp|324557": "2026-10-20",
+    "acp|324570": "2026-10-20",
+    "acp|324580": "2026-10-20",
+    "acp|324586": "2026-10-20",
+    "acp|324588": "2026-10-20",
+    "acp|324603": "2026-10-20",
+    "acp|324627": "2026-10-20",
+    "acp|324648": "2026-10-20",
+    "acp|500965": "2026-10-20",
+    "acp|500992": "2026-10-20",
+    "acp|501338": "2026-10-20",
+    "acp|501826": "2026-10-20"
   },
   "acpReportStats": {
     "attemptedThisRun": 45,
-    "namesFoundThisRun": 31,
-    "reportsCheckedTotal": 630,
-    "updatedAt": "2026-10-19T10:04:28.868855+00:00"
+    "namesFoundThisRun": 10,
+    "reportsCheckedTotal": 675,
+    "updatedAt": "2026-10-20T09:32:07.761251+00:00"
   },
   "checked": {
     "acp|324019": "2026-10-08",
@@ -1085,7 +1130,7 @@
     "pagesCheckedTotal": 252,
     "pagesWithFormLinks": 0,
     "pdfsInspectedThisRun": 0,
-    "updatedAt": "2026-10-19T10:04:29.235207+00:00"
+    "updatedAt": "2026-10-20T09:32:08.129327+00:00"
   },
   "cursor": {
     "acp": 0,
@@ -1821,6 +1866,9 @@
     "acp|324648": "2026-10-14",
     "acp|324661": "2026-10-14",
     "acp|324684": "2026-10-14",
+    "acp|324701": "2026-10-20",
+    "acp|324706": "2026-10-20",
+    "acp|324712": "2026-10-20",
     "acp|500965": "2026-10-08",
     "acp|500992": "2026-10-08",
     "acp|501338": "2026-10-08",
@@ -5493,6 +5541,12 @@
       "applicantSource": "https://www.pleanala.ie/en-ie/case/320106",
       "verifiedAt": "2026-10-18"
     },
+    "acp|320213": {
+      "applicant": "Unlimited Company",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/320213",
+      "verifiedAt": "2026-10-20"
+    },
     "acp|320249": {
       "applicant": "Unlimited Company",
       "applicantEvidence": "Explicit Applicant party on official ACP case page",
@@ -5823,6 +5877,12 @@
       "applicantSource": "https://www.pleanala.ie/en-ie/case/322851",
       "verifiedAt": "2026-10-19"
     },
+    "acp|323029": {
+      "applicant": "Cairn Homes Properties Limited",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/323029",
+      "verifiedAt": "2026-10-20"
+    },
     "acp|323150": {
       "applicant": "The land Development Agency",
       "applicantEvidence": "Explicit Applicant party on official ACP case page",
@@ -5865,6 +5925,12 @@
       "applicantSource": "https://www.pleanala.ie/en-ie/case/323735",
       "verifiedAt": "2026-10-19"
     },
+    "acp|324047": {
+      "applicant": "Waterside block 9 developments",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/324047",
+      "verifiedAt": "2026-10-20"
+    },
     "acp|324062": {
       "applicant": "Glenveagh Homes Ltd.",
       "applicantEvidence": "Matched ACP case to exact council application reference; applicant named in linked official record",
@@ -5881,6 +5947,18 @@
       "planningReference": "2560877",
       "verifiedAt": "2026-10-08"
     },
+    "acp|324139": {
+      "applicant": "Joshua Guy",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/324139",
+      "verifiedAt": "2026-10-20"
+    },
+    "acp|324186": {
+      "applicant": "Cork County GAA Board",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/324186",
+      "verifiedAt": "2026-10-20"
+    },
     "acp|324204": {
       "applicant": "Earlsfort Developments Drogheda Limited",
       "applicantEvidence": "Matched ACP case to exact council application reference; applicant named in linked official record",
@@ -5896,6 +5974,12 @@
       "planningAuthority": "Galway County Council",
       "planningReference": "2660056",
       "verifiedAt": "2026-10-08"
+    },
+    "acp|324300": {
+      "applicant": "Cosgrave Property Group",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/324300",
+      "verifiedAt": "2026-10-20"
     },
     "acp|324442": {
       "developer": "Land Development Agency",
@@ -5944,6 +6028,54 @@
       "planningAuthority": "Kildare County Council",
       "planningReference": "2660381",
       "verifiedAt": "2026-10-14"
+    },
+    "acp|324701": {
+      "applicant": "Wrightwood Development Ltd",
+      "applicantEvidence": "ACP case reference matched to an exact council application",
+      "applicantSource": "http://www.eplanning.ie/KerryCC/AppFileRefDetails/2660718/0",
+      "planningAuthority": "Kerry County Council",
+      "planningReference": "2660718",
+      "verifiedAt": "2026-10-20"
+    },
+    "acp|324706": {
+      "applicant": "Dargan Woods Devco Ltd",
+      "applicantEvidence": "ACP case matched to the exact council application reference",
+      "applicantSource": "http://www.eplanning.ie/LaoisCC/AppFileRefDetails/2660255/0",
+      "planningAuthority": "Laois County Council",
+      "planningReference": "2660255",
+      "verifiedAt": "2026-10-20"
+    },
+    "acp|324712": {
+      "applicant": "Marshall Yards Development Company Ltd.",
+      "applicantEvidence": "ACP case reference matched to an exact council application",
+      "applicantSource": "http://www.eplanning.ie/GalwayCC/AppFileRefDetails/2460733/0",
+      "planningAuthority": "Galway County Council",
+      "planningReference": "2460733",
+      "verifiedAt": "2026-10-20"
+    },
+    "acp|500965": {
+      "applicant": "BHA Developments Carlow Ltd",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/500965",
+      "verifiedAt": "2026-10-20"
+    },
+    "acp|500992": {
+      "applicant": "N11 Senior Living Limited",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/500992",
+      "verifiedAt": "2026-10-20"
+    },
+    "acp|501338": {
+      "applicant": "Balmoral Land Beresford Limited",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/501338",
+      "verifiedAt": "2026-10-20"
+    },
+    "acp|501826": {
+      "applicant": "Kingscroft Developments Limited",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/501826",
+      "verifiedAt": "2026-10-20"
     },
     "planning|cavancountycouncil|2560057": {
       "applicant": "Shire Development Partnership",
@@ -7060,5 +7192,5 @@
     "newApplicants": 23,
     "sourcePagesInspected": 33
   },
-  "updatedAt": "2026-10-19T10:04:51.837595+00:00"
+  "updatedAt": "2026-10-20T09:32:39.548587+00:00"
 }
