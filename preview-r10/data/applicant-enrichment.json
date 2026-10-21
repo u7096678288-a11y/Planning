@@ -659,6 +659,7 @@
     "acp|324349": "2026-10-20",
     "acp|324435": "2026-10-20",
     "acp|324442": "2026-10-20",
+    "acp|324475": "2026-10-21",
     "acp|324484": "2026-10-20",
     "acp|324546": "2026-10-20",
     "acp|324554": "2026-10-20",
@@ -677,10 +678,10 @@
     "acp|501826": "2026-10-20"
   },
   "acpReportStats": {
-    "attemptedThisRun": 45,
-    "namesFoundThisRun": 10,
-    "reportsCheckedTotal": 675,
-    "updatedAt": "2026-10-20T09:32:07.761251+00:00"
+    "attemptedThisRun": 1,
+    "namesFoundThisRun": 0,
+    "reportsCheckedTotal": 676,
+    "updatedAt": "2026-10-21T09:26:46.807578+00:00"
   },
   "checked": {
     "acp|324019": "2026-10-08",
@@ -1130,7 +1131,7 @@
     "pagesCheckedTotal": 252,
     "pagesWithFormLinks": 0,
     "pdfsInspectedThisRun": 0,
-    "updatedAt": "2026-10-20T09:32:08.129327+00:00"
+    "updatedAt": "2026-10-21T09:26:47.230632+00:00"
   },
   "cursor": {
     "acp": 0,
@@ -7192,5 +7193,5 @@
     "newApplicants": 23,
     "sourcePagesInspected": 33
   },
-  "updatedAt": "2026-10-20T09:32:39.548587+00:00"
+  "updatedAt": "2026-10-21T09:27:10.281009+00:00"
 }
