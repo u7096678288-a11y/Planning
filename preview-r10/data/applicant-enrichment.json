@@ -681,7 +681,7 @@
     "attemptedThisRun": 0,
     "namesFoundThisRun": 0,
     "reportsCheckedTotal": 676,
-    "updatedAt": "2026-10-24T08:57:24.455922+00:00"
+    "updatedAt": "2026-10-25T09:14:10.819897+00:00"
   },
   "checked": {
     "acp|324019": "2026-10-08",
@@ -1131,7 +1131,7 @@
     "pagesCheckedTotal": 252,
     "pagesWithFormLinks": 0,
     "pdfsInspectedThisRun": 0,
-    "updatedAt": "2026-10-24T08:57:24.746395+00:00"
+    "updatedAt": "2026-10-25T09:14:11.194330+00:00"
   },
   "cursor": {
     "acp": 0,
@@ -7193,5 +7193,5 @@
     "newApplicants": 23,
     "sourcePagesInspected": 33
   },
-  "updatedAt": "2026-10-24T08:57:48.418294+00:00"
+  "updatedAt": "2026-10-25T09:14:31.991583+00:00"
 }
