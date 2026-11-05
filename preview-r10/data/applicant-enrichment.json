@@ -681,7 +681,7 @@
     "attemptedThisRun": 0,
     "namesFoundThisRun": 0,
     "reportsCheckedTotal": 676,
-    "updatedAt": "2026-11-04T12:18:38.303209+00:00"
+    "updatedAt": "2026-11-05T12:32:45.456549+00:00"
   },
   "checked": {
     "acp|324019": "2026-10-08",
@@ -1131,7 +1131,7 @@
     "pagesCheckedTotal": 252,
     "pagesWithFormLinks": 0,
     "pdfsInspectedThisRun": 0,
-    "updatedAt": "2026-11-04T12:18:38.583132+00:00"
+    "updatedAt": "2026-11-05T12:32:45.810270+00:00"
   },
   "cursor": {
     "acp": 0,
@@ -1870,6 +1870,16 @@
     "acp|324701": "2026-10-20",
     "acp|324706": "2026-10-20",
     "acp|324712": "2026-10-20",
+    "acp|324722": "2026-11-05",
+    "acp|324729": "2026-11-05",
+    "acp|324732": "2026-11-05",
+    "acp|324742": "2026-11-05",
+    "acp|324744": "2026-11-05",
+    "acp|324745": "2026-11-05",
+    "acp|324746": "2026-11-05",
+    "acp|324748": "2026-11-05",
+    "acp|324750": "2026-11-05",
+    "acp|324752": "2026-11-05",
     "acp|500965": "2026-10-08",
     "acp|500992": "2026-10-08",
     "acp|501338": "2026-10-08",
@@ -6138,6 +6148,62 @@
       "planningReference": "2460733",
       "verifiedAt": "2026-10-20"
     },
+    "acp|324722": {
+      "applicant": "Wrightwood Development Ltd",
+      "applicantEvidence": "ACP case reference matched to an exact council application",
+      "applicantSource": "http://www.eplanning.ie/KerryCC/AppFileRefDetails/2660718/0",
+      "planningAuthority": "Kerry County Council",
+      "planningReference": "2660718",
+      "verifiedAt": "2026-11-05"
+    },
+    "acp|324729": {
+      "applicant": "Ballymore Development Limited",
+      "applicantEvidence": "ACP case matched to the exact council application reference",
+      "applicantSource": "http://www.eplanning.ie/KildareCC/AppFileRefDetails/2660469/0",
+      "planningAuthority": "Kildare County Council",
+      "planningReference": "2660469",
+      "verifiedAt": "2026-11-05"
+    },
+    "acp|324744": {
+      "applicant": "Wrightwood Development Ltd",
+      "applicantEvidence": "ACP case reference matched to an exact council application",
+      "applicantSource": "http://www.eplanning.ie/KerryCC/AppFileRefDetails/2660718/0",
+      "planningAuthority": "Kerry County Council",
+      "planningReference": "2660718",
+      "verifiedAt": "2026-11-05"
+    },
+    "acp|324745": {
+      "applicant": "Kingston Stables Ltd",
+      "applicantEvidence": "ACP case matched to the exact council application reference",
+      "applicantSource": "http://www.eplanning.ie/GalwayCity/AppFileRefDetails/2660282/0",
+      "planningAuthority": "Galway City Council",
+      "planningReference": "2660282",
+      "verifiedAt": "2026-11-05"
+    },
+    "acp|324746": {
+      "applicant": "Wrightwood Development Ltd",
+      "applicantEvidence": "ACP case reference matched to an exact council application",
+      "applicantSource": "http://www.eplanning.ie/KerryCC/AppFileRefDetails/2660718/0",
+      "planningAuthority": "Kerry County Council",
+      "planningReference": "2660718",
+      "verifiedAt": "2026-11-05"
+    },
+    "acp|324748": {
+      "applicant": "Wrightwood Development Ltd",
+      "applicantEvidence": "ACP case reference matched to an exact council application",
+      "applicantSource": "http://www.eplanning.ie/KerryCC/AppFileRefDetails/2660718/0",
+      "planningAuthority": "Kerry County Council",
+      "planningReference": "2660718",
+      "verifiedAt": "2026-11-05"
+    },
+    "acp|324750": {
+      "applicant": "Wrightwood Development Ltd",
+      "applicantEvidence": "ACP case reference matched to an exact council application",
+      "applicantSource": "http://www.eplanning.ie/KerryCC/AppFileRefDetails/2660718/0",
+      "planningAuthority": "Kerry County Council",
+      "planningReference": "2660718",
+      "verifiedAt": "2026-11-05"
+    },
     "acp|500965": {
       "applicant": "BHA Developments Carlow Ltd",
       "applicantEvidence": "Explicit Applicant party on official ACP case page",
@@ -7277,5 +7343,5 @@
     "newApplicants": 23,
     "sourcePagesInspected": 33
   },
-  "updatedAt": "2026-11-04T12:19:04.509200+00:00"
+  "updatedAt": "2026-11-05T12:33:16.780392+00:00"
 }
