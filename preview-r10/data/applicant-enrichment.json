@@ -672,16 +672,19 @@
     "acp|324603": "2026-10-20",
     "acp|324627": "2026-10-20",
     "acp|324648": "2026-10-20",
+    "acp|324732": "2026-11-06",
+    "acp|324742": "2026-11-06",
+    "acp|324752": "2026-11-06",
     "acp|500965": "2026-10-20",
     "acp|500992": "2026-10-20",
     "acp|501338": "2026-10-20",
     "acp|501826": "2026-10-20"
   },
   "acpReportStats": {
-    "attemptedThisRun": 0,
-    "namesFoundThisRun": 0,
-    "reportsCheckedTotal": 676,
-    "updatedAt": "2026-11-05T12:32:45.456549+00:00"
+    "attemptedThisRun": 3,
+    "namesFoundThisRun": 1,
+    "reportsCheckedTotal": 679,
+    "updatedAt": "2026-11-06T12:15:18.591347+00:00"
   },
   "checked": {
     "acp|324019": "2026-10-08",
@@ -1131,7 +1134,7 @@
     "pagesCheckedTotal": 252,
     "pagesWithFormLinks": 0,
     "pdfsInspectedThisRun": 0,
-    "updatedAt": "2026-11-05T12:32:45.810270+00:00"
+    "updatedAt": "2026-11-06T12:15:18.953778+00:00"
   },
   "cursor": {
     "acp": 0,
@@ -6164,6 +6167,12 @@
       "planningReference": "2660469",
       "verifiedAt": "2026-11-05"
     },
+    "acp|324742": {
+      "applicant": "Cumnor Construction Ltd.",
+      "applicantEvidence": "Explicit Applicant party on official ACP case page",
+      "applicantSource": "https://www.pleanala.ie/en-ie/case/324742",
+      "verifiedAt": "2026-11-06"
+    },
     "acp|324744": {
       "applicant": "Wrightwood Development Ltd",
       "applicantEvidence": "ACP case reference matched to an exact council application",
@@ -7343,5 +7352,5 @@
     "newApplicants": 23,
     "sourcePagesInspected": 33
   },
-  "updatedAt": "2026-11-05T12:33:16.780392+00:00"
+  "updatedAt": "2026-11-06T12:15:45.959018+00:00"
 }
