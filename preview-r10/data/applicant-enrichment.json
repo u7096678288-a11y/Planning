@@ -685,7 +685,7 @@
     "attemptedThisRun": 0,
     "namesFoundThisRun": 0,
     "reportsCheckedTotal": 680,
-    "updatedAt": "2026-11-13T12:22:41.829756+00:00"
+    "updatedAt": "2026-11-14T11:37:09.271162+00:00"
   },
   "checked": {
     "acp|324019": "2026-10-08",
@@ -930,16 +930,16 @@
     "planning|southdublincountycouncil|lrd26a0002w": "2026-11-07",
     "planning|southdublincountycouncil|lrd26a0005w": "2026-11-07",
     "planning|southdublincountycouncil|lrd26a0006w": "2026-11-13",
-    "planning|southdublincountycouncil|s01a0114": "2026-10-13",
-    "planning|southdublincountycouncil|s01a0186": "2026-10-13",
-    "planning|southdublincountycouncil|s01a0242": "2026-10-12",
-    "planning|southdublincountycouncil|s01a0262": "2026-10-13",
-    "planning|southdublincountycouncil|s01a0664": "2026-10-13",
-    "planning|southdublincountycouncil|s01a0706": "2026-10-13",
-    "planning|southdublincountycouncil|s02a0044": "2026-10-12",
-    "planning|southdublincountycouncil|sd02a0275": "2026-10-12",
-    "planning|southdublincountycouncil|sd02a0288": "2026-10-12",
-    "planning|southdublincountycouncil|sd02a0296": "2026-10-13",
+    "planning|southdublincountycouncil|s01a0114": "2026-11-14",
+    "planning|southdublincountycouncil|s01a0186": "2026-11-14",
+    "planning|southdublincountycouncil|s01a0242": "2026-11-14",
+    "planning|southdublincountycouncil|s01a0262": "2026-11-14",
+    "planning|southdublincountycouncil|s01a0664": "2026-11-14",
+    "planning|southdublincountycouncil|s01a0706": "2026-11-14",
+    "planning|southdublincountycouncil|s02a0044": "2026-11-14",
+    "planning|southdublincountycouncil|sd02a0275": "2026-11-14",
+    "planning|southdublincountycouncil|sd02a0288": "2026-11-14",
+    "planning|southdublincountycouncil|sd02a0296": "2026-11-14",
     "planning|southdublincountycouncil|sd02a0394": "2026-11-13",
     "planning|southdublincountycouncil|sd02a0427": "2026-11-13",
     "planning|southdublincountycouncil|sd02a0549": "2026-11-13",
@@ -1131,11 +1131,11 @@
   "councilFormStats": {
     "applicantsVerifiedThisRun": 0,
     "note": "Only publicly linked PDF application forms; image-only documents need manual review.",
-    "pagesCheckedThisRun": 35,
+    "pagesCheckedThisRun": 10,
     "pagesCheckedTotal": 252,
     "pagesWithFormLinks": 0,
     "pdfsInspectedThisRun": 0,
-    "updatedAt": "2026-11-13T12:22:43.104744+00:00"
+    "updatedAt": "2026-11-14T11:37:09.897054+00:00"
   },
   "cursor": {
     "acp": 0,
@@ -7381,5 +7381,5 @@
     "newApplicants": 23,
     "sourcePagesInspected": 33
   },
-  "updatedAt": "2026-11-13T12:23:01.258669+00:00"
+  "updatedAt": "2026-11-14T11:37:35.509469+00:00"
 }
