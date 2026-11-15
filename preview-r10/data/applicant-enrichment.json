@@ -685,7 +685,7 @@
     "attemptedThisRun": 0,
     "namesFoundThisRun": 0,
     "reportsCheckedTotal": 680,
-    "updatedAt": "2026-11-14T11:37:09.271162+00:00"
+    "updatedAt": "2026-11-15T12:03:25.546282+00:00"
   },
   "checked": {
     "acp|324019": "2026-10-08",
@@ -1131,11 +1131,11 @@
   "councilFormStats": {
     "applicantsVerifiedThisRun": 0,
     "note": "Only publicly linked PDF application forms; image-only documents need manual review.",
-    "pagesCheckedThisRun": 10,
+    "pagesCheckedThisRun": 0,
     "pagesCheckedTotal": 252,
     "pagesWithFormLinks": 0,
     "pdfsInspectedThisRun": 0,
-    "updatedAt": "2026-11-14T11:37:09.897054+00:00"
+    "updatedAt": "2026-11-15T12:03:25.828261+00:00"
   },
   "cursor": {
     "acp": 0,
@@ -7381,5 +7381,5 @@
     "newApplicants": 23,
     "sourcePagesInspected": 33
   },
-  "updatedAt": "2026-11-14T11:37:35.509469+00:00"
+  "updatedAt": "2026-11-15T12:03:50.763603+00:00"
 }
