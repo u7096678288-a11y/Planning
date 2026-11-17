@@ -685,7 +685,7 @@
     "attemptedThisRun": 0,
     "namesFoundThisRun": 0,
     "reportsCheckedTotal": 680,
-    "updatedAt": "2026-11-16T12:56:03.765473+00:00"
+    "updatedAt": "2026-11-17T13:38:37.965796+00:00"
   },
   "checked": {
     "acp|324019": "2026-10-08",
@@ -1135,7 +1135,7 @@
     "pagesCheckedTotal": 252,
     "pagesWithFormLinks": 0,
     "pdfsInspectedThisRun": 0,
-    "updatedAt": "2026-11-16T12:56:03.992434+00:00"
+    "updatedAt": "2026-11-17T13:38:38.220758+00:00"
   },
   "cursor": {
     "acp": 0,
@@ -1885,6 +1885,7 @@
     "acp|324750": "2026-11-05",
     "acp|324752": "2026-11-05",
     "acp|324754": "2026-11-07",
+    "acp|324777": "2026-11-17",
     "acp|500965": "2026-10-08",
     "acp|500992": "2026-10-08",
     "acp|501338": "2026-10-08",
@@ -6218,6 +6219,14 @@
       "planningReference": "2660718",
       "verifiedAt": "2026-11-05"
     },
+    "acp|324777": {
+      "applicant": "Maynooth Montane Limited",
+      "applicantEvidence": "ACP case matched to the exact council application reference",
+      "applicantSource": "http://www.eplanning.ie/KildareCC/AppFileRefDetails/2660575/0",
+      "planningAuthority": "Kildare County Council",
+      "planningReference": "2660575",
+      "verifiedAt": "2026-11-17"
+    },
     "acp|500965": {
       "applicant": "BHA Developments Carlow Ltd",
       "applicantEvidence": "Explicit Applicant party on official ACP case page",
@@ -7381,5 +7390,5 @@
     "newApplicants": 23,
     "sourcePagesInspected": 33
   },
-  "updatedAt": "2026-11-16T12:56:25.636678+00:00"
+  "updatedAt": "2026-11-17T13:38:58.186048+00:00"
 }
