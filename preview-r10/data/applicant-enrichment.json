@@ -685,7 +685,7 @@
     "attemptedThisRun": 0,
     "namesFoundThisRun": 0,
     "reportsCheckedTotal": 680,
-    "updatedAt": "2026-11-23T14:57:37.591437+00:00"
+    "updatedAt": "2026-11-24T14:59:47.589073+00:00"
   },
   "checked": {
     "acp|324019": "2026-10-08",
@@ -1135,7 +1135,7 @@
     "pagesCheckedTotal": 252,
     "pagesWithFormLinks": 0,
     "pdfsInspectedThisRun": 0,
-    "updatedAt": "2026-11-23T14:57:37.888298+00:00"
+    "updatedAt": "2026-11-24T14:59:47.823531+00:00"
   },
   "cursor": {
     "acp": 0,
@@ -2041,6 +2041,7 @@
     "planning|meathcountycouncil|2660481": "2026-10-08",
     "planning|meathcountycouncil|2660788": "2026-10-08",
     "planning|meathcountycouncil|2661080": "2026-10-08",
+    "planning|meathcountycouncil|2661276": "2026-11-24",
     "planning|meathcountycouncil|aa170488": "2026-10-08",
     "planning|meathcountycouncil|aa170505": "2026-10-08",
     "planning|meathcountycouncil|lb170675": "2026-10-08",
@@ -2081,7 +2082,7 @@
     "planning|southdublincountycouncil|lrd25a0014w": "2026-11-19",
     "planning|southdublincountycouncil|lrd26a0002w": "2026-11-19",
     "planning|southdublincountycouncil|lrd26a0005w": "2026-11-19",
-    "planning|southdublincountycouncil|lrd26a0006w": "2026-11-03",
+    "planning|southdublincountycouncil|lrd26a0006w": "2026-11-24",
     "planning|southdublincountycouncil|s01a0114": "2026-11-20",
     "planning|southdublincountycouncil|s01a0186": "2026-11-20",
     "planning|southdublincountycouncil|s01a0242": "2026-11-20",
@@ -7079,6 +7080,14 @@
       "applicantSource": "http://www.eplanning.ie/MeathCC/AppFileRefDetails/2661080/0",
       "verifiedAt": "2026-10-08"
     },
+    "planning|meathcountycouncil|2661276": {
+      "applicant": "Glenveagh Homes Ltd.",
+      "applicantEvidence": "Explicit applicant name on linked official council application",
+      "applicantSource": "http://www.eplanning.ie/MeathCC/AppFileRefDetails/2661276/0",
+      "planningAuthority": "Meath County Council",
+      "planningReference": "",
+      "verifiedAt": "2026-11-24"
+    },
     "planning|meathcountycouncil|2697": {
       "applicant": "Glenveagh Homes Limited",
       "applicantEvidence": "Applicant explicitly labelled on the linked planning-authority page",
@@ -7398,5 +7407,5 @@
     "newApplicants": 23,
     "sourcePagesInspected": 33
   },
-  "updatedAt": "2026-11-23T14:58:00.981877+00:00"
+  "updatedAt": "2026-11-24T15:00:07.728441+00:00"
 }
