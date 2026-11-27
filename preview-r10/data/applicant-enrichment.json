@@ -685,7 +685,7 @@
     "attemptedThisRun": 0,
     "namesFoundThisRun": 0,
     "reportsCheckedTotal": 680,
-    "updatedAt": "2026-11-26T14:01:51.053261+00:00"
+    "updatedAt": "2026-11-27T14:00:27.577249+00:00"
   },
   "checked": {
     "acp|324019": "2026-10-08",
@@ -930,6 +930,7 @@
     "planning|southdublincountycouncil|lrd26a0002w": "2026-11-07",
     "planning|southdublincountycouncil|lrd26a0005w": "2026-11-07",
     "planning|southdublincountycouncil|lrd26a0006w": "2026-11-13",
+    "planning|southdublincountycouncil|lrd26a0007w": "2026-11-27",
     "planning|southdublincountycouncil|s01a0114": "2026-11-14",
     "planning|southdublincountycouncil|s01a0186": "2026-11-14",
     "planning|southdublincountycouncil|s01a0242": "2026-11-14",
@@ -1077,6 +1078,7 @@
     "planning|southdublincountycouncil|sdz24a0029w": "2026-11-07",
     "planning|southdublincountycouncil|sdz25a0013w": "2026-11-07",
     "planning|southdublincountycouncil|sdz25a0019w": "2026-11-07",
+    "planning|southdublincountycouncil|sdz26a0029w": "2026-11-27",
     "planning|southdublincountycouncil|shd3abp30055518": "2026-11-10",
     "planning|southdublincountycouncil|shd3abp30055518ep": "2026-11-08",
     "planning|southdublincountycouncil|shd3abp30239818": "2026-11-10",
@@ -1131,11 +1133,11 @@
   "councilFormStats": {
     "applicantsVerifiedThisRun": 0,
     "note": "Only publicly linked PDF application forms; image-only documents need manual review.",
-    "pagesCheckedThisRun": 0,
-    "pagesCheckedTotal": 252,
+    "pagesCheckedThisRun": 2,
+    "pagesCheckedTotal": 254,
     "pagesWithFormLinks": 0,
     "pdfsInspectedThisRun": 0,
-    "updatedAt": "2026-11-26T14:01:51.413790+00:00"
+    "updatedAt": "2026-11-27T14:00:27.979969+00:00"
   },
   "cursor": {
     "acp": 0,
@@ -1886,6 +1888,10 @@
     "acp|324752": "2026-11-26",
     "acp|324754": "2026-11-07",
     "acp|324777": "2026-11-17",
+    "acp|324780": "2026-11-27",
+    "acp|324793": "2026-11-27",
+    "acp|324798": "2026-11-27",
+    "acp|324800": "2026-11-27",
     "acp|500965": "2026-10-08",
     "acp|500992": "2026-10-08",
     "acp|501338": "2026-10-08",
@@ -7409,5 +7415,5 @@
     "newApplicants": 23,
     "sourcePagesInspected": 33
   },
-  "updatedAt": "2026-11-26T14:02:25.252038+00:00"
+  "updatedAt": "2026-11-27T14:00:56.317462+00:00"
 }
