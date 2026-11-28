@@ -676,16 +676,20 @@
     "acp|324742": "2026-11-06",
     "acp|324752": "2026-11-06",
     "acp|324754": "2026-11-08",
+    "acp|324780": "2026-11-28",
+    "acp|324793": "2026-11-28",
+    "acp|324798": "2026-11-28",
+    "acp|324800": "2026-11-28",
     "acp|500965": "2026-10-20",
     "acp|500992": "2026-10-20",
     "acp|501338": "2026-10-20",
     "acp|501826": "2026-10-20"
   },
   "acpReportStats": {
-    "attemptedThisRun": 0,
+    "attemptedThisRun": 4,
     "namesFoundThisRun": 0,
-    "reportsCheckedTotal": 680,
-    "updatedAt": "2026-11-27T14:00:27.577249+00:00"
+    "reportsCheckedTotal": 684,
+    "updatedAt": "2026-11-28T13:16:57.495389+00:00"
   },
   "checked": {
     "acp|324019": "2026-10-08",
@@ -1133,11 +1137,11 @@
   "councilFormStats": {
     "applicantsVerifiedThisRun": 0,
     "note": "Only publicly linked PDF application forms; image-only documents need manual review.",
-    "pagesCheckedThisRun": 2,
+    "pagesCheckedThisRun": 0,
     "pagesCheckedTotal": 254,
     "pagesWithFormLinks": 0,
     "pdfsInspectedThisRun": 0,
-    "updatedAt": "2026-11-27T14:00:27.979969+00:00"
+    "updatedAt": "2026-11-28T13:16:57.806189+00:00"
   },
   "cursor": {
     "acp": 0,
@@ -1886,7 +1890,7 @@
     "acp|324748": "2026-11-05",
     "acp|324750": "2026-11-05",
     "acp|324752": "2026-11-26",
-    "acp|324754": "2026-11-07",
+    "acp|324754": "2026-11-28",
     "acp|324777": "2026-11-17",
     "acp|324780": "2026-11-27",
     "acp|324793": "2026-11-27",
@@ -7415,5 +7419,5 @@
     "newApplicants": 23,
     "sourcePagesInspected": 33
   },
-  "updatedAt": "2026-11-27T14:00:56.317462+00:00"
+  "updatedAt": "2026-11-28T13:17:25.176618+00:00"
 }
